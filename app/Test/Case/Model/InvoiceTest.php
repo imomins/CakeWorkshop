@@ -1,0 +1,51 @@
+<?php
+App::uses('Invoice', 'Model');
+
+/**
+ * Invoice Test Case
+ *
+ */
+class InvoiceTest extends CakeTestCase {
+
+/**
+ * Fixtures
+ *
+ * @var array
+ */
+	public $fixtures = array(
+		'app.invoice',
+		'app.type',
+		'app.booking',
+		'app.user',
+		'app.gender',
+		'app.department',
+		'app.occupation',
+		'app.group',
+		'app.courses_term',
+		'app.term',
+		'app.course',
+		'app.category'
+	);
+
+/**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		$this->Invoice = ClassRegistry::init('Invoice');
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		unset($this->Invoice);
+
+		parent::tearDown();
+	}
+
+}
