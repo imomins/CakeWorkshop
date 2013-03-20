@@ -62,15 +62,15 @@ class Font_Table_cmap extends Font_Table {
       $segCount = $subtable["segCountX2"] / 2;
       $subtable["segCount"] = $segCount;
       
-      $endCode       = $font->r(array(self::uint16, $segCount));
+      $endCode       = $font->str_replace(array(self::uint16, $segCount));
       
       $font->readUInt16(); // reservedPad
       
-      $startCode     = $font->r(array(self::uint16, $segCount));
-      $idDelta       = $font->r(array(self::int16, $segCount));
+      $startCode     = $font->str_replace(array(self::uint16, $segCount));
+      $idDelta       = $font->str_replace(array(self::int16, $segCount));
       
       $ro_start      = $font->pos();
-      $idRangeOffset = $font->r(array(self::uint16, $segCount));
+      $idRangeOffset = $font->str_replace(array(self::uint16, $segCount));
       
       $glyphIndexArray = array();
       for($i = 0; $i < $segCount; $i++) {

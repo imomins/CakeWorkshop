@@ -23,10 +23,10 @@
         // One global object is stupid enough.
         ?>
         eLearning = {
-            controller: '<?php echo $this->params['controller']; ?>',
-            view: '<?php echo $this->params['view']; ?>',
-            action: '<?php echo $this->params['action']; ?>',
-            webroot: '<?php echo $this->webroot; ?>'
+            controller: '<?php echo $this->request->params['controller']; ?>',
+            view: '<?php echo $this->request->params['view']; ?>',
+            action: '<?php echo $this->request->params['action']; ?>',
+            webroot: '<?php echo $this->request->webroot; ?>'
         };
         </script>
         <?php echo $this->Html->css('bootstrap-responsive.min'); ?>

@@ -66,7 +66,7 @@ class AppController extends Controller {
 
     public function isAuthorized($user) {
         // If a admin method is accessed the users group must also be admin
-        if (!empty($this->params['prefix']) && $this->params['prefix'] === 'admin') {
+        if (!empty($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin') {
             return $this->isAdmin();
         }
         return true;

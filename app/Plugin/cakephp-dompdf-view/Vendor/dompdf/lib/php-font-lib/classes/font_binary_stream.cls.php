@@ -241,7 +241,7 @@ class Font_Binary_Stream {
   public function unpack($def) {
     $d = array();
     foreach($def as $name => $type) {
-      $d[$name] = $this->r($type);
+      $d[$name] = $this->str_replace($type);
     }
     return $d;
   }
@@ -260,7 +260,7 @@ class Font_Binary_Stream {
    * @param mixed $type The data type to read
    * @return mixed The data that was read
    */
-  public function r($type) {
+  public function str_replace($type) {
     switch($type) {
       case self::uint8:     return $this->readUInt8();
       case self::int8:      return $this->readInt8();
@@ -283,7 +283,7 @@ class Font_Binary_Stream {
           
           $ret = array();
           for($i = 0; $i < $type[1]; $i++) {
-            $ret[] = $this->r($type[0]);
+            $ret[] = $this->str_replace($type[0]);
           }
           return $ret;
         }

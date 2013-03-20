@@ -246,7 +246,7 @@ label.error {
     border-width: 1px;
 }
 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
-    box-shadow: none !important;
+    box-shadow: 1px !important;
 }
 
 .form-horizontal .control-label {
