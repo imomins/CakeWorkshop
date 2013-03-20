@@ -48,10 +48,6 @@
         <li class="nav-header"><?php echo __('Formulardetails'); ?></li>
         <li class="divider"></li>
 
-        <li class="nav-header"><?php echo __('Beschäftigungen'); ?></li>
-        <li><?php echo $this->Html->link(__('Übersicht'), '/admin/occupations'); ?></li>
-        <li><?php echo $this->Html->link(__('Anlegen'), '/admin/occupations/add'); ?></li>
-
         <li class="nav-header"><?php echo __('Fachbereiche'); ?></li>
         <li><?php echo $this->Html->link(__('Übersicht'), '/admin/departments'); ?></li>
         <li><?php echo $this->Html->link(__('Anlegen'), '/admin/departments/add'); ?></li>

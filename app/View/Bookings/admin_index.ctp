@@ -16,7 +16,7 @@
                     <?php echo $this->Html->link($booking['User']['name'], array('controller' => 'users', 'action' => 'view', $booking['User']['id'])); ?>
                 </td>
                 <td>
-                    <?php echo $this->Html->link($booking['CoursesTerm']['Course']['label'], array('controller' => 'courses_terms', 'action' => 'view', $booking['CoursesTerm']['id'])); ?>
+                    <?php echo $this->Html->link($booking['CoursesTerm']['Course']['name'], array('controller' => 'courses_terms', 'action' => 'view', $booking['CoursesTerm']['id'])); ?>
                 </td>
                 <td>
                     <?php echo $this->Html->link($booking['CoursesTerm']['Term']['name'], array('controller' => 'terms', 'action' => 'view', $booking['CoursesTerm']['Term']['id'])); ?>

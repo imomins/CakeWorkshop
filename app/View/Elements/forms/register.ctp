@@ -64,7 +64,7 @@
     <div class="control-group">
         <label class="control-label"><?php echo __('Beschäftigt als'); ?></label>
         <div class="controls">
-            <?php echo $this->Form->input('occupation_id', array('required' => true, 'class' => 'span3', 'label' => false)); ?>
+            <?php echo $this->Form->input('occupation', array('required' => true, 'class' => 'span3', 'label' => false)); ?>
         </div>
     </div>
 

@@ -19,7 +19,7 @@ class UserFixture extends CakeTestFixture {
 		'title_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'index'),
 		'gender_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'index'),
 		'department_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'index'),
-		'occupation_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'index'),
+		'occupation' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'index'),
 		'hrz' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'phone' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'group_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'index'),
@@ -31,7 +31,6 @@ class UserFixture extends CakeTestFixture {
 			'fk_users_titles1_idx' => array('column' => 'title_id', 'unique' => 0),
 			'fk_users_genders1_idx' => array('column' => 'gender_id', 'unique' => 0),
 			'fk_attendees_departments1_idx' => array('column' => 'department_id', 'unique' => 0),
-			'fk_attendees_occupations1_idx' => array('column' => 'occupation_id', 'unique' => 0),
 			'fk_users_groups1_idx' => array('column' => 'group_id', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
@@ -51,8 +50,8 @@ class UserFixture extends CakeTestFixture {
 			'lastname' => 'Lorem ipsum dolor sit amet',
 			'title_id' => 1,
 			'gender_id' => 1,
-			'department_id' => 1,
-			'occupation_id' => 1,
+			'department' => 1,
+			'occupation' => 1,
 			'hrz' => 'Lorem ipsum dolor sit amet',
 			'phone' => 'Lorem ipsum dolor sit amet',
 			'group_id' => 1,

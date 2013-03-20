@@ -2,7 +2,7 @@
 
 <table class="table table-striped table-bordered">
     <tr>
-        <th><?php echo $this->Paginator->sort('label'); ?></th>
+        <th><?php echo $this->Paginator->sort('name'); ?></th>
         <th><?php echo $this->Paginator->sort('category_id'); ?></th>
         <th class="actions"><?php echo __('Actions'); ?></th>
     </tr>
@@ -10,7 +10,7 @@
     foreach ($courses as $course): ?>
         <tr>
             <td>
-                <?php echo h($course['Course']['label']); ?>
+                <?php echo h($course['Course']['name']); ?>
             </td>
             <td>
                 <?php echo $this->Html->link($course['Category']['name'], array('controller' => 'categories', 'action' => 'view', $course['Category']['id'])); ?>

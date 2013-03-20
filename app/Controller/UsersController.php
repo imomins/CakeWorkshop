@@ -22,21 +22,23 @@ class UsersController extends AppController {
             if ($this->Auth->login()) {
                 if ($this->isAdmin()) {
                     $this->redirect('/admin/bookings');
-                } else {
+                }
+                else {
                     $this->redirect('/bookings');
                 }
-            } else {
+            }
+            else {
                 $this->Session->setFlash(__('Ungültiges Passwort oder Benutzername. Setzen Sie Ihr Passwort zurück falls nötig. <br />Beachten Sie, dass Ihr Konto auch deaktiviert worden sein könnte.'), 'flash_error');
             }
-        // Registration form data
-        } else {
+            // Registration form data
+        }
+        else {
             $genders = $this->User->Gender->find('list');
             $departments = $this->User->Department->find('list');
-            $occupations = $this->User->Occupation->find('list');
 
             $this->loadModel('Category');
             $coursesByCategory = $this->Category->findGroupedByCategory();
-            $this->set(compact('genders', 'departments', 'occupations', 'coursesByCategory'));
+            $this->set(compact('genders', 'departments', 'coursesByCategory'));
         }
     }
 
@@ -57,21 +59,21 @@ class UsersController extends AppController {
             // Let's filter we don't want post surprises
             $data = array(
                 'User' => array(
-                    'email'            => trim($this->request->data['User']['email']),
-                    'password'         => trim($this->request->data['User']['password']),
+                    'email' => trim($this->request->data['User']['email']),
+                    'password' => trim($this->request->data['User']['password']),
                     'password_confirm' => trim($this->request->data['User']['password_confirm']),
-                    'firstname'        => trim($this->request->data['User']['firstname']),
-                    'lastname'         => trim($this->request->data['User']['lastname']),
-                    'title_id'         => $this->request->data['User']['title_id'],
-                    'gender_id'        => $this->request->data['User']['gender_id'],
-                    'department_id'    => $this->request->data['User']['department_id'],
-                    'occupation_id'    => $this->request->data['User']['occupation_id'],
-                    'hrz'              => trim($this->request->data['User']['hrz']),
-                    'phone'            => trim($this->request->data['User']['phone']),
+                    'firstname' => trim($this->request->data['User']['firstname']),
+                    'lastname' => trim($this->request->data['User']['lastname']),
+                    'title_id' => $this->request->data['User']['title_id'],
+                    'gender_id' => $this->request->data['User']['gender_id'],
+                    'department_id' => $this->request->data['User']['department_id'],
+                    'occupation' => $this->request->data['User']['occupation'],
+                    'hrz' => trim($this->request->data['User']['hrz']),
+                    'phone' => trim($this->request->data['User']['phone']),
                     'email_confirmed' => 0,
-                    'active'           => 0,
-                    'group_id'         => $group['Group']['id'],
-                    'hash'             => $hash
+                    'active' => 0,
+                    'group_id' => $group['Group']['id'],
+                    'hash' => $hash
                 )
             );
 
@@ -79,11 +81,13 @@ class UsersController extends AppController {
                 $this->sendActivationEmail($data['User']['email'], $hash);
                 $this->Session->setFlash(__('Bitte schauen Sie zur Bestätigung Ihrer E-mail Adresse in Ihr Postfach.'), 'flash_success');
                 $this->redirect(array('controller' => 'users', 'action' => 'login'));
-            } else {
+            }
+            else {
                 $this->Session->setFlash($this->User->validationErrors);
                 $this->redirect(array('controller' => 'users', 'action' => 'login'));
             }
-        } else {
+        }
+        else {
             throw new MethodNotAllowedException();
         }
     }
@@ -96,7 +100,6 @@ class UsersController extends AppController {
 
     /**
      * Send a CakePhp email template to activate the users account.
-     *
      * We want to make sure that the users provide correct email and not
      * random accounts are opened.
      *
@@ -139,7 +142,8 @@ class UsersController extends AppController {
             if ($this->User->activate($hash)) {
                 $this->Session->setFlash(__('Bitte melden Sie sich an'), 'flash_info');
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             $this->Session->setFlash($e->getMessage());
             $this->redirect(array('controller' => 'users', 'action' => 'register'));
         }
@@ -150,8 +154,8 @@ class UsersController extends AppController {
 
     }
 
-	public function admin_index() {
-		$this->paginate = array(
+    public function admin_index() {
+        $this->paginate = array(
             'fields' => array(
                 'User.id',
                 'User.group_id',
@@ -163,8 +167,8 @@ class UsersController extends AppController {
                 'Gender' => array('fields' => array('Gender.name')),
             )
         );
-		$this->set('users', $this->paginate());
-	}
+        $this->set('users', $this->paginate());
+    }
 
     public function search() {
         $this->autoRender = false;
@@ -172,7 +176,7 @@ class UsersController extends AppController {
 
         $users = $this->User->search($this->request['term']);
 
-        foreach($users as $id => $name) {
+        foreach ($users as $id => $name) {
             array_push($auto_complete, array('value' => $id, 'label' => $name));
         }
 
@@ -204,7 +208,7 @@ class UsersController extends AppController {
                     'Gender', 'Department', 'Occupation', 'Group',
                     'CoursesTerm' => array(
                         'fields' => array('term_id', 'course_id'),
-                        'Course' => array('fields' => array('Course.id', 'Course.label')),
+                        'Course' => array('fields' => array('Course.id', 'Course.name')),
                         'Term' => array('fields' => array('Term.id', 'Term.name')),
                     )
                 ),
@@ -213,14 +217,14 @@ class UsersController extends AppController {
         );
     }
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function admin_view($id = null) {
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function admin_view($id = null) {
         $user = $this->User->find('first',
             array(
                 'conditions' => array('User.id' => $id),
@@ -245,7 +249,7 @@ class UsersController extends AppController {
                     'Gender', 'Department', 'Occupation', 'Group',
                     'CoursesTerm' => array(
                         'fields' => array('term_id', 'course_id'),
-                        'Course' => array('fields' => array('Course.id', 'Course.label')),
+                        'Course' => array('fields' => array('Course.id', 'Course.name')),
                         'Term' => array('fields' => array('Term.id', 'Term.name')),
                     )
                 ),
@@ -256,30 +260,30 @@ class UsersController extends AppController {
         if (empty($user)) {
             throw new NotFoundException(__('Invalid user'));
         }
-		$this->set('user', $user);
-	}
+        $this->set('user', $user);
+    }
 
-/**
- * add method
- *
- * @return void
- */
-	public function admin_add() {
-		if ($this->request->is('post')) {
-			$this->User->create();
-			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-			}
-		}
-		$genders = $this->User->Gender->find('list');
-		$departments = $this->User->Department->find('list');
-		$occupations = $this->User->Occupation->find('list');
-		$groups = $this->User->Group->find('list');
-		$this->set(compact('genders', 'departments', 'occupations', 'groups', 'coursesTerms'));
-	}
+    /**
+     * add method
+     *
+     * @return void
+     */
+    public function admin_add() {
+        if ($this->request->is('post')) {
+            $this->User->create();
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash(__('The user has been saved'));
+                $this->redirect(array('action' => 'index'));
+            }
+            else {
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+            }
+        }
+        $genders = $this->User->Gender->find('list');
+        $departments = $this->User->Department->find('list');
+        $groups = $this->User->Group->find('list');
+        $this->set(compact('genders', 'departments', 'groups', 'coursesTerms'));
+    }
 
     /**
      * If an email address is posted to this method the "email_update"
@@ -300,11 +304,12 @@ class UsersController extends AppController {
             if ($this->User->exists()) {
                 $hash = $this->getRandomString();
 
-                if ( $this->User->save(array('User' => array('hash' => $hash))) ) {
+                if ($this->User->save(array('User' => array('hash' => $hash)))) {
                     $this->sendPasswordResetMail(trim($this->request->data['User']['email']), $hash);
 
                     $this->Session->setFlash(__('Ihnen wurde eine Email zugesandt, bitte überprüfen Sie Ihr Postfach'), 'flash_success');
-                } else {
+                }
+                else {
                     throw new InternalErrorException(__('Ein internet Fehler ist aufgetreten'));
                 }
             }
@@ -338,9 +343,9 @@ class UsersController extends AppController {
                     $this->User->save(
                         array(
                             'User' => array(
-                                'password'         => $this->request->data['User']['password'],
+                                'password' => $this->request->data['User']['password'],
                                 'password_confirm' => $this->request->data['User']['password_confirm'],
-                                'hash'             => null
+                                'hash' => null
                             )
                         )
                     )
@@ -348,7 +353,8 @@ class UsersController extends AppController {
                     $this->Session->setFlash(__('Ihr Passwort wurde geändert, bitte melden Sie sich an.'), 'flash_success');
                     $this->redirect('/users/login');
                 }
-            } else {
+            }
+            else {
                 throw new NotFoundException(__('Keinen Benutzer gefunden'));
             }
 
@@ -363,23 +369,26 @@ class UsersController extends AppController {
             if ($this->User->exists()) {
                 if ($this->User->save(
                     array('User' => array(
-                        'gender_id'     => $this->request->data['User']['gender_id'],
-                        'title'         => $this->request->data['User']['title'],
-                        'firstname'     => $this->request->data['User']['firstname'],
-                        'lastname'      => $this->request->data['User']['lastname'],
+                        'gender_id' => $this->request->data['User']['gender_id'],
+                        'title' => $this->request->data['User']['title'],
+                        'firstname' => $this->request->data['User']['firstname'],
+                        'lastname' => $this->request->data['User']['lastname'],
                         'department_id' => $this->request->data['User']['department_id'],
-                        'occupation_id' => $this->request->data['User']['occupation_id'],
-                        'hrz'           => $this->request->data['User']['hrz'],
-                        'phone'         => $this->request->data['User']['phone'],
+                        'occupation' => $this->request->data['User']['occupation'],
+                        'hrz' => $this->request->data['User']['hrz'],
+                        'phone' => $this->request->data['User']['phone'],
                     )
-                ))) {
-                        $this->Session->setFlash(__('Ihr Konto wurde aktualisiert'), 'flash_success');
-                } else {
+                    ))
+                ) {
+                    $this->Session->setFlash(__('Ihr Konto wurde aktualisiert'), 'flash_success');
+                }
+                else {
                     $this->Session->setFlash(__('Fehler beim speichern Ihres Kontos'), 'flash_error');
                 }
             }
             $this->redirect('/users/edit');
-        } else {
+        }
+        else {
             throw new MethodNotAllowedException();
         }
     }
@@ -388,7 +397,8 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->User->id = $this->getUserId();
             $this->redirect('/users/edit');
-        } else {
+        }
+        else {
             throw new MethodNotAllowedException();
         }
     }
@@ -408,17 +418,18 @@ class UsersController extends AppController {
                 $this->Session->setFlash(__('The user has been saved'));
                 $this->redirect(array('action' => 'index'));
                 $this->redirect(array('action' => 'index'));
-            } else {
+            }
+            else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
             }
-        } else {
+        }
+        else {
             $this->request->data = $this->User->read(null, $this->Auth->user('id'));
         }
         $genders = $this->User->Gender->find('list');
         $departments = $this->User->Department->find('list');
-        $occupations = $this->User->Occupation->find('list');
 
-        $this->set(compact('genders', 'departments', 'occupations', 'coursesTerms'));
+        $this->set(compact('genders', 'departments', 'coursesTerms'));
     }
 
     /**
@@ -428,27 +439,29 @@ class UsersController extends AppController {
      * @param string $id
      * @return void
      */
-	public function admin_edit($id = null) {
-		$this->User->id = $id;
-		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
-		}
-		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-			}
-		} else {
-			$this->request->data = $this->User->read(null, $id);
-		}
-		$genders = $this->User->Gender->find('list');
-		$departments = $this->User->Department->find('list');
-		$occupations = $this->User->Occupation->find('list');
-		$groups = $this->User->Group->find('list');
-		$this->set(compact('genders', 'departments', 'occupations', 'groups', 'coursesTerms'));
-	}
+    public function admin_edit($id = null) {
+        $this->User->id = $id;
+        if (!$this->User->exists()) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->request->is('post') || $this->request->is('put')) {
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash(__('The user has been saved'));
+                $this->redirect(array('action' => 'index'));
+            }
+            else {
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+            }
+        }
+        else {
+            $this->request->data = $this->User->read(null, $id);
+        }
+        $genders = $this->User->Gender->find('list');
+        $departments = $this->User->Department->find('list');
+        $groups = $this->User->Group->find('list');
+
+        $this->set(compact('genders', 'departments', 'groups', 'coursesTerms'));
+    }
 
     /**
      * delete method
@@ -458,20 +471,20 @@ class UsersController extends AppController {
      * @param string $id
      * @return void
      */
-	public function admin_delete($id = null) {
-		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
-		}
-		$this->User->id = $id;
-		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
-		}
-		if ($this->User->delete()) {
-			$this->Session->setFlash(__('User deleted'));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->Session->setFlash(__('User was not deleted'));
-		$this->redirect(array('action' => 'index'));
-	}
+    public function admin_delete($id = null) {
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException();
+        }
+        $this->User->id = $id;
+        if (!$this->User->exists()) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->User->delete()) {
+            $this->Session->setFlash(__('User deleted'));
+            $this->redirect(array('action' => 'index'));
+        }
+        $this->Session->setFlash(__('User was not deleted'));
+        $this->redirect(array('action' => 'index'));
+    }
 
 }

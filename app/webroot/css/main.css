@@ -277,3 +277,30 @@ dd {
 dt, dd {
     line-height: 21px;
 }
+
+.paging {
+    margin:5px 0px;
+    padding:5px 0px;
+    border-top:1px dotted #d3d3d3;
+}
+.paging span {
+    margin:0px 5px;
+}
+
+.actions ul {
+    list-style: none;
+    margin: 7px 0px;
+    padding: 0;
+    float:left;
+}
+.actions ul li {
+    float: left;
+}
+.actions ul li {
+    line-height: 12px;
+    margin-right: 6px;
+}
+.actions ul li+li {
+    padding-left: 6px;
+    border-left: 1px solid lightgray;
+}

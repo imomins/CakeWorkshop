@@ -174,15 +174,15 @@ class User extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'occupation_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
+		'occupation' => array(
+            'notempty' => array(
+                'rule' => array('notempty'),
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ),
 		),
 		'phone' => array(
 			'notempty' => array(
@@ -244,13 +244,6 @@ class User extends AppModel {
 		'Department' => array(
 			'className' => 'Department',
 			'foreignKey' => 'department_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'Occupation' => array(
-			'className' => 'Occupation',
-			'foreignKey' => 'occupation_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

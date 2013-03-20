@@ -15,13 +15,14 @@ class BookingsController extends AppController {
  */
 	public function admin_index() {
         $this->paginate = array(
+            'order' => array('Booking.created DESC'),
             'contain' => array(
                 'User' => array(
                     'fields' => array('User.id', 'User.name')
                 ),
                 'CoursesTerm' => array(
                     'Course' => array(
-                        'fields' => array('Course.label')
+                        'fields' => array('Course.name')
                     ),
                     'Term' => array(
                         'fields' => array('Term.id', 'Term.name')
@@ -31,9 +32,8 @@ class BookingsController extends AppController {
         );
         $bookings = $this->paginate('Booking');
         $terms = $this->Booking->CoursesTerm->Term->find('list');
-        $invoices = $this->Booking->Invoice->find('list');
 
-		$this->set(compact('bookings', 'terms', 'invoices'));
+		$this->set(compact('bookings', 'terms'));
 	}
 
 /**
@@ -203,7 +203,7 @@ class BookingsController extends AppController {
         $terms = $this->Booking->CoursesTerm->Term->find('list');
         $invoices = $this->Booking->Invoice->find('list', array('conditions' => array('Invoice.user_id' => $this->getUserId())));
         $bookings = $this->Booking->findBookingsByUserId($this->getUserId());
-        debug($bookings);
+        //debug($bookings);
 
         $this->set(compact('types', 'terms', 'coursesByCategory', 'bookings', 'term_id', 'invoices'));
         $this->set('_serialize', array('bookings', 'coursesByCategory'));

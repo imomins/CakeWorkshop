@@ -1,5 +1,6 @@
 <div class="users view">
     <p class="lead"><?php  echo __('Daten des Benutzers: '. h($user['User']['firstname']) . ' ' . h($user['User']['lastname'])); ?></p>
+    <hr />
 
 	<dl>
 		<dt><?php echo __('Anrede'); ?></dt>
@@ -34,7 +35,7 @@
 
 		<dt><?php echo __('Beschäftigung'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($user['Occupation']['name'], array('controller' => 'occupations', 'action' => 'view', $user['Occupation']['id'])); ?>
+            <?php echo h($user['User']['occupation']); ?>
 			&nbsp;
 		</dd>
 
@@ -71,9 +72,10 @@
 </div>
 
 <div class="related">
-	<h3><?php echo __('Gebuchte Kurse'); ?></h3>
-	<?php if (!empty($user['CoursesTerm'])): ?>
-        <table class="table table-bordered">
+    <h4><?php echo __('Gebuchte Kurse'); ?></h4>
+
+    <?php if (!empty($user['CoursesTerm'])): ?>
+        <table class="table table-bordered table-condensed table-striped">
         <tr>
             <th><?php echo __('Semester'); ?></th>
             <th><?php echo __('Kurs'); ?></th>
@@ -84,7 +86,7 @@
             foreach ($user['CoursesTerm'] as $coursesTerm): ?>
             <tr>
                 <td><?php echo $coursesTerm['Term']['name']; ?></td>
-                <td><?php echo $coursesTerm['Course']['label']; ?></td>
+                <td><?php echo $coursesTerm['Course']['name']; ?></td>
                 <td class="actions">
                     <?php echo $this->Html->link(__('View'), array('controller' => 'courses_terms', 'action' => 'view', $coursesTerm['Booking']['id'])); ?>
                     <?php echo $this->Html->link(__('Edit'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['Booking']['id'])); ?>

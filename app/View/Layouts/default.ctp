@@ -50,7 +50,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <?php echo $this->Html->link('eLearning-Workshops', array('controller' => 'pages', 'action' => 'display'), array('class' => 'brand')); ?>
+                    <?php echo $this->Html->link('Uni-Frankfurt Workshops', array('controller' => 'pages', 'action' => 'display'), array('class' => 'brand')); ?>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <?php if (!$loggedIn) : ?>

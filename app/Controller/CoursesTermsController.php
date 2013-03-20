@@ -24,7 +24,7 @@ class CoursesTermsController extends AppController {
             'contain' => array(
                 'Day',
                 'Term' => array('fields' => array('Term.id', 'Term.name')),
-                'Course' => array('fields' => array('Course.id', 'Course.label'))
+                'Course' => array('fields' => array('Course.id', 'Course.name'))
             )
         );
         $p = $this->paginate();

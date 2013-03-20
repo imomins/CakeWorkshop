@@ -35,8 +35,8 @@ class Category extends AppModel {
             array(
                 'contain' => array(
                     'Course' => array(
-                        'order' => 'Course.label ASC',
-                        'fields' => array('Course.label'),
+                        'order' => 'Course.name ASC',
+                        'fields' => array('Course.name'),
                         'CoursesTerm' => array(
                             'conditions' => $conditions,
                             'fields' => array('CoursesTerm.attendees', 'CoursesTerm.max'),

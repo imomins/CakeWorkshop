@@ -33,7 +33,7 @@
                             <?php if ($form): ?>
                                 <td><?php echo $this->Form->input('CourseTerm.' . $i, array('class' => 'booking', 'label' => false, 'type' => 'checkbox', 'value' => $courseByTerm['id'])); ?></td>
                             <?php endif; ?>
-                            <td><?php echo h($course['label']); ?></td>
+                            <td><?php echo h($course['name']); ?></td>
                             <td><?php echo h($courseByTerm['Term']['name']); ?></td>
                             <!-- days -->
                             <td colspan="3">

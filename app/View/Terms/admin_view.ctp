@@ -1,5 +1,5 @@
 <div class="terms view">
-<h2><?php  echo __('Term'); ?></h2>
+<h2><?php  echo __('Semesterübersicht'); ?></h2>
 	<dl>
 		<dt><?php echo __('Name'); ?></dt>
 		<dd>
@@ -34,24 +34,20 @@
 <div class="related">
 	<h3><?php echo __('Referenzierte Kurse (nicht Semester-Kurse)'); ?></h3>
 	<?php if (!empty($term['Course'])): ?>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered table-condensed">
 	<tr>
-		<th><?php echo __('Id'); ?></th>
 		<th><?php echo __('Category Id'); ?></th>
 		<th><?php echo __('Name'); ?></th>
 		<th><?php echo __('Code'); ?></th>
-		<th><?php echo __('Description'); ?></th>
 		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php
 		$i = 0;
 		foreach ($term['Course'] as $course): ?>
 		<tr>
-			<td><?php echo $course['id']; ?></td>
-			<td><?php echo $course['category_id']; ?></td>
+			<td><?php echo substr($course['Category']['name'], 0, 25).'...'; ?></td>
 			<td><?php echo $course['name']; ?></td>
 			<td><?php echo $course['code']; ?></td>
-			<td><?php echo $course['description']; ?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'courses', 'action' => 'view', $course['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'courses', 'action' => 'edit', $course['id'])); ?>

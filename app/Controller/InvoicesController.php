@@ -40,7 +40,7 @@ class InvoicesController extends AppController {
                     'CoursesTerm' => array(
                         'Term' => array('fields' => array('Term.name')),
                         'fields' => array('CoursesTerm.id'),
-                        'Course' => array('fields' => 'Course.label')
+                        'Course' => array('fields' => 'Course.name')
                     )
                 )
             )
@@ -65,7 +65,7 @@ class InvoicesController extends AppController {
                     'CoursesTerm' => array(
                         'Term' => array('fields' => array('Term.name')),
                         'fields' => array('CoursesTerm.id'),
-                        'Course' => array('fields' => 'Course.label')
+                        'Course' => array('fields' => 'Course.name')
                     )
                 )
             )

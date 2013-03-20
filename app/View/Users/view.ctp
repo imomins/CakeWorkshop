@@ -34,7 +34,7 @@
 
 		<dt><?php echo __('Occupation'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($user['Occupation']['name'], array('controller' => 'occupations', 'action' => 'view', $user['Occupation']['id'])); ?>
+            <?php echo h($user['User']['occupation']); ?>
 			&nbsp;
 		</dd>
 
@@ -84,7 +84,7 @@
             foreach ($user['CoursesTerm'] as $coursesTerm): ?>
             <tr>
                 <td><?php echo $coursesTerm['Term']['name']; ?></td>
-                <td><?php echo $coursesTerm['Course']['label']; ?></td>
+                <td><?php echo $coursesTerm['Course']['name']; ?></td>
                 <td class="actions">
                     <?php echo $this->Html->link(__('View'), array('controller' => 'courses_terms', 'action' => 'view', $coursesTerm['Booking']['id'])); ?>
                     <?php echo $this->Html->link(__('Edit'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['Booking']['id'])); ?>

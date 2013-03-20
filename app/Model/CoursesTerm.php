@@ -19,14 +19,14 @@ class CoursesTerm extends AppModel {
             'fields' => array('CoursesTerm.id'),
             'contain' => array(
                 'Course' => array(
-                    'fields' => array('Course.label')
+                    'fields' => array('Course.name')
                 ),
                 'Term' => array(
                     'fields' => array('Term.name')
                 )
             )
         ));
-        $coursesTerms = Set::combine($coursesTerms, '{n}.CoursesTerm.id', array('{0} - {1}', '{n}.Course.label', '{n}.Term.name'));
+        $coursesTerms = Set::combine($coursesTerms, '{n}.CoursesTerm.id', array('{0} - {1}', '{n}.Course.name', '{n}.Term.name'));
 
         return $coursesTerms;
     }
@@ -37,7 +37,7 @@ class CoursesTerm extends AppModel {
      *
      * Nicely formatted the full query:
      *
-     * SELECT Term.name,Course.label,Category.name,Category.id,CoursesTerm.id,CoursesTerm.start_date,CoursesTerm.start_time,CoursesTerm.end_time,CoursesTerm.attendees,CoursesTerm.max
+     * SELECT Term.name,Course.name,Category.name,Category.id,CoursesTerm.id,CoursesTerm.start_date,CoursesTerm.start_time,CoursesTerm.end_time,CoursesTerm.attendees,CoursesTerm.max
      * FROM courses_terms AS CoursesTerm
      *     LEFT JOIN terms AS Term ON CoursesTerm.term_id = Term.id
      *     LEFT JOIN courses AS Course ON CoursesTerm.course_id = Course.id
@@ -81,7 +81,7 @@ class CoursesTerm extends AppModel {
 
         // Easier to make this query like this
         $coursesTerm = $this->query(
-            ' SELECT Term.name,Course.label,Category.name,Category.id,CoursesTerm.id,Day.start_date,Day.start_time,Day.end_time,CoursesTerm.attendees,CoursesTerm.max'.
+            ' SELECT Term.name,Course.name,Category.name,Category.id,CoursesTerm.id,Day.start_date,Day.start_time,Day.end_time,CoursesTerm.attendees,CoursesTerm.max'.
                 ' FROM courses_terms AS CoursesTerm'.
                 '	LEFT JOIN terms AS Term ON CoursesTerm.term_id = Term.id'.
                 '	LEFT JOIN courses AS Course ON CoursesTerm.course_id = Course.id'.
@@ -113,7 +113,7 @@ class CoursesTerm extends AppModel {
         //                    'CoursesTerm.id' => array(
         //                        'Term' => array('name' => 'Term.name'),
         //
-        //                        'Course' => array('label' => 'Course.label'),
+        //                        'Course' => array('label' => 'Course.name'),
         //
         //                        'CoursesTerm' => array(
         //                            'id' => 'CoursesTerm.id',

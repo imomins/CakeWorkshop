@@ -13,7 +13,6 @@ class TermsController extends AppController {
  * @return void
  */
 	public function admin_index() {
-		$this->Term->recursive = 0;
 		$this->set('terms', $this->paginate());
 	}
 
@@ -29,6 +28,7 @@ class TermsController extends AppController {
 		if (!$this->Term->exists()) {
 			throw new NotFoundException(__('Invalid term'));
 		}
+        $this->Term->recursive = 2;
 		$this->set('term', $this->Term->read(null, $id));
 	}
 

@@ -63,7 +63,7 @@
 			<td><?php echo $user['title_id']; ?></td>
 			<td><?php echo $user['gender_id']; ?></td>
 			<td><?php echo $user['department_id']; ?></td>
-			<td><?php echo $user['occupation_id']; ?></td>
+			<td><?php echo $user['occupation']; ?></td>
 			<td><?php echo $user['hrz']; ?></td>
 			<td><?php echo $user['phone']; ?></td>
 			<td><?php echo $user['group_id']; ?></td>

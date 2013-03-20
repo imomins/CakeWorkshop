@@ -20,7 +20,7 @@
                     <?php echo $this->Html->link($coursesTerm['Term']['name'], array('controller' => 'terms', 'action' => 'view', $coursesTerm['Term']['id'])); ?>
                 </td>
                 <td>
-                    <?php echo $this->Html->link($coursesTerm['Course']['label'], array('controller' => 'courses', 'action' => 'view', $coursesTerm['Course']['id'])); ?>
+                    <?php echo $this->Html->link($coursesTerm['Course']['name'], array('controller' => 'courses', 'action' => 'view', $coursesTerm['Course']['id'])); ?>
                 </td>
                 <!-- days -->
                 <td colspan="3">
@@ -42,10 +42,10 @@
                 <td class="actions">
                     <?php echo $this->Html->link(__('View'), array('action' => 'view', $coursesTerm['CoursesTerm']['id'])); ?>
                     <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $coursesTerm['CoursesTerm']['id'])); ?>
-                    <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $coursesTerm['CoursesTerm']['id']), null, __('Are you sure you want to delete # %s?', $coursesTerm['Course']['label'])); ?>
+                    <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $coursesTerm['CoursesTerm']['id']), null, __('Are you sure you want to delete # %s?', $coursesTerm['Course']['name'])); ?>
                 </td>
                 <td>
-                    <?php echo $this->Html->link(__('PDF'), array('action' => 'view', 'ext'=>'pdf', $coursesTerm['CoursesTerm']['id'], $coursesTerm['Course']['label'])); ?>
+                    <?php echo $this->Html->link(__('PDF'), array('action' => 'view', 'ext'=>'pdf', $coursesTerm['CoursesTerm']['id'], $coursesTerm['Course']['name'])); ?>
                 </td>
             </tr>
             <?php endforeach; ?>

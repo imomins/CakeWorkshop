@@ -10,7 +10,7 @@
 		echo $this->Form->input('title');
 		echo $this->Form->input('gender_id');
 		echo $this->Form->input('department_id');
-		echo $this->Form->input('occupation_id');
+		echo $this->Form->input('occupation');
 		echo $this->Form->input('hrz');
 		echo $this->Form->input('phone');
 		echo $this->Form->input('group_id');
