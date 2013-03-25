@@ -6,7 +6,6 @@ App::uses('AppModel', 'Model');
  * @property Title $Title
  * @property Gender $Gender
  * @property Department $Department
- * @property Occupation $Occupation
  * @property Group $Group
  * @property CoursesTerm $CoursesTerm
  */

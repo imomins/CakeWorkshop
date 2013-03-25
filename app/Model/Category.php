@@ -46,7 +46,8 @@ class Category extends AppModel {
                             'Day'
                         )
                     )
-                )
+                ),
+                'order' => array('Category.name ASC')
             )
         );
     }

@@ -10,18 +10,19 @@ class UsersController extends AppController {
 
     var $actsAs = array('Containable');
 
+    public $helpers = array('Frontend');
+
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('register', 'login', 'logout', 'activate', 'reset', 'password');
     }
 
     public function login() {
-        // Actual login
         if ($this->request->is('post')) {
 
             if ($this->Auth->login()) {
                 if ($this->isAdmin()) {
-                    $this->redirect('/admin/bookings');
+                    $this->redirect('/admin/bookings/index/sort:created/direction:desc');
                 }
                 else {
                     $this->redirect('/bookings');
@@ -37,7 +38,7 @@ class UsersController extends AppController {
             $departments = $this->User->Department->find('list');
 
             $this->loadModel('Category');
-            $coursesByCategory = $this->Category->findGroupedByCategory();
+            $coursesByCategory = $this->Category->findGroupedByCategory(array('Term' => array('id' => 77)));
             $this->set(compact('genders', 'departments', 'coursesByCategory'));
         }
     }
@@ -112,7 +113,7 @@ class UsersController extends AppController {
         $email->template('register')
             ->emailFormat('html')
             ->viewVars(array('hash' => $hash))
-            ->subject(__('Bitte aktivieren Sie Ihr Konto auf dem eLearning-Portal'))
+            ->subject(__('Bitte aktivieren Sie Ihr Konto auf dem CakeWorkshop-Portal'))
             ->from('no-reply@uni-ffm.de')
             ->to($to)
             ->send();
@@ -131,7 +132,7 @@ class UsersController extends AppController {
         $email->template('password_reset')
             ->emailFormat('html')
             ->viewVars(array('hash' => $hash))
-            ->subject(__('Passwortänderung-Anfrage auf dem eLearning-Portal'))
+            ->subject(__('Passwortänderung-Anfrage auf dem CakeWorkshop-Portal'))
             ->from('no-reply@uni-ffm.de')
             ->to($to)
             ->send();
@@ -201,11 +202,11 @@ class UsersController extends AppController {
                     'Department.name',
                     'Gender.name',
                     'User.title',
-                    'Occupation.name',
+                    'User.occupation',
                     'Group.name'
                 ),
                 'contain' => array(
-                    'Gender', 'Department', 'Occupation', 'Group',
+                    'Gender', 'Department', 'Group',
                     'CoursesTerm' => array(
                         'fields' => array('term_id', 'course_id'),
                         'Course' => array('fields' => array('Course.id', 'Course.name')),
@@ -242,13 +243,13 @@ class UsersController extends AppController {
                     'Department.name',
                     'Gender.name',
                     'User.title',
-                    'Occupation.name',
+                    'User.occupation',
                     'Group.name'
                 ),
                 'contain' => array(
-                    'Gender', 'Department', 'Occupation', 'Group',
+                    'Gender', 'Department', 'Group',
                     'CoursesTerm' => array(
-                        'fields' => array('term_id', 'course_id'),
+                        'fields' => array('term_id', 'course_id', 'id'),
                         'Course' => array('fields' => array('Course.id', 'Course.name')),
                         'Term' => array('fields' => array('Term.id', 'Term.name')),
                     )

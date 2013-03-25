@@ -33,7 +33,8 @@
                 <button data-dismiss="alert" class="close" type="button">×</button>
 
                 <p><strong>Hinweis zur Anmeldung bei ausgebuchten Workshops</strong></p>
-                <br />
+                <br/>
+
                 <p>Vielen Dank für Ihr Interesse an unserem Workshopangebot. Auch wenn Workshops ausgebucht sind, melden Sie sich bitte trotzdem an. Oft werden noch Plätze über die Warteliste frei bzw. bei großem Interesse bieten wir auch Wiederholungstermine für einzelne Workshops an.</p>
             </div>
 

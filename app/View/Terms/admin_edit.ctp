@@ -1,24 +1,40 @@
-<div class="terms form">
-<?php echo $this->Form->create('Term'); ?>
-	<fieldset>
-		<legend><?php echo __('Edit Term'); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('name');
-		echo $this->Form->input('start');
-		echo $this->Form->input('end');
-		echo $this->Form->input('Course');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<div class="page-header">
+    <h4><?php  echo __('Semester bearbeiten'); ?></h4>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
 
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Term.id')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Term.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Terms'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Courses'), array('controller' => 'courses', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Course'), array('controller' => 'courses', 'action' => 'add')); ?> </li>
-	</ul>
+<div class="well ">
+    <?php echo $this->Form->create('Term', array('class' => 'form')); ?>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Anrede'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('name', array('required' => true, 'label' => false, 'class' => 'span3')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Von'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('start', array('label' => false, 'class' => 'span3')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Bis'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('end', array('label' => false, 'class' => 'span3')); ?>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Speichern</button>
 </div>
+
+<div class="btn-group">
+    <?php echo $this->Html->link(__('All Semester anzeigen'), array('action' => 'index'), array('class' => 'btn')); ?>
+    <?php echo $this->Html->link(__('Kurs für dieses Semester anlegen'), array('controller' => 'courses', 'action' => 'add'), array('class' => 'btn')); ?>
+    <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $this->Form->value('Term.id')), array('class' => 'btn btn-danger'), __('Are you sure you want to delete # %s?', $this->Form->value('Term.id'))); ?>
+</div>
+

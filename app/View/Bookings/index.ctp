@@ -1,5 +1,6 @@
-<p class="lead"><?php echo __('Kursverwaltung'); ?></p>
-<br />
+<div class="page-header">
+    <h3><?php  echo __('Kursverwaltung'); ?></h3>
+</div>
 
 <div class="tabbable">
 
@@ -31,7 +32,7 @@
                     bitte trotzdem an. Oft werden noch Plätze über die Warteliste frei bzw. bei großem Interesse bieten wir auch
                     Wiederholungstermine für einzelne Workshops an.</p>
             </div>
-            <hr />
+            <hr/>
 
             <?php echo $this->Form->create('Booking', array('action' => 'index', 'class' => 'form-inline formInvoice')); ?>
             <label class="input">
@@ -44,128 +45,130 @@
             <div class="groupInvoice" style="display:none;">
                 <?php echo $this->element('forms/invoice'); ?>
             </div>
-            <hr />
+            <hr/>
 
             <?php echo $this->element('tables/courses_by_category', array($coursesByCategory, 'form' => true)); ?>
-        </div><!-- tab-content -->
+        </div>
+        <!-- tab-content -->
 
-    </div><!-- tab-content -->
+    </div>
+    <!-- tab-content -->
 
 </div><!-- tabbable -->
 
 <style>
-.formInvoice label, .formInvoice form {
-    margin:0 !important;
-}
+    .formInvoice label, .formInvoice form {
+        margin: 0 !important;
+    }
 </style>
 
 <script>
-$(function () {
-    'use strict';
+    $(function () {
+        'use strict';
 
-    var Booking = Booking || {};
+        var Booking = Booking || {};
 
-    // REFERENCES
-    Booking.refs = {
-        $btnInvoice: $('#btnInvoice'),
-        $groupInvoice: $('.groupInvoice'),
-        $btnCancelInvoice: $('#btnCancelInvoice'),
-        $formInvoice: $('.form-invoice'),
-        $businessGroup: $('.business'),
-        $invoiceType: $('#invoice')
-    };
+        // REFERENCES
+        Booking.refs = {
+            $btnInvoice: $('#btnInvoice'),
+            $groupInvoice: $('.groupInvoice'),
+            $btnCancelInvoice: $('#btnCancelInvoice'),
+            $formInvoice: $('.form-invoice'),
+            $businessGroup: $('.business'),
+            $invoiceType: $('#invoice')
+        };
 
-    // METHODS
-    Booking.toggleInvoiceForm = function () {
-        Booking.refs.$groupInvoice.toggle();
-    };
+        // METHODS
+        Booking.toggleInvoiceForm = function () {
+            Booking.refs.$groupInvoice.toggle();
+        };
 
-    Booking.addInvoice = function(params, callback) {
-        Booking.refs.$invoiceType.append(
-            $('<option></option>').val(params.value).html(params.name)
-        );
-        callback();
-    };
+        Booking.addInvoice = function (params, callback) {
+            Booking.refs.$invoiceType.append(
+                $('<option></option>').val(params.value).html(params.name)
+            );
+            callback();
+        };
 
-    Booking.selectInvoice = function (val) {
-        $("#invoid_id option[value='" + val + "']").attr('selected', 'selected');
-    };
+        Booking.selectInvoice = function (val) {
+            $("#invoid_id option[value='" + val + "']").attr('selected', 'selected');
+        };
 
-    Booking.resetForm = function () {
-        Booking.refs.$formInvoice[0].reset();
-        Booking.refs.$businessGroup.show();
-    };
+        Booking.resetForm = function () {
+            Booking.refs.$formInvoice[0].reset();
+            Booking.refs.$businessGroup.show();
+        };
 
-    // BOOSTRAP
-    Booking.init = function () {
+        // BOOSTRAP
+        Booking.init = function () {
 
-        function toggle(event) {
-            event.preventDefault();
-            Booking.toggleInvoiceForm();
-            return false;
-        }
+            function toggle(event) {
+                event.preventDefault();
+                Booking.toggleInvoiceForm();
+                return false;
+            }
 
-        Booking.refs.$btnInvoice.click(function (event) {
-            return toggle(event);
-        });
+            Booking.refs.$btnInvoice.click(function (event) {
+                return toggle(event);
+            });
 
-        Booking.refs.$btnCancelInvoice.click(function (event) {
-            Booking.resetForm();
-            return toggle(event);
-        });
+            Booking.refs.$btnCancelInvoice.click(function (event) {
+                Booking.resetForm();
+                return toggle(event);
+            });
 
-        // Booking checkboxes
-        $('.check .booking').each(function () {
-            $(this).change(function (event) {
+            // Booking checkboxes
+            $('.check .booking').each(function () {
+                $(this).change(function (event) {
+                    var $this = $(this);
+                    var self = this;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: CakeWorkshop.webroot + 'bookings/add.json',
+                        data: {
+                            "course_term_id": self.value,
+                            "invoice_id": Booking.refs.$invoiceType.val()
+                        },
+                        success: function (data) {
+                            CakeWorkshop.showMessage({ type: 'success', message: data.message });
+                        }
+                    });
+                });
+            });
+
+            Booking.refs.$formInvoice.submit(function (event) {
+                event.preventDefault();
+
                 var $this = $(this);
-                var self = this;
 
                 $.ajax({
                     type: 'POST',
-                    url: eLearning.webroot + 'bookings/add.json',
-                    data: {
-                        "course_term_id": self.value,
-                        "invoice_id": Booking.refs.$invoiceType.val()
-                    },
+                    url: this.action + '.json',
+                    data: $this.serialize(),
                     success: function (data) {
-                        eLearning.showMessage({ type: 'success', message: data.message });
+                        var obj = jQuery.parseJSON(data);
+
+                        if (typeof obj === 'object') {
+                            // Add and select new invoice type
+                            Booking.addInvoice({value: obj.id, name: obj.name}, function () {
+                                Booking.selectInvoice(obj.id);
+                            });
+
+                            CakeWorkshop.showMessage({ type: 'success', message: obj.message });
+
+                            Booking.toggleInvoiceForm();
+                            Booking.resetForm();
+                        }
                     }
                 });
-            });
-        });
 
-        Booking.refs.$formInvoice.submit(function (event) {
-            event.preventDefault();
-
-            var $this = $(this);
-
-            $.ajax({
-                type: 'POST',
-                url: this.action + '.json',
-                data: $this.serialize(),
-                success: function (data) {
-                    var obj = jQuery.parseJSON(data);
-
-                    if (typeof obj === 'object') {
-                        // Add and select new invoice type
-                        Booking.addInvoice({value: obj.id, name: obj.name}, function () {
-                            Booking.selectInvoice(obj.id);
-                        });
-
-                        eLearning.showMessage({ type: 'success', message: obj.message });
-
-                        Booking.toggleInvoiceForm();
-                        Booking.resetForm();
-                    }
-                }
+                return false;
             });
 
-            return false;
-        });
+        };
 
-    };
-
-    // LAUNCH
-    Booking.init();
-});
+        // LAUNCH
+        Booking.init();
+    });
 </script>

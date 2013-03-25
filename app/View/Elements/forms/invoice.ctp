@@ -112,7 +112,7 @@ $(function () {
             });
 
             Booking.Invoice.$termId.change(function (event) {
-                window.location = eLearning.webroot + eLearning.controller + '/' + eLearning.action + '/' + this.value;
+                window.location = CakeWorkshop.webroot + CakeWorkshop.controller + '/' + CakeWorkshop.action + '/' + this.value;
             });
         }
     };

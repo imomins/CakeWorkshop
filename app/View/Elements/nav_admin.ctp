@@ -1,7 +1,7 @@
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Buchungen <b class="caret"></b></a>
     <ul class="dropdown-menu">
-        <li><?php echo $this->Html->link(__('Übersicht'), '/admin/bookings'); ?></li>
+        <li><?php echo $this->Html->link(__('Übersicht'), '/admin/bookings/index/sort:created/direction:desc'); ?></li>
         <li><?php echo $this->Html->link(__('Jemanden buchen'), '/admin/bookings/add'); ?></li>
     </ul>
 </li>

@@ -18,19 +18,15 @@
         }
         </style>
         <script>
-        <?php
-        // The only global object is "eLearning", don't create another one.
-        // One global object is stupid enough.
-        ?>
-        eLearning = {
+        CakeWorkshop = {
             controller: '<?php echo $this->request->params['controller']; ?>',
-            view: '<?php echo $this->request->params['view']; ?>',
-            action: '<?php echo $this->request->params['action']; ?>',
-            webroot: '<?php echo $this->request->webroot; ?>'
+            view:       '<?php //echo $this->request->params['view']; ?>',
+            action:     '<?php echo $this->request->params['action']; ?>',
+            webroot:    '<?php echo $this->request->webroot; ?>'
         };
         </script>
         <?php echo $this->Html->css('bootstrap-responsive.min'); ?>
-        <?php echo $this->Html->css('custom-theme/jquery-ui-1.8.23.custom'); ?>
+        <?php //echo $this->Html->css('custom-theme/jquery-ui-1.8.23.custom'); ?>
         <?php echo $this->Html->css('main'); ?>
 
         <?php echo $this->Html->script('vendor/modernizr-2.6.1-respond-1.1.0.min'); ?>
@@ -71,6 +67,21 @@
                         </ul>
 
                         <ul class="nav pull-right">
+                            <?php if ($group === 'admin'): ?>
+                            <li class="nav-search">
+                                <form class="form-search">
+                                    <input type="text" placeholder="Kurs suchen" class="span3 input-medium search-query">
+                                </form>
+                            </li>
+
+                            <style>
+                                li.nav-search form {
+                                    line-height: 37px !important;
+                                    margin: 0 !important;
+                                    padding-bottom: 3px;
+                                }
+                            </style>
+                            <?php endif; ?>
 
                             <?php if ($loggedIn) : ?>
                             <li class="divider-vertical"></li>
@@ -95,41 +106,49 @@
             </div>
         </div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+        <?php echo $this->Html->script('vendor/jquery-1.9.1.min'); ?>
         <?php echo $this->Html->script('vendor/bootstrap.min'); ?>
-        <?php echo $this->Html->script('vendor/jquery-ui-1.8.23.custom.min'); ?>
         <?php echo $this->Html->script('vendor/ICanHaz.min'); ?>
         <?php echo $this->Html->script('main'); ?>
 
         <div class="container">
-
             <div class="row">
-                <div class="pull-right">
-                    <?php echo $this->Html->image('uni_logo.png', array()); ?>
+                <div class="span12">
+                    <div class="row">
+                        <div class="span12">
+                            <div id="messages">
+                                <?php echo $this->Session->flash(); ?>
+                                <?php echo $this->Session->flash('auth'); ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="span12">
+                            <!--
+                            <div class="row">
+                                <div class="span12">
+                                    <div class="pull-right">
+                                        <?php echo $this->Html->image('uni_logo.png', array()); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                            <div class="row">
+                                <div class="span12">
+                                    <?php echo $this->fetch('content'); ?>
+                                </div>
+                            </div>
+
+                            <!--
+                            <div class="hero-unit">
+                                <?php //echo $this->element('sql_dump'); ?>
+                            </div>
+                            -->
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div id="messages">
-                <?php echo $this->Session->flash(); ?>
-                <?php echo $this->Session->flash('auth'); ?>
-            </div>
-
-			<?php echo $this->fetch('content'); ?>
-
-			<div class="hero-unit">
-				<?php echo $this->element('sql_dump'); ?>
-			</div>
-
-            <hr />
-
-            <footer>
-                <p class="pull-left">&copy; Uni-Frankfurt 2012</p>
-
-                <p class="pull-right">
-                    <?php echo $this->Html->image('elearning_logo.png', array()); ?>
-                </p>
-            </footer>
-
         </div> <!-- /container -->
     </body>
 </html>

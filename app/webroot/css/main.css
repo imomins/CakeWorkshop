@@ -304,3 +304,15 @@ dt, dd {
     padding-left: 6px;
     border-left: 1px solid lightgray;
 }
+
+.page-header {
+    margin-top: 0;
+}
+/*
+.table th, .table td {
+    vertical-align: middle;
+    padding: 4px 6px;
+}
+.table th {
+    padding: 7px 6px;
+}
