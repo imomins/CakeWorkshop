@@ -23,7 +23,7 @@ class Course extends AppModel {
             'numeric' => array(
                 'rule' => array('numeric'),
                 //'message' => 'Your custom message here',
-                //'allowEmpty' => false,
+                'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
@@ -32,7 +32,7 @@ class Course extends AppModel {
         'name'        => array(
             'notempty' => array(
                 'rule' => array('notempty'),
-                //'message' => 'Your custom message here',
+                'message' => 'Bitte geben Sie eine Bezeichnung für die Kategorie an',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule

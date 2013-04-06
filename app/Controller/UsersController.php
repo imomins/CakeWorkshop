@@ -17,12 +17,17 @@ class UsersController extends AppController {
         $this->Auth->allow('register', 'login', 'logout', 'activate', 'reset', 'password');
     }
 
+    // TODO: move to component
+    protected function getRandomString() {
+        return Security::hash(rand(100000, 100000000000000));
+    }
+
     public function login() {
         if ($this->request->is('post')) {
 
             if ($this->Auth->login()) {
-                if ($this->isAdmin()) {
-                    $this->redirect('/admin/bookings/index/sort:created/direction:desc');
+                if ($this->isAdmin() || $this->isAssistant()) {
+                    $this->redirect('/admin/bookings');
                 }
                 else {
                     $this->redirect('/bookings');
@@ -31,14 +36,18 @@ class UsersController extends AppController {
             else {
                 $this->Session->setFlash(__('Ungültiges Passwort oder Benutzername. Setzen Sie Ihr Passwort zurück falls nötig. <br />Beachten Sie, dass Ihr Konto auch deaktiviert worden sein könnte.'), 'flash_error');
             }
-            // Registration form data
         }
+        // Registration form data
         else {
-            $genders = $this->User->Gender->find('list');
+            $genders     = $this->User->Gender->find('list');
             $departments = $this->User->Department->find('list');
 
             $this->loadModel('Category');
-            $coursesByCategory = $this->Category->findGroupedByCategory(array('Term' => array('id' => 77)));
+            $this->loadModel('Term');
+
+            $termId = $this->Term->find('first', array('order' => array('id' => 'DESC')));
+
+            $coursesByCategory = $this->Category->findCoursesGroupedByCategory();
             $this->set(compact('genders', 'departments', 'coursesByCategory'));
         }
     }
@@ -60,21 +69,21 @@ class UsersController extends AppController {
             // Let's filter we don't want post surprises
             $data = array(
                 'User' => array(
-                    'email' => trim($this->request->data['User']['email']),
-                    'password' => trim($this->request->data['User']['password']),
+                    'email'            => trim($this->request->data['User']['email']),
+                    'password'         => trim($this->request->data['User']['password']),
                     'password_confirm' => trim($this->request->data['User']['password_confirm']),
-                    'firstname' => trim($this->request->data['User']['firstname']),
-                    'lastname' => trim($this->request->data['User']['lastname']),
-                    'title_id' => $this->request->data['User']['title_id'],
-                    'gender_id' => $this->request->data['User']['gender_id'],
-                    'department_id' => $this->request->data['User']['department_id'],
-                    'occupation' => $this->request->data['User']['occupation'],
-                    'hrz' => trim($this->request->data['User']['hrz']),
-                    'phone' => trim($this->request->data['User']['phone']),
-                    'email_confirmed' => 0,
-                    'active' => 0,
-                    'group_id' => $group['Group']['id'],
-                    'hash' => $hash
+                    'firstname'        => trim($this->request->data['User']['firstname']),
+                    'lastname'         => trim($this->request->data['User']['lastname']),
+                    'title_id'         => $this->request->data['User']['title_id'],
+                    'gender_id'        => $this->request->data['User']['gender_id'],
+                    'department_id'    => $this->request->data['User']['department_id'],
+                    'occupation'       => $this->request->data['User']['occupation'],
+                    'hrz'              => trim($this->request->data['User']['hrz']),
+                    'phone'            => trim($this->request->data['User']['phone']),
+                    'email_confirmed'  => 0,
+                    'active'           => 0,
+                    'group_id'         => $group['Group']['id'],
+                    'hash'             => $hash
                 )
             );
 
@@ -113,7 +122,7 @@ class UsersController extends AppController {
         $email->template('register')
             ->emailFormat('html')
             ->viewVars(array('hash' => $hash))
-            ->subject(__('Bitte aktivieren Sie Ihr Konto auf dem CakeWorkshop-Portal'))
+            ->subject(__('Bitte aktivieren Sie Ihr Konto für Ihre Registrierung'))
             ->from('no-reply@uni-ffm.de')
             ->to($to)
             ->send();
@@ -132,7 +141,7 @@ class UsersController extends AppController {
         $email->template('password_reset')
             ->emailFormat('html')
             ->viewVars(array('hash' => $hash))
-            ->subject(__('Passwortänderung-Anfrage auf dem CakeWorkshop-Portal'))
+            ->subject(__('Passwortänderung-Anfrage auf dem Workshop-Portal'))
             ->from('no-reply@uni-ffm.de')
             ->to($to)
             ->send();
@@ -157,14 +166,14 @@ class UsersController extends AppController {
 
     public function admin_index() {
         $this->paginate = array(
-            'fields' => array(
+            'fields'  => array(
                 'User.id',
                 'User.group_id',
                 'User.email',
                 "CONCAT(Gender.name, ' ', User.title, ' ', User.firstname, ' ', User.lastname) As name"
             ),
             'contain' => array(
-                'Group' => array('fields' => array('Group.id', 'Group.name')),
+                'Group'  => array('fields' => array('Group.id', 'Group.name')),
                 'Gender' => array('fields' => array('Gender.name')),
             )
         );
@@ -173,7 +182,7 @@ class UsersController extends AppController {
 
     public function search() {
         $this->autoRender = false;
-        $auto_complete = array();
+        $auto_complete    = array();
 
         $users = $this->User->search($this->request['term']);
 
@@ -188,7 +197,7 @@ class UsersController extends AppController {
         $user = $this->User->find('first',
             array(
                 'conditions' => array('User.id' => $id),
-                'fields' => array(
+                'fields'     => array(
                     'User.id',
                     'User.name',
                     'User.email',
@@ -205,15 +214,15 @@ class UsersController extends AppController {
                     'User.occupation',
                     'Group.name'
                 ),
-                'contain' => array(
+                'contain'    => array(
                     'Gender', 'Department', 'Group',
                     'CoursesTerm' => array(
                         'fields' => array('term_id', 'course_id'),
                         'Course' => array('fields' => array('Course.id', 'Course.name')),
-                        'Term' => array('fields' => array('Term.id', 'Term.name')),
+                        'Term'   => array('fields' => array('Term.id', 'Term.name')),
                     )
                 ),
-                'order' => 'created DESC'
+                'order'      => 'created DESC'
             )
         );
     }
@@ -229,7 +238,7 @@ class UsersController extends AppController {
         $user = $this->User->find('first',
             array(
                 'conditions' => array('User.id' => $id),
-                'fields' => array(
+                'fields'     => array(
                     'User.id',
                     'User.name',
                     'User.email',
@@ -246,15 +255,15 @@ class UsersController extends AppController {
                     'User.occupation',
                     'Group.name'
                 ),
-                'contain' => array(
+                'contain'    => array(
                     'Gender', 'Department', 'Group',
                     'CoursesTerm' => array(
                         'fields' => array('term_id', 'course_id', 'id'),
                         'Course' => array('fields' => array('Course.id', 'Course.name')),
-                        'Term' => array('fields' => array('Term.id', 'Term.name')),
+                        'Term'   => array('fields' => array('Term.id', 'Term.name')),
                     )
                 ),
-                'order' => 'created DESC'
+                'order'      => 'created DESC'
             )
         );
 
@@ -280,9 +289,9 @@ class UsersController extends AppController {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
             }
         }
-        $genders = $this->User->Gender->find('list');
+        $genders     = $this->User->Gender->find('list');
         $departments = $this->User->Department->find('list');
-        $groups = $this->User->Group->find('list');
+        $groups      = $this->User->Group->find('list');
         $this->set(compact('genders', 'departments', 'groups', 'coursesTerms'));
     }
 
@@ -299,7 +308,7 @@ class UsersController extends AppController {
         if ($this->request->is('post') && isset($this->request->data['User']['email'])) {
 
             // Search the email
-            $user = $this->User->findUserIdByEmail($this->request->data['User']['email']);
+            $user           = $this->User->findUserIdByEmail($this->request->data['User']['email']);
             $this->User->id = $user['User']['id'];
 
             if ($this->User->exists()) {
@@ -336,7 +345,7 @@ class UsersController extends AppController {
         }
         if ($this->request->is('post')) {
 
-            $user = $this->User->findUserIdByHash($this->request->data['User']['hash']);
+            $user           = $this->User->findUserIdByHash($this->request->data['User']['hash']);
             $this->User->id = $user['User']['id'];
 
             if ($this->User->exists()) {
@@ -344,9 +353,9 @@ class UsersController extends AppController {
                     $this->User->save(
                         array(
                             'User' => array(
-                                'password' => $this->request->data['User']['password'],
+                                'password'         => $this->request->data['User']['password'],
                                 'password_confirm' => $this->request->data['User']['password_confirm'],
-                                'hash' => null
+                                'hash'             => null
                             )
                         )
                     )
@@ -370,14 +379,14 @@ class UsersController extends AppController {
             if ($this->User->exists()) {
                 if ($this->User->save(
                     array('User' => array(
-                        'gender_id' => $this->request->data['User']['gender_id'],
-                        'title' => $this->request->data['User']['title'],
-                        'firstname' => $this->request->data['User']['firstname'],
-                        'lastname' => $this->request->data['User']['lastname'],
+                        'gender_id'     => $this->request->data['User']['gender_id'],
+                        'title'         => $this->request->data['User']['title'],
+                        'firstname'     => $this->request->data['User']['firstname'],
+                        'lastname'      => $this->request->data['User']['lastname'],
                         'department_id' => $this->request->data['User']['department_id'],
-                        'occupation' => $this->request->data['User']['occupation'],
-                        'hrz' => $this->request->data['User']['hrz'],
-                        'phone' => $this->request->data['User']['phone'],
+                        'occupation'    => $this->request->data['User']['occupation'],
+                        'hrz'           => $this->request->data['User']['hrz'],
+                        'phone'         => $this->request->data['User']['phone'],
                     )
                     ))
                 ) {
@@ -409,7 +418,7 @@ class UsersController extends AppController {
      */
     public function edit() {
         $this->User->recursive = -1;
-        $this->User->id = $this->Auth->user('id');
+        $this->User->id        = $this->Auth->user('id');
 
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
@@ -427,7 +436,7 @@ class UsersController extends AppController {
         else {
             $this->request->data = $this->User->read(null, $this->Auth->user('id'));
         }
-        $genders = $this->User->Gender->find('list');
+        $genders     = $this->User->Gender->find('list');
         $departments = $this->User->Department->find('list');
 
         $this->set(compact('genders', 'departments', 'coursesTerms'));
@@ -457,9 +466,9 @@ class UsersController extends AppController {
         else {
             $this->request->data = $this->User->read(null, $id);
         }
-        $genders = $this->User->Gender->find('list');
+        $genders     = $this->User->Gender->find('list');
         $departments = $this->User->Department->find('list');
-        $groups = $this->User->Group->find('list');
+        $groups      = $this->User->Group->find('list');
 
         $this->set(compact('genders', 'departments', 'groups', 'coursesTerms'));
     }

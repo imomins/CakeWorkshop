@@ -1,34 +1,39 @@
-$(function (CakeWorkshop) {
-    'use strict';
+/**
+ * @module CAKEWORKSHOP
+ */
+var CAKEWORKSHOP = (function (_CAKEWORKSHOP, $) {
+    "use strict";
 
     /**
      * Show a boostrap alert message at the page top.
      * The params must be passed in as an object literal.
      *
+     * @methode showMessage
      * @param params.type can be: 'error', 'success', 'info'. Everthing else will be interpreted as defaul message.
      * @param params.message The actual message that is visible to thse user.
      */
-    CakeWorkshop.showMessage = function (params) {
-        var $alerts = $('#messages');
-        var className = '';
+    _CAKEWORKSHOP.showMessage = function (params) {
+        var $alerts = $('#messages'),
+            className = '',
+            message;
 
-        switch(params.type) {
-            case 'error':
-                className = 'alert-error';
-                break;
-            case 'success':
-                className = 'alert-success';
-                break;
-            case 'info':
-                className = 'alert-info';
-                break;
-            default:
-                break;
+        switch (params.type) {
+        case 'error':
+            className = 'alert-error';
+            break;
+        case 'success':
+            className = 'alert-success';
+            break;
+        case 'info':
+            className = 'alert-info';
+            break;
+        default:
+            break;
         }
 
-        var message = ich.alert({
+        message = ich.alert({
             "className": className,
-            "message": params.message
+            "message"  : params.message
         });
         $alerts.append(message);
 
@@ -42,24 +47,19 @@ $(function (CakeWorkshop) {
         });
     };
 
-    CakeWorkshop.refs = {
-        $nav: $('.navbar')
-    };
-
-    CakeWorkshop.highlightCurrentNav = function () {
-        CakeWorkshop.refs.$nav.find('li').each(function () {
+    var highlightCurrentNav = function () {
+        $('.navbar').find('li').each(function () {
             var $this = $(this);
 
-            if ($this.data('controller') === CakeWorkshop.controller && $this.data('view') === CakeWorkshop.view) {
+            if ($this.data('controller') === CAKEWORKSHOP.controller && $this.data('view') === CAKEWORKSHOP.view) {
                 this.className = 'active';
             }
         });
     };
 
-    CakeWorkshop.init = function () {
-        this.highlightCurrentNav();
-    };
+    $(function () {
+        highlightCurrentNav();
+    });
 
-    CakeWorkshop.init();
-
-}(CakeWorkshop || {}));
+    return _CAKEWORKSHOP;
+}(CAKEWORKSHOP || {}, jQuery));

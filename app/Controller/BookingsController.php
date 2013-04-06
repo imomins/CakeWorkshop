@@ -31,11 +31,38 @@ class BookingsController extends AppController {
     /**
      * index method
      *
+     * @param $termId
      * @return void
      */
-    public function admin_index() {
-        $bookings = $this->paginate('Booking');
-        $terms    = $this->Booking->CoursesTerm->Term->find('list');
+    public function admin_index($termId = null) {
+        if ($termId === null) {
+            $termId = $this->Booking->query('SELECT id FROM terms ORDER BY id DESC LIMIT 1');
+            $termId = $termId[0]['terms']['id'];
+        }
+//        $this->paginate = array(
+//            'order'   => array('Booking.created' => 'DESC'),
+//            'contain' => array(
+//                'User'        => array('fields' => array('name', 'id')),
+//                'CoursesTerm' => array(
+//                    'Course' => array('fields' => array('name')),
+//                    'Term'   => array('conditions' => array('Term.id' => $termId))
+//                )
+//            )
+//        );
+//        if ($this->request->is('post')) {
+//            $this->paginate['contain']['CoursesTerm']['Course'] = array(
+//                'fields'     => array('name'),
+//                'conditions' => array('Course.name' => trim($this->request->data['Course']['name']))
+//            );
+//        }
+        $bookings = $this->Booking->find('all', array(
+           'recursive' => 2
+        ));
+        debug($bookings);
+
+//        $bookings = $this->paginate('Booking');
+
+        $terms = $this->Booking->CoursesTerm->Term->find('list');
 
         $this->set(compact('bookings', 'terms'));
     }
@@ -204,19 +231,13 @@ class BookingsController extends AppController {
         );
         // Flattens the array for the NOT IN query in findGroupedByCategory
         // array('Booking.courses_term_id_1', ...)
-        $bookedCourses = Set::format($bookedCourses, '{0}', array('{n}.Booking.courses_term_id'));
-
-        $coursesByCategory = $this->Booking->CoursesTerm->Course->Category->findGroupedByCategory(
-            array(
-                'CoursesTerm' => $bookedCourses
-            )
-        );
+        $bookedCourses     = Set::format($bookedCourses, '{0}', array('{n}.Booking.courses_term_id'));
+        $coursesByCategory = $this->Booking->CoursesTerm->Course->Category->findCoursesGroupedByCategory(array('Bookings' => $bookedCourses));
 
         $types    = $this->Booking->Invoice->Type->find('list');
         $terms    = $this->Booking->CoursesTerm->Term->find('list');
         $invoices = $this->Booking->Invoice->find('list', array('conditions' => array('Invoice.user_id' => $this->getUserId())));
         $bookings = $this->Booking->findBookingsByUserId($this->getUserId());
-        //debug($bookings);
 
         $this->set(compact('types', 'terms', 'coursesByCategory', 'bookings', 'term_id', 'invoices'));
         $this->set('_serialize', array('bookings', 'coursesByCategory'));

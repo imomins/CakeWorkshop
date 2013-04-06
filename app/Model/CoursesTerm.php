@@ -11,17 +11,15 @@ class CoursesTerm extends AppModel {
 
     var $actsAs = array('Containable');
 
-
-
     public function getCoursesList() {
         // Changing the courses label
         $coursesTerms = $this->User->CoursesTerm->find('all', array(
-            'fields' => array('CoursesTerm.id'),
+            'fields'  => array('CoursesTerm.id'),
             'contain' => array(
                 'Course' => array(
                     'fields' => array('Course.name')
                 ),
-                'Term' => array(
+                'Term'   => array(
                     'fields' => array('Term.name')
                 )
             )
@@ -34,9 +32,7 @@ class CoursesTerm extends AppModel {
     /**
      * Returns the courses optionally for a certain semester and or courses which a
      * user hasn't booked yet.
-     *
      * Nicely formatted the full query:
-     *
      * SELECT Term.name,Course.name,Category.name,Category.id,CoursesTerm.id,CoursesTerm.start_date,CoursesTerm.start_time,CoursesTerm.end_time,CoursesTerm.attendees,CoursesTerm.max
      * FROM courses_terms AS CoursesTerm
      *     LEFT JOIN terms AS Term ON CoursesTerm.term_id = Term.id
@@ -64,12 +60,12 @@ class CoursesTerm extends AppModel {
         $user_condition = '';
         if ($exclude_user_id !== null) {
             $user_condition =
-                ' AND CoursesTerm.id NOT IN ('.
-                '   SELECT BookingsSubquery.courses_term_id'.
-                '   	FROM bookings AS BookingsSubquery'.
-                '	    WHERE BookingsSubquery.user_id = ?'.
-                ' )'.
-                ' ORDER BY Category.id ASC, Course.name ASC;';
+                ' AND CoursesTerm.id NOT IN (' .
+                    '   SELECT BookingsSubquery.courses_term_id' .
+                    '   	FROM bookings AS BookingsSubquery' .
+                    '	    WHERE BookingsSubquery.user_id = ?' .
+                    ' )' .
+                    ' ORDER BY Category.id ASC, Course.name ASC;';
             array_push($params, $exclude_user_id);
         }
         // Reduces the query to a certain term.
@@ -81,24 +77,24 @@ class CoursesTerm extends AppModel {
 
         // Easier to make this query like this
         $coursesTerm = $this->query(
-            ' SELECT Term.name,Course.name,Category.name,Category.id,CoursesTerm.id,Day.start_date,Day.start_time,Day.end_time,CoursesTerm.attendees,CoursesTerm.max'.
-                ' FROM courses_terms AS CoursesTerm'.
-                '	LEFT JOIN terms AS Term ON CoursesTerm.term_id = Term.id'.
-                '	LEFT JOIN courses AS Course ON CoursesTerm.course_id = Course.id'.
-                '	LEFT JOIN categories AS Category ON Course.category_id = Category.id'.
-                '	LEFT JOIN days AS Day ON CoursesTerm.id = Day.courses_term_id'.
-                ' WHERE 1=1'.
-                $user_condition.
+            ' SELECT Term.name,Course.name,Category.name,Category.id,CoursesTerm.id,Day.start_date,Day.start_time,Day.end_time,CoursesTerm.attendees,CoursesTerm.max' .
+                ' FROM courses_terms AS CoursesTerm' .
+                '	LEFT JOIN terms AS Term ON CoursesTerm.term_id = Term.id' .
+                '	LEFT JOIN courses AS Course ON CoursesTerm.course_id = Course.id' .
+                '	LEFT JOIN categories AS Category ON Course.category_id = Category.id' .
+                '	LEFT JOIN days AS Day ON CoursesTerm.id = Day.courses_term_id' .
+                ' WHERE 1=1' .
+                $user_condition .
                 $term_condition,
-                $params
+            $params
         );
 
         // Prepare to group by 'Category.id'
         $coursesByCategory = array();
-        foreach($coursesTerm as $course) {
+        foreach ($coursesTerm as $course) {
             $coursesByCategory[$course['Category']['id']] = array(
                 'Category' => $course['Category'],
-                'Course' => array()
+                'Course'   => array()
             );
         }
 
@@ -144,8 +140,8 @@ class CoursesTerm extends AppModel {
         //        );
 
         // Group the courses by category
-        foreach($coursesTerm as $course) {
-            $category_id = $course['Category']['id'];
+        foreach ($coursesTerm as $course) {
+            $category_id    = $course['Category']['id'];
             $course_term_id = $course['CoursesTerm']['id'];
 
             // Category is the parent key, we don't need this twice.
@@ -154,8 +150,9 @@ class CoursesTerm extends AppModel {
             if (!isset($coursesByCategory[$category_id]['Course'][$course_term_id])) {
                 // Push actual new training for a term into the array.
                 $coursesByCategory[$category_id]['Course'] = array($course_term_id => $course);
-                $day = $coursesByCategory[$category_id]['Course'][$course_term_id]['Day'];
-            } else {
+                $day                                       = $coursesByCategory[$category_id]['Course'][$course_term_id]['Day'];
+            }
+            else {
                 // Only push additional days in.
                 array_push($coursesByCategory[$category_id]['Course'][$course_term_id]['Day'], $course['Day']);
             }
@@ -164,128 +161,135 @@ class CoursesTerm extends AppModel {
         return $coursesByCategory;
     }
 
-/**
- * Validation rules
- *
- * @var array
- */
-	public $validate = array(
-		'term_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'course_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'attendees' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'max' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-	);
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public $validate = array(
+        'term_id'   => array(
+            'numeric' => array(
+                'rule' => array('numeric'),
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ),
+        ),
+        'course_id' => array(
+            'numeric' => array(
+                'rule' => array('numeric'),
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ),
+        ),
+        'attendees' => array(
+            'numeric' => array(
+                'rule' => array('numeric'),
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ),
+        ),
+        'max'       => array(
+            'numeric' => array(
+                'rule' => array('numeric'),
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ),
+        ),
+    );
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+    //The Associations below have been created with all possible keys, those that are not needed can be removed
 
-/**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'Term' => array(
-			'className' => 'Term',
-			'foreignKey' => 'term_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'Course' => array(
-			'className' => 'Course',
-			'foreignKey' => 'course_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
+    /**
+     * belongsTo associations
+     *
+     * @var array
+     */
+    public $belongsTo = array(
+        'Term'     => array(
+            'className'  => 'Term',
+            'foreignKey' => 'term_id',
+            'conditions' => '',
+            'fields'     => '',
+            'order'      => ''
+        ),
+        'Course'   => array(
+            'className'  => 'Course',
+            'foreignKey' => 'course_id',
+            'conditions' => '',
+            'fields'     => '',
+            'order'      => ''
+        ),
+        'Schedule' => array(
+            'className'  => 'Schedule',
+            'foreignKey' => 'schedule_name',
+            'conditions' => '',
+            'fields'     => '',
+            'order'      => ''
+        )
+    );
 
     public $hasMany = array(
-        'Day' => array(
-            'className' => 'Day',
-            'foreignKey' => 'courses_term_id',
-            'dependent' => true,
-            'conditions' => '',
-            'fields' => '',
-            'order' => '',
-            'limit' => '',
-            'offset' => '',
-            'exclusive' => '',
-            'finderQuery' => '',
+        'Day'     => array(
+            'className'    => 'Day',
+            'foreignKey'   => 'courses_term_id',
+            'dependent'    => true,
+            'conditions'   => '',
+            'fields'       => '',
+            'order'        => '',
+            'limit'        => '',
+            'offset'       => '',
+            'exclusive'    => '',
+            'finderQuery'  => '',
             'counterQuery' => ''
         ),
         'Booking' => array(
-            'className' => 'Booking',
-            'foreignKey' => 'courses_term_id',
-            'dependent' => true,
-            'conditions' => '',
-            'fields' => '',
-            'order' => '',
-            'limit' => '',
-            'offset' => '',
-            'exclusive' => '',
-            'finderQuery' => '',
+            'className'    => 'Booking',
+            'foreignKey'   => 'courses_term_id',
+            'dependent'    => true,
+            'conditions'   => '',
+            'fields'       => '',
+            'order'        => '',
+            'limit'        => '',
+            'offset'       => '',
+            'exclusive'    => '',
+            'finderQuery'  => '',
             'counterQuery' => ''
         )
     );
 
-/**
- * hasAndBelongsToMany associations
- *
- * @var array
- */
-	public $hasAndBelongsToMany = array(
-		'User' => array(
-			'className' => 'User',
-			'joinTable' => 'bookings',
-			'foreignKey' => 'courses_term_id',
-			'associationForeignKey' => 'user_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
-		)
-	);
+    /**
+     * hasAndBelongsToMany associations
+     *
+     * @var array
+     */
+    public $hasAndBelongsToMany = array(
+        'User' => array(
+            'className'             => 'User',
+            'joinTable'             => 'bookings',
+            'foreignKey'            => 'courses_term_id',
+            'associationForeignKey' => 'user_id',
+            'unique'                => 'keepExisting',
+            'conditions'            => '',
+            'fields'                => '',
+            'order'                 => '',
+            'limit'                 => '',
+            'offset'                => '',
+            'finderQuery'           => '',
+            'deleteQuery'           => '',
+            'insertQuery'           => ''
+        )
+    );
 
 }

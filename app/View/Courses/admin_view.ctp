@@ -6,33 +6,33 @@
     <dl class="dl-horizontal">
         <dt><?php echo __('Kategorie'); ?></dt>
         <dd>
-            <?php echo $this->Html->link($course['Category']['name'], array('controller' => 'categories', 'action' => 'view', $course['Category']['id'])); ?>
+            <?php echo $this->Html->link($coursesTerm['Category']['name'], array('controller' => 'categories', 'action' => 'view', $coursesTerm['Category']['id'])); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Kurstitel'); ?></dt>
         <dd>
-            <?php echo h($course['Course']['name']); ?>
+            <?php echo h($coursesTerm['Course']['name']); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Abkürzung'); ?></dt>
         <dd>
-            <?php echo h($course['Course']['code']); ?>
+            <?php echo h($coursesTerm['Course']['code']); ?>
             &nbsp;
         </dd>
-        <?php if (!empty($course['Course']['description'])): ?>
+        <?php if (!empty($coursesTerm['Course']['description'])): ?>
             <dt><?php echo __('Description'); ?></dt>
             <dd>
-                <?php echo h($course['Course']['description']); ?>
+                <?php echo h($coursesTerm['Course']['description']); ?>
             </dd>
         <?php endif; ?>
     </dl>
 </div>
 
 <div class="btn-group">
-    <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $course['Course']['id']), array('class' => 'btn')); ?>
+    <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $coursesTerm['Course']['id']), array('class' => 'btn')); ?>
     <?php echo $this->Html->link(__('Übersicher aller Kurse'), array('action' => 'index'), array('class' => 'btn')); ?>
     <?php echo $this->Html->link(__('Weiteren Kurs anlegen'), array('action' => 'add'), array('class' => 'btn')); ?>
-    <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $course['Course']['id']), array('class' => 'btn btn-warning'), __('Are you sure you want to delete # %s?', $course['Course']['id'])); ?>
+    <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $coursesTerm['Course']['id']), array('class' => 'btn btn-warning'), __('Are you sure you want to delete # %s?', $coursesTerm['Course']['id'])); ?>
 </div>
 
 <br/>
@@ -42,7 +42,7 @@
     <h4><?php echo __('Angelegt für folgende Semester'); ?></h4>
 </div>
 
-<?php if (!empty($course['Term'])): ?>
+<?php if (!empty($coursesTerm['Term'])): ?>
     <table class="table table-bordered table-condensed table-striped">
         <tr>
             <th><?php echo __('Semester'); ?></th>
@@ -52,7 +52,7 @@
         </tr>
         <?php
         $i = 0;
-        foreach ($course['Term'] as $term): ?>
+        foreach ($coursesTerm['Term'] as $term): ?>
             <tr>
                 <td><?php echo $term['name']; ?></td>
                 <td><?php echo $term['start']; ?></td>

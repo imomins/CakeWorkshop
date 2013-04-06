@@ -1,12 +1,8 @@
-<?php foreach ($coursesByCategory as $category): ?>
-    <?php if (empty($category['Course']) || sizeof($category['Course']) === 0) {
-        continue;
-    }
-    ; ?>
-
-    <div class="">
-        <h5><?php echo $category['Category']['name']; ?></h5>
-        <table class="table table-bordered table-striped">
+<?php
+foreach ($coursesByCategory as $categories): ?>
+    <div>
+        <h5><?php echo $categories['Category']['name']; ?></h5>
+        <table class="table table-bordered table-condensed table-striped">
             <thead>
             <tr>
                 <?php if ($form): ?>
@@ -24,35 +20,33 @@
 
             <tbody>
             <?php $i = 1; ?>
-            <?php if (empty($category['Course'])): ?>
+            <?php if (!isset($categories['Category']['CoursesTerm'])): ?>
                 <tr>
                     <td colspan="8"><?php echo __('Keine Kurse'); ?></td>
                 </tr>
             <?php else: ?>
-                <?php foreach ($category['Course'] as $course): ?>
-                    <?php foreach ($course['CoursesTerm'] as $courseByTerm): ?>
-                        <tr class="check <?php echo ($courseByTerm['attendees'] > $courseByTerm['max']) ? 'error' : ''; ?>">
-                            <?php if ($form): ?>
-                                <td><?php echo $this->Form->input('CourseTerm.' . $i, array('class' => 'booking', 'label' => false, 'type' => 'checkbox', 'value' => $courseByTerm['id'])); ?></td>
+                <?php foreach ($categories['Category']['CoursesTerm'] as $coursesTerm): ?>
+                    <tr class="check <?php echo ($coursesTerm['attendees'] > $coursesTerm['max']) ? 'error' : ''; ?>">
+                        <?php if ($form): ?>
+                            <td><?php echo $this->Form->input('CourseTerm.' . $i, array('class' => 'booking', 'label' => false, 'type' => 'checkbox', 'value' => $coursesTerm['id'])); ?></td>
+                        <?php endif; ?>
+                        <td><?php echo h($coursesTerm['Course']['name']); ?></td>
+                        <td><?php echo h($coursesTerm['Term']['name']); ?></td>
+                        <!-- days -->
+                        <td colspan="3" style="min-width: 230px;">
+                            <?php if (empty($coursesTerm['days'])): ?>
+                                <?php echo __('Noch kein Termin festgelegt'); ?>
+                            <?php else: ?>
+                                <?php foreach ($coursesTerm['days'] as $day): ?>
+                                    <?php echo h(date('d.m.Y', strtotime($day['start_date']))) . ', ' . h(substr($day['start_time'], 0, 5) . ' ' . __('Uhr')) . ', ' . h(substr($day['end_time'], 0, 5) . ' ' . __('Uhr')); ?>
+                                    <br/>
+                                <?php endforeach; ?>
                             <?php endif; ?>
-                            <td><?php echo h($course['name']); ?></td>
-                            <td><?php echo h($courseByTerm['Term']['name']); ?></td>
-                            <!-- days -->
-                            <td colspan="3" style="min-width: 230px;">
-                                <?php if (empty($courseByTerm['Day'])): ?>
-                                    <?php echo __('Noch kein Termin festgelegt'); ?>
-                                <?php else: ?>
-                                    <?php foreach ($courseByTerm['Day'] as $day): ?>
-                                        <?php echo h(date('d.m.Y', strtotime($day['start_date']))) . ', ' . h(substr($day['start_time'], 0, 5) . ' ' . __('Uhr')) . ', ' . h(substr($day['end_time'], 0, 5) . ' ' . __('Uhr')); ?>
-                                        <br/>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </td>
-                            <!-- end days -->
-                            <td class="table-center"><?php echo h($courseByTerm['attendees']); ?></td>
-                            <td class="table-center"><?php echo h($courseByTerm['max']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
+                        </td>
+                        <!-- end days -->
+                        <td class="table-center"><?php echo h($coursesTerm['attendees']); ?></td>
+                        <td class="table-center"><?php echo h($coursesTerm['max']); ?></td>
+                    </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
             </tbody>

@@ -1,14 +1,25 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Term Model
+ * AttendanceState Model
  *
- * @property Course $Course
- * @property STermsUser $STermsUser
+ * @property Booking $Booking
  */
-class Term extends AppModel {
+class AttendanceState extends AppModel {
 
-    var $actsAs = array('Containable');
+    /**
+     * Primary key field
+     *
+     * @var string
+     */
+    public $primaryKey = 'name';
+
+    /**
+     * Display field
+     *
+     * @var string
+     */
+    public $displayField = 'display';
 
     /**
      * Validation rules
@@ -16,7 +27,7 @@ class Term extends AppModel {
      * @var array
      */
     public $validate = array(
-        'name'  => array(
+        'name'    => array(
             'notempty' => array(
                 'rule' => array('notempty'),
                 //'message' => 'Your custom message here',
@@ -26,19 +37,9 @@ class Term extends AppModel {
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
-        'start' => array(
-            'date' => array(
-                'rule' => array('date'),
-                //'message' => 'Your custom message here',
-                //'allowEmpty' => false,
-                //'required' => false,
-                //'last' => false, // Stop validation after this rule
-                //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        'end'   => array(
-            'date' => array(
-                'rule' => array('date'),
+        'display' => array(
+            'notempty' => array(
+                'rule' => array('notempty'),
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
@@ -54,9 +55,9 @@ class Term extends AppModel {
      * @var array
      */
     public $hasMany = array(
-        'User' => array(
-            'className'    => 'CoursesTerm',
-            'foreignKey'   => 'term_id',
+        'Booking' => array(
+            'className'    => 'Booking',
+            'foreignKey'   => 'attendance_state_name',
             'dependent'    => false,
             'conditions'   => '',
             'fields'       => '',
