@@ -1,8 +1,12 @@
 html { overflow-y: scroll; }
 
-#logo { display: none; height: 45px; }
+#logo { display: none; height: 60px; }
 
-/** Notices and Errors **/
+.nav-search, .form-search {
+    margin:0 !important;
+}
+.nav-search { margin: 6px 0px !important; }
+
 .message {
     clear: both;
     color: #fff;
@@ -46,7 +50,6 @@ p.error,
     display: block;
 }
 
-/** Debugging **/
 pre {
     color: #000;
     background: #f0f0f0;
@@ -266,18 +269,18 @@ label.error {
 }
 
 .navbar .brand {
-    color: darkslategray;
+    color: black;
     font-size: 14px;
     font-weight: bold;
     padding: 10px 15px;
 }
 
 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
-    border-width: 1px;
+    /*border-width: 1px;*/
 }
 
 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
-    box-shadow: 1px !important;
+    /*box-shadow: 1px !important;*/
 }
 
 .form-horizontal .control-label {
@@ -348,11 +351,57 @@ dt, dd {
     margin-top: 0;
 }
 
-/*
-.table th, .table td {
-    vertical-align: middle;
-    padding: 4px 6px;
+.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1) !important;
 }
-.table th {
-    padding: 7px 6px;
+
+/**
+table-courses
+*/
+table.table-courses .inner-table {
+    width: 100%;
+    font-size: 15px;
+}
+
+table.table-courses .inner-table td {
+    background: transparent !important;
+}
+
+table.table-courses .inner-table td {
+    border: none;
+    margin: -5px;
+}
+
+table.table-courses .inner-table tr+tr {
+    border-top: 1px solid lightgrey;
+}
+
+table.table-courses tbody td.table-center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+table.table-courses tr.choice button.btn.btn-mini,
+table.table-courses tr.choice input.btn.btn-mini,
+table.table-courses tr.choice a.btn {
+    width: 55px;
+}
+
+table.table-courses thead tr th {
+    background: #ffffff;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ3JSIgc3RvcC1jb2xvcj0iI2Y2ZjZmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNGY0ZjQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #f6f6f6), color-stop(100%, #f4f4f4));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
+}
+
+/**
+Invoice
+*/
+.formInvoice label, .formInvoice form {
+    margin: 0 !important;
 }
