@@ -35,6 +35,7 @@ class AppController extends Controller {
                 'controller' => 'users',
                 'action'     => 'login',
             ),
+            'authError'    => 'Bitte melden Sie sich an',
             'authenticate' => array(
                 'Form' => array(
                     'fields' => array(
@@ -72,8 +73,18 @@ class AppController extends Controller {
         }
     }
 
+    public function gotoHomeScreen() {
+        if ($this->Auth->loggedIn()) {
+            if ($this->isAdmin() || $this->isAssistant()) {
+                $this->redirect('/admin/bookings');
+            }
+            else {
+                $this->redirect('/bookings');
+            }
+        }
+    }
+
     public function isAuthorized($user) {
-        // If a admin method is accessed the users group must also be admin
         if (!empty($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin') {
             return $this->isAdmin();
         }

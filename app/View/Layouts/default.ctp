@@ -21,6 +21,7 @@
             padding-bottom: 40px;
         }
     </style>
+
     <script>
         var CAKEWORKSHOP = {
             controller: '<?php echo $this->request->params['controller']; ?>',
@@ -29,13 +30,57 @@
             webroot   : '<?php echo $this->request->webroot; ?>'
         };
     </script>
+
+    <script data-main="js/main" src="js/require.js"></script>
+    <script>
+        requirejs.config({
+            "paths": {
+                "bootstrap"           : "vendor/bootstrap.min",
+                "bootstrap-tab"       : "vendor/bootstrap/bootstrap-tab",
+                "bootstrap-dropdown"  : "vendor/bootstrap/bootstrap-dropdown",
+                "bootstrap-button"    : "vendor/bootstrap/bootstrap-button",
+                "bootstrap-alert"     : "vendor/bootstrap/bootstrap-alert",
+                "bootstrap-transition": "vendor/bootstrap/bootstrap-transition",
+                "bootstrap-collapse"  : "vendor/bootstrap/bootstrap-collapse",
+                "bootstrap-modal"     : "vendor/bootstrap/bootstrap-modal",
+                "jquery"              : "vendor/jquery-1.9.1.min"
+            },
+            "shim" : {
+                "bootstrap"           : {
+                    "deps": ["jquery"]
+                },
+                "bootstrap-tab"       : {
+                    "deps": ["jquery"]
+                },
+                "bootstrap-button"    : {
+                    "deps": ["jquery"]
+                },
+                "bootstrap-alert"     : {
+                    "deps": ["jquery"]
+                },
+                "bootstrap-dropdown"  : {
+                    "deps": ["jquery", "bootstrap-transition"]
+                },
+                "bootstrap-collapse"  : {
+                    "deps": ["jquery", "bootstrap-transition"]
+                },
+                "bootstrap-modal"     : {
+                    "deps": ["jquery", "bootstrap-transition"]
+                },
+                "bootstrap-transition": {
+                    "deps": ["jquery"]
+                }
+            }
+        });
+    </script>
+
     <?php echo $this->Html->css('bootstrap-responsive.min'); ?>
     <?php //echo $this->Html->css('custom-theme/jquery-ui-1.8.23.custom'); ?>
     <?php echo $this->Html->css('main'); ?>
-
-    <?php echo $this->Html->script('vendor/modernizr-2.6.1-respond-1.1.0.min'); ?>
+    <!--<?php echo $this->Html->script('vendor/modernizr-2.6.1-respond-1.1.0.min'); ?>-->
 </head>
 <body>
+
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an outdated browser. <a
     href="http://browsehappy.com/">Upgrade your browser today</a> or <a
@@ -106,11 +151,6 @@
     </div>
 </div>
 
-<?php echo $this->Html->script('vendor/jquery-1.9.1.min'); ?>
-<?php echo $this->Html->script('vendor/bootstrap.min'); ?>
-<?php echo $this->Html->script('vendor/ICanHaz.min'); ?>
-<?php echo $this->Html->script('main'); ?>
-
 <div class="container">
     <div class="row">
         <div class="span12">
@@ -158,3 +198,19 @@
         <p>{{message}}</p>
     </div>
 </script>
+
+<div id="alert" class="modal hide fade">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{{header}}</h3>
+    </div>
+
+    <div class="modal-body">
+        <p>{{message}}</p>
+    </div>
+
+    <div class="modal-footer">
+        <a href="#" class="btn">Ok</a>
+    </div>
+</div>

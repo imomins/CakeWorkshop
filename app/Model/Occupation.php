@@ -38,8 +38,8 @@ class Occupation extends AppModel {
      * @var array
      */
     public $hasMany = array(
-        'Booking' => array(
-            'className'    => 'Booking',
+        'User' => array(
+            'className'    => 'User',
             'foreignKey'   => 'occupation_id',
             'dependent'    => false,
             'conditions'   => '',

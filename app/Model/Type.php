@@ -7,6 +7,13 @@ App::uses('AppModel', 'Model');
  */
 class Type extends AppModel {
 
+    /**
+     * Primary key field
+     *
+     * @var string
+     */
+    public $primaryKey = 'name';
+
     public $displayField = 'display';
 
     /**

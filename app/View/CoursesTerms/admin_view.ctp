@@ -4,8 +4,8 @@
 
 <div class="btn-toolbar">
     <div class="btn-group" style="margin-top: -30px;">
-        <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn')); ?>
-        <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn')); ?>
+        <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $booking['CoursesTerm']['id']), array('class' => 'btn')); ?>
+        <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $booking['CoursesTerm']['id']), array('class' => 'btn')); ?>
     </div>
 </div>
 
@@ -13,22 +13,22 @@
     <dl class="dl-horizontal">
         <dt><?php echo __('Semester'); ?></dt>
         <dd>
-            <?php echo $this->Html->link($coursesTerm['Term']['name'], array('controller' => 'terms', 'action' => 'view', $coursesTerm['Term']['id'])); ?>
+            <?php echo $this->Html->link($booking['Term']['name'], array('controller' => 'terms', 'action' => 'view', $booking['Term']['id'])); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Kurs'); ?></dt>
         <dd>
-            <?php echo $this->Html->link($coursesTerm['Course']['name'], array('controller' => 'courses', 'action' => 'view', $coursesTerm['Course']['id'])); ?>
+            <?php echo $this->Html->link($booking['Course']['name'], array('controller' => 'courses', 'action' => 'view', $booking['Course']['id'])); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Angemeldet'); ?></dt>
         <dd>
-            <?php echo h($coursesTerm['CoursesTerm']['attendees']); ?>
+            <?php echo h($booking['CoursesTerm']['attendees']); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Maximal'); ?></dt>
         <dd>
-            <?php echo h($coursesTerm['CoursesTerm']['max']); ?>
+            <?php echo h($booking['CoursesTerm']['max']); ?>
             &nbsp;
         </dd>
     </dl>
@@ -38,7 +38,7 @@
     <h4><?php  echo __('Teilnehmer'); ?></h4>
 </div>
 
-<?php if (!empty($coursesTerm['User'])): ?>
+<?php if (!empty($booking['User'])): ?>
     <table class="table table-bordered table-striped">
         <tr>
             <th><?php echo __('Name'); ?></th>
@@ -48,7 +48,7 @@
         </tr>
         <?php
         $i = 0;
-        foreach ($coursesTerm['User'] as $user): ?>
+        foreach ($booking['User'] as $user): ?>
             <tr>
                 <td><?php echo $this->Html->link($user['name'], array('controller' => 'users', 'action' => 'view', $user['id'])); ?></td>
                 <td><?php echo $user['email']; ?></td>

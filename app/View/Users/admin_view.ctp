@@ -60,7 +60,7 @@
 
         <dt><?php echo __('Benutzer-Gruppe'); ?></dt>
         <dd>
-            <?php echo $this->Html->link($this->Frontend->groupToName($user['Group']['name']), array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>
+            <?php echo $this->Html->link($user['Group']['display'], array('controller' => 'groups', 'action' => 'view', $user['Group']['name'])); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Konto-Aktiviert'); ?></dt>
@@ -82,7 +82,7 @@
     <h4><?php  echo __('Gebuchte Kurse'); ?></h4>
 </div>
 
-<?php if (!empty($user['CoursesTerm'])): ?>
+<?php if (!empty($user['Booking'])): ?>
     <table class="table table-bordered table-striped">
         <tr>
             <th><?php echo __('Semester'); ?></th>
@@ -91,14 +91,14 @@
         </tr>
         <?php
         $i = 0;
-        foreach ($user['CoursesTerm'] as $coursesTerm): ?>
+        foreach ($user['Booking'] as $booking): ?>
             <tr>
-                <td><?php echo $coursesTerm['Term']['name']; ?></td>
-                <td><?php echo $coursesTerm['Course']['name']; ?></td>
+                <td><?php echo $booking['CoursesTerm']['Term']['name']; ?></td>
+                <td><?php echo $booking['CoursesTerm']['Course']['name']; ?></td>
                 <td class="actions">
-                    <?php echo $this->Html->link(__('View'), array('controller' => 'courses_terms', 'action' => 'view', $coursesTerm['id'])); ?>
-                    <?php echo $this->Html->link(__('Edit'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['id'])); ?>
-                    <?php echo $this->Form->postLink(__('Delete'), array('controller' => 'courses_terms', 'action' => 'delete', $coursesTerm['id']), null, __('Are you sure you want to delete # %s?', $coursesTerm['id'])); ?>
+                    <?php echo $this->Html->link(__('View'), array('controller' => 'bookings', 'action' => 'view', $booking['id'])); ?>
+                    <?php echo $this->Html->link(__('Edit'), array('controller' => 'bookings', 'action' => 'edit', $booking['id'])); ?>
+                    <?php echo $this->Form->postLink(__('Delete'), array('controller' => 'bookings', 'action' => 'delete', $booking['id']), null, __('Soll die Buchung gelöscht werden?')); ?>
                 </td>
             </tr>
         <?php endforeach; ?>

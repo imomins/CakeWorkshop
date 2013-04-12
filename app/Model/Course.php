@@ -9,8 +9,6 @@ App::uses('AppModel', 'Model');
  */
 class Course extends AppModel {
 
-    var $actsAs = array('Containable');
-
     public $displayField = 'name';
 
     /**
@@ -21,7 +19,7 @@ class Course extends AppModel {
     public $validate = array(
         'category_id' => array(
             'numeric' => array(
-                'rule' => array('numeric'),
+                'rule'       => array('numeric'),
                 //'message' => 'Your custom message here',
                 'allowEmpty' => false,
                 //'required' => false,
@@ -31,7 +29,7 @@ class Course extends AppModel {
         ),
         'name'        => array(
             'notempty' => array(
-                'rule' => array('notempty'),
+                'rule'    => array('notempty'),
                 'message' => 'Bitte geben Sie eine Bezeichnung für die Kategorie an',
                 //'allowEmpty' => false,
                 //'required' => false,

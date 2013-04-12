@@ -23,15 +23,12 @@ class UsersController extends AppController {
     }
 
     public function login() {
+        $this->gotoHomeScreen();
+
         if ($this->request->is('post')) {
 
             if ($this->Auth->login()) {
-                if ($this->isAdmin() || $this->isAssistant()) {
-                    $this->redirect('/admin/bookings');
-                }
-                else {
-                    $this->redirect('/bookings');
-                }
+                $this->gotoHomeScreen();
             }
             else {
                 $this->Session->setFlash(__('Ungültiges Passwort oder Benutzername. Setzen Sie Ihr Passwort zurück falls nötig. <br />Beachten Sie, dass Ihr Konto auch deaktiviert worden sein könnte.'), 'flash_error');
@@ -44,11 +41,13 @@ class UsersController extends AppController {
 
             $this->loadModel('Category');
             $this->loadModel('Term');
+            $this->loadModel('Occupation');
 
             $termId = $this->Term->find('first', array('order' => array('id' => 'DESC')));
 
             $coursesByCategory = $this->Category->findCoursesGroupedByCategory();
-            $this->set(compact('genders', 'departments', 'coursesByCategory'));
+            $occupations       = $this->Occupation->find('list');
+            $this->set(compact('genders', 'departments', 'coursesByCategory', 'occupations'));
         }
     }
 
@@ -60,8 +59,6 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->User->create();
 
-            // Default users group is "attendee"
-            $group = $this->User->Group->findByName('attendee');
             // Randomly select a number for activation.
             // Don't forget CakePhp uses a salted hash, so it's secure enough.
             $hash = $this->getRandomString();
@@ -74,15 +71,15 @@ class UsersController extends AppController {
                     'password_confirm' => trim($this->request->data['User']['password_confirm']),
                     'firstname'        => trim($this->request->data['User']['firstname']),
                     'lastname'         => trim($this->request->data['User']['lastname']),
-                    'title_id'         => $this->request->data['User']['title_id'],
+                    'title'            => $this->request->data['User']['title'],
                     'gender_id'        => $this->request->data['User']['gender_id'],
                     'department_id'    => $this->request->data['User']['department_id'],
-                    'occupation'       => $this->request->data['User']['occupation'],
+                    'occupation_id'    => $this->request->data['User']['occupation_id'],
                     'hrz'              => trim($this->request->data['User']['hrz']),
                     'phone'            => trim($this->request->data['User']['phone']),
                     'email_confirmed'  => 0,
                     'active'           => 0,
-                    'group_id'         => $group['Group']['id'],
+                    'group_name'       => 'attendee',
                     'hash'             => $hash
                 )
             );
@@ -123,7 +120,7 @@ class UsersController extends AppController {
             ->emailFormat('html')
             ->viewVars(array('hash' => $hash))
             ->subject(__('Bitte aktivieren Sie Ihr Konto für Ihre Registrierung'))
-            ->from('no-reply@uni-ffm.de')
+            ->from('nicht-antworten@studiumdigitale.uni-frankfurt.de')
             ->to($to)
             ->send();
     }
@@ -142,7 +139,7 @@ class UsersController extends AppController {
             ->emailFormat('html')
             ->viewVars(array('hash' => $hash))
             ->subject(__('Passwortänderung-Anfrage auf dem Workshop-Portal'))
-            ->from('no-reply@uni-ffm.de')
+            ->from('nicht-antworten@studiumdigitale.uni-frankfurt.de')
             ->to($to)
             ->send();
     }
@@ -168,13 +165,14 @@ class UsersController extends AppController {
         $this->paginate = array(
             'fields'  => array(
                 'User.id',
-                'User.group_id',
+                'User.group_name',
                 'User.email',
+                'Group.name',
                 "CONCAT(Gender.name, ' ', User.title, ' ', User.firstname, ' ', User.lastname) As name"
             ),
             'contain' => array(
-                'Group'  => array('fields' => array('Group.id', 'Group.name')),
-                'Gender' => array('fields' => array('Gender.name')),
+                'Group'  => array('fields' => array('name', 'display')),
+                'Gender' => array('fields' => array('name')),
             )
         );
         $this->set('users', $this->paginate());
@@ -206,13 +204,12 @@ class UsersController extends AppController {
                     'User.hrz',
                     'User.phone',
                     'User.created',
-                    'User.group_id',
+                    'User.group_name',
                     'User.active',
                     'Department.name',
                     'Gender.name',
                     'User.title',
-                    'User.occupation',
-                    'Group.name'
+                    'User.occupation_id',
                 ),
                 'contain'    => array(
                     'Gender', 'Department', 'Group',
@@ -235,6 +232,11 @@ class UsersController extends AppController {
      * @return void
      */
     public function admin_view($id = null) {
+        $this->User->id = $id;
+        if (!$this->User->exists()) {
+            throw new NotFoundException(__('Der Benutzer wurde nicht gefunden'));
+        }
+
         $user = $this->User->find('first',
             array(
                 'conditions' => array('User.id' => $id),
@@ -247,29 +249,26 @@ class UsersController extends AppController {
                     'User.hrz',
                     'User.phone',
                     'User.created',
-                    'User.group_id',
+                    'User.group_name',
                     'User.active',
                     'Department.name',
                     'Gender.name',
                     'User.title',
-                    'User.occupation',
-                    'Group.name'
+                    'Group.display'
                 ),
                 'contain'    => array(
                     'Gender', 'Department', 'Group',
-                    'CoursesTerm' => array(
-                        'fields' => array('term_id', 'course_id', 'id'),
-                        'Course' => array('fields' => array('Course.id', 'Course.name')),
-                        'Term'   => array('fields' => array('Term.id', 'Term.name')),
+                    'Booking' => array(
+                        'CoursesTerm' => array(
+                            'fields' => array(),
+                            'Course' => array('fields' => array('Course.name')),
+                            'Term'   => array('fields' => array('Term.name')),
+                        )
                     )
                 ),
                 'order'      => 'created DESC'
             )
         );
-
-        if (empty($user)) {
-            throw new NotFoundException(__('Invalid user'));
-        }
         $this->set('user', $user);
     }
 
@@ -305,6 +304,8 @@ class UsersController extends AppController {
      * @throws InternalErrorException
      */
     public function reset() {
+        $this->gotoHomeScreen();
+
         if ($this->request->is('post') && isset($this->request->data['User']['email'])) {
 
             // Search the email
@@ -340,6 +341,8 @@ class UsersController extends AppController {
      * @throws InternalErrorException
      */
     public function password($hash = null) {
+        $this->gotoHomeScreen();
+
         if ($hash === null) {
             throw new MethodNotAllowedException(__('Fehlerhafter Zugriff'));
         }
@@ -384,7 +387,7 @@ class UsersController extends AppController {
                         'firstname'     => $this->request->data['User']['firstname'],
                         'lastname'      => $this->request->data['User']['lastname'],
                         'department_id' => $this->request->data['User']['department_id'],
-                        'occupation'    => $this->request->data['User']['occupation'],
+                        'occupation_id' => $this->request->data['User']['occupation_id'],
                         'hrz'           => $this->request->data['User']['hrz'],
                         'phone'         => $this->request->data['User']['phone'],
                     )
@@ -438,8 +441,9 @@ class UsersController extends AppController {
         }
         $genders     = $this->User->Gender->find('list');
         $departments = $this->User->Department->find('list');
+        $occupations = $this->User->Occupation->find('list');
 
-        $this->set(compact('genders', 'departments', 'coursesTerms'));
+        $this->set(compact('genders', 'departments', 'coursesTerms', 'occupations'));
     }
 
     /**
@@ -452,11 +456,11 @@ class UsersController extends AppController {
     public function admin_edit($id = null) {
         $this->User->id = $id;
         if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
+            throw new NotFoundException(__('Der Benutzer wurde nicht gefunden'));
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('Die Daten wurden gespeichert'));
                 $this->redirect(array('action' => 'index'));
             }
             else {

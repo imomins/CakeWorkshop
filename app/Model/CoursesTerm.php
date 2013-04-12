@@ -9,8 +9,6 @@ App::uses('AppModel', 'Model');
  */
 class CoursesTerm extends AppModel {
 
-    var $actsAs = array('Containable');
-
     public function getCoursesList() {
         // Changing the courses label
         $coursesTerms = $this->User->CoursesTerm->find('all', array(

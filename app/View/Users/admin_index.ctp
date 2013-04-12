@@ -6,12 +6,13 @@
     <input type="text" class="input-medium search-query span4">
     <button type="submit" class="btn"><?php echo __('Suchen'); ?></button>
 </form>
+<br/>
 
 <table class="table table-striped table-bordered">
     <tr>
         <th><?php echo $this->Paginator->sort('name'); ?></th>
         <th><?php echo $this->Paginator->sort('email'); ?></th>
-        <th><?php echo $this->Paginator->sort('group_id'); ?></th>
+        <th><?php echo $this->Paginator->sort('group_name'); ?></th>
         <th class="actions"><?php echo __('Actions'); ?></th>
     </tr>
     <?php
@@ -20,7 +21,7 @@
             <td><?php echo h($user['0']['name']); ?>&nbsp;</td>
             <td><?php echo h($user['User']['email']); ?>&nbsp;</td>
             <td>
-                <?php echo $this->Html->link($this->Frontend->GroupToName($user['Group']['name']), array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>
+                <?php echo $this->Html->link($user['Group']['display'], array('controller' => 'groups', 'action' => 'view', $user['Group']['name'])); ?>
             </td>
             <td class="actions">
                 <?php echo $this->Html->link(__('View'), array('action' => 'view', $user['User']['id'])); ?>

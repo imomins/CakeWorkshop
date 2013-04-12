@@ -52,7 +52,7 @@
 
 		<dt><?php echo __('Group'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($user['Group']['name'], array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>
+			<?php echo $this->Html->link($user['Group']['display'], array('controller' => 'groups', 'action' => 'view', $user['Group']['name'])); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Active'); ?></dt>

@@ -7,8 +7,6 @@ App::uses('AppModel', 'Model');
  */
 class Category extends AppModel {
 
-    var $actsAs = array('Containable');
-
     /**
      * Display field
      *
@@ -24,18 +22,13 @@ class Category extends AppModel {
               courses_terms.id, courses_terms.attendees,courses_terms.max,
               terms.name,
               days.start_date,days.start_time,days.end_time
-            FROM categories LEFT OUTER
-                JOIN courses ON (categories.id = courses.category_id) LEFT OUTER
-                JOIN courses_terms ON (courses.id = courses_terms.course_id) LEFT OUTER
-                JOIN terms ON (courses_terms.term_id = terms.id)
-                JOIN days ON (courses_terms.id = days.courses_term_id)
+            FROM categories
+                LEFT OUTER JOIN courses ON (categories.id = courses.category_id)
+                LEFT OUTER JOIN courses_terms ON (courses.id = courses_terms.course_id)
+                LEFT OUTER JOIN terms ON (courses_terms.term_id = terms.id)
+                LEFT OUTER JOIN days ON (courses_terms.id = days.courses_term_id)
             WHERE terms.id = (SELECT id FROM terms ORDER BY id DESC LIMIT 1)
-        ';
-
-        if (isset($params['Bookings'])) {
-            $query .= 'AND courses_terms.id NOT IN (' . implode(',', $params['Bookings']) . ')';
-        }
-        $query .= 'ORDER BY categories.name ASC, courses.name ASC';
+                ORDER BY categories.name ASC, courses.name ASC';
 
         $rows = $this->query($query);
 
@@ -67,42 +60,6 @@ class Category extends AppModel {
         return $categories;
     }
 
-    public function findGroupedByCategory($params = null) {
-        $conditions = array();
-
-        // The conditions
-        if ($params !== null) {
-            // Limit to a certain term
-            if (isset($params['Term']['id'])) {
-                $conditions = array('CoursesTerm.term_id' => $params['Term']['id']);
-            }
-            // Exclude certain trainings which a user already booked
-            if (isset($params['CoursesTerm'])) {
-                $conditions = array('NOT' => array('CoursesTerm.id' => $params['CoursesTerm']));
-            }
-        }
-
-        return $this->find('all',
-            array(
-                'contain' => array(
-                    'Course' => array(
-                        'order'       => 'Course.name ASC',
-                        'fields'      => array('Course.name'),
-                        'CoursesTerm' => array(
-                            'conditions' => $conditions,
-                            'fields'     => array('CoursesTerm.attendees', 'CoursesTerm.max'),
-                            'Term'       => array(
-                                'fields' => array('Term.id', 'Term.name'),
-                            ),
-                            'Day'
-                        )
-                    )
-                ),
-                'order'   => array('Category.name ASC')
-            )
-        );
-    }
-
     /**
      * Validation rules
      *
@@ -120,8 +77,6 @@ class Category extends AppModel {
             ),
         ),
     );
-
-    //The Associations below have been created with all possible keys, those that are not needed can be removed
 
     /**
      * hasMany associations

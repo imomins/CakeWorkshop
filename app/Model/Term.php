@@ -8,8 +8,6 @@ App::uses('AppModel', 'Model');
  */
 class Term extends AppModel {
 
-    var $actsAs = array('Containable');
-
     /**
      * Validation rules
      *
@@ -54,7 +52,7 @@ class Term extends AppModel {
      * @var array
      */
     public $hasMany = array(
-        'User' => array(
+        'CoursesTerm' => array(
             'className'    => 'CoursesTerm',
             'foreignKey'   => 'term_id',
             'dependent'    => false,

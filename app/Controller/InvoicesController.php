@@ -104,21 +104,8 @@ class InvoicesController extends AppController {
         if ($this->request->is('post')) {
             $this->Invoice->create();
 
-            if ($this->Invoice->save(array(
-                'Invoice' => array(
-                    'name'        => $this->request->data['Invoice']['name'],
-                    'type_id'     => $this->request->data['Invoice']['type_id'],
-                    'user_id'     => $this->getUserId(),
-                    'institution' => $this->request->data['Invoice']['institution'],
-                    'department'  => $this->request->data['Invoice']['department'],
-                    'postbox'     => $this->request->data['Invoice']['postbox'],
-                    'to_person'   => $this->request->data['Invoice']['to_person'],
-                    'street'      => $this->request->data['Invoice']['street'],
-                    'zip'         => $this->request->data['Invoice']['zip'],
-                    'location'    => $this->request->data['Invoice']['location'],
-                )
-            ))
-            ) {
+            $this->request->data['Invoice']['user_id'] = $this->getUserId();
+            if ($this->Invoice->save($this->request->data)) {
                 if ($this->request->is('ajax')) {
                     $this->autoRender = false;
                     return json_encode(array('message' => __('Die Vorlage wurde gespeichert'), 'id' => $this->Invoice->id, 'name' => $this->Invoice->name));

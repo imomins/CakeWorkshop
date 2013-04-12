@@ -93,7 +93,7 @@ class User extends AppModel {
      */
     public $validate = array(
         'email'            => array(
-            'email' => array(
+            'email'  => array(
                 'rule' => array('email'),
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
@@ -101,6 +101,10 @@ class User extends AppModel {
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
+            'unique' => array(
+                'rule'    => 'isUnique',
+                'message' => 'Die Email ist bereits registriert'
+            )
         ),
         'password'         => array(
             'notempty'     => array(
@@ -248,6 +252,13 @@ class User extends AppModel {
             'fields'     => '',
             'order'      => ''
         ),
+        'Occupation' => array(
+            'className'  => 'Occupation',
+            'foreignKey' => 'occupation_id',
+            'conditions' => '',
+            'fields'     => '',
+            'order'      => ''
+        ),
         'Group'      => array(
             'className'  => 'Group',
             'foreignKey' => 'group_name',
@@ -281,9 +292,9 @@ class User extends AppModel {
     );
 
     public $hasMany = array(
-        'Invoice' => array(
-            'className'    => 'Invoice',
-            'foreignKey'   => 'invoice_id',
+        'Booking' => array(
+            'className'    => 'Booking',
+            'foreignKey'   => 'user_id',
             'dependent'    => true,
             'conditions'   => '',
             'fields'       => '',
@@ -294,9 +305,9 @@ class User extends AppModel {
             'finderQuery'  => '',
             'counterQuery' => ''
         ),
-        'Booking' => array(
-            'className'    => 'Booking',
-            'foreignKey'   => 'booking_id',
+        'Invoice' => array(
+            'className'    => 'Invoice',
+            'foreignKey'   => 'user_id',
             'dependent'    => true,
             'conditions'   => '',
             'fields'       => '',

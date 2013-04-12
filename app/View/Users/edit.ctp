@@ -1,6 +1,4 @@
-<?php
-$post_details = array('controller' => 'users', 'action' => 'details');
-?>
+<h3 class="page-header"><?php echo __('Meine Daten'); ?></h3>
 
 <div class="tabbable">
 
@@ -13,38 +11,42 @@ $post_details = array('controller' => 'users', 'action' => 'details');
 
         <div class="tab-pane active" id="tab1">
             <div class="alert alert-info">
-                <p><?php echo __('Geänderte Email-Adressen müssen Sie per Email-Aktivierung bestätigen.'); ?></p>
+                <p><?php echo __('Email-Änderungen müssen mit einer zugesandten Email an die neue Adresse bestätigt werden.'); ?></p>
             </div>
-            <?php
-            echo $this->Form->create('User', array('controller' => 'users', 'action' => 'account'));
-            echo $this->Form->input('email', array('required' => true, 'class' => 'span4', 'label' => __('Email')));
-            echo $this->Form->input('password', array('required' => true, 'class' => 'span4', 'value' => '', 'label' => __('Passwort')));
-            echo $this->Form->input('password_confirm', array('required' => true, 'type' => 'password', 'class' => 'span4', 'label' => __('Passwort bestätigen')));
-            ?>
-            <hr/>
-            <?php
-            echo $this->Form->submit(__('Speichern'), array('class' => 'btn'));
-            echo $this->Form->end();
-            ?>
+            <div class="well">
+                <?php
+                echo $this->Form->create('User', array('controller' => 'users', 'action' => 'account'));
+                echo $this->Form->input('email', array('required' => true, 'class' => 'span4', 'label' => __('Email')));
+                echo $this->Form->input('password', array('required' => true, 'class' => 'span4', 'value' => '', 'label' => __('Passwort')));
+                echo $this->Form->input('password_confirm', array('required' => true, 'type' => 'password', 'class' => 'span4', 'label' => __('Passwort bestätigen')));
+                ?>
+                <hr/>
+                <?php
+                echo $this->Form->submit(__('Speichern'), array('class' => 'btn btn-primary'));
+                echo $this->Form->end();
+                ?>
+            </div>
         </div>
 
         <div class="tab-pane" id="tab2">
-            <?php
-            echo $this->Form->create('User', array('controller' => 'users', 'action' => 'details'));
-            echo $this->Form->input('gender_id', array('required' => true, 'class' => 'span4', 'label' => __('Geschlecht')));
-            echo $this->Form->input('title', array('empty' => true, 'class' => 'span4', 'label' => __('Titel')));
-            echo $this->Form->input('firstname', array('required' => true, 'class' => 'span4', 'label' => __('Vorname')));
-            echo $this->Form->input('lastname', array('required' => true, 'class' => 'span4', 'label' => __('Nachname')));
-            echo $this->Form->input('department_id', array('class' => 'span4'));
-            echo $this->Form->input('occupation', array('class' => 'span4'));
-            echo $this->Form->input('hrz', array('class' => 'span4'));
-            echo $this->Form->input('phone', array('required' => true, 'class' => 'span4'));
-            ?>
-            <hr />
-            <?php
-            echo $this->Form->submit(__('Speichern'), array('class' => 'btn'));
-            echo $this->Form->end();
-            ?>
+            <div class="well">
+                <?php
+                echo $this->Form->create('User', array('controller' => 'users', 'action' => 'details'));
+                echo $this->Form->input('gender_id', array('required' => true, 'class' => 'span2', 'label' => __('Anrede')));
+                echo $this->Form->input('title', array('empty' => true, 'class' => 'span3', 'label' => __('Titel')));
+                echo $this->Form->input('firstname', array('required' => true, 'class' => 'span4', 'label' => __('Vorname')));
+                echo $this->Form->input('lastname', array('required' => true, 'class' => 'span4', 'label' => __('Nachname')));
+                echo $this->Form->input('department_id', array('class' => 'span5'));
+                echo $this->Form->input('occupation', array('class' => 'span5'));
+                echo $this->Form->input('hrz', array('class' => 'span3'));
+                echo $this->Form->input('phone', array('required' => true, 'class' => 'span3'));
+                ?>
+                <hr/>
+                <?php
+                echo $this->Form->submit(__('Speichern'), array('class' => 'btn btn-primary'));
+                echo $this->Form->end();
+                ?>
+            </div>
         </div>
 
     </div>

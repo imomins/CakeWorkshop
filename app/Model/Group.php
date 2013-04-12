@@ -7,6 +7,15 @@ App::uses('AppModel', 'Model');
  */
 class Group extends AppModel {
 
+    public $primaryKey = 'name';
+
+    /**
+     * Display field
+     *
+     * @var string
+     */
+    public $displayField = 'display';
+
     /**
      * Validation rules
      *

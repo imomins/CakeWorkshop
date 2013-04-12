@@ -10,6 +10,6 @@
     ?>
     <?php echo $this->Html->link(__('Passwort vergessen?'), array('controller' => 'users', 'action' => 'reset')); ?>
     <hr/>
-    <input type="submit" class="btn" value="<?php echo __('Anmelden'); ?>"/>
+    <input type="submit" class="btn btn-primary" value="<?php echo __('Anmelden'); ?>"/>
     <?php echo $this->Form->end(); ?>
 </div>

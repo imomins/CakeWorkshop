@@ -1,4 +1,4 @@
-<?php foreach($coursesTerm['Booking'] as $booking): ?>
+<?php foreach($booking['Booking'] as $booking): ?>
     <div class="nameplate">
         <p><?php echo $booking['User']['name']; ?></p>
     </div>

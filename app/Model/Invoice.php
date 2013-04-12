@@ -3,14 +3,13 @@ App::uses('AppModel', 'Model');
 /**
  * Invoice Model
  *
+ * @property User $User
  * @property Type $Type
  * @property Booking $Booking
  */
 class Invoice extends AppModel {
 
     public $displayField = 'name';
-
-    var $actsAs = array('Containable');
 
     /**
      * Validation rules
