@@ -61,7 +61,7 @@ define(['ko', 'jquery'], function (ko, $) {
                 }
             })
             .error(function (response) {
-                alert(JSON.parse(response.responseText).name);
+                alert($.parseJSON(response.responseText).name);
             });
 
         $.getJSON('invoices.json')
@@ -76,7 +76,7 @@ define(['ko', 'jquery'], function (ko, $) {
                 }
             })
             .error(function (response) {
-                alert(JSON.parse(response.responseText).name);
+                alert($.parseJSON(response.responseText).name);
             });
 
         this.add = function () {
@@ -114,7 +114,7 @@ define(['ko', 'jquery'], function (ko, $) {
                     self.working(false);
                 })
                 .error(function (response) {
-                    alert(JSON.parse(response.responseText).name);
+                    alert($.parseJSON(response.responseText).name);
                     self.working(false);
                 });
         };
@@ -179,7 +179,7 @@ define(['ko', 'jquery'], function (ko, $) {
                 })
                 .error(function (response) {
                     // A constraint prevents deleting associated invoices, we catch that
-                    var error = JSON.parse(response.responseText).name;
+                    var error = $.parseJSON(response.responseText).name;
 
                     if (error.indexOf('Integrity constraint') !== -1) {
                         alert('Diese Rechnung wurde bereits für Buchungen verwendet und kann daher nicht gelöscht werden.');
