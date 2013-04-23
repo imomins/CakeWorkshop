@@ -10,61 +10,69 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
+    <title><?php echo $title_for_layout; ?></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
     <?php echo $this->Html->css('bootstrap.min'); ?>
-    <style>
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-    </style>
+    <?php echo $this->Html->css('bootstrap-responsive.min'); ?>
+    <?php echo $this->Html->css('main'); ?>
+    <?php echo $this->Html->script('vendor/modernizr-2.6.1-respond-1.1.0.min'); ?>
 
     <script>
         var CAKEWORKSHOP = {
             controller: '<?php echo $this->request->params['controller']; ?>',
-            view      : '<?php //echo $this->request->params['view']; ?>',
-            action    : '<?php echo $this->request->params['action']; ?>',
-            webroot   : '<?php echo $this->request->webroot; ?>'
+            action:     '<?php echo $this->request->params['action']; ?>',
+            webroot:    '<?php echo $this->request->webroot; ?>'
         };
     </script>
-
-    <script data-main="js/main" src="js/require.js"></script>
+    <?php echo $this->Html->script('vendor/require.js', array('data-main' => Router::url('/', true) . 'js/main')); ?>
     <script>
         requirejs.config({
             "paths": {
-                "bootstrap"           : "vendor/bootstrap.min",
-                "bootstrap-tab"       : "vendor/bootstrap/bootstrap-tab",
-                "bootstrap-dropdown"  : "vendor/bootstrap/bootstrap-dropdown",
-                "bootstrap-button"    : "vendor/bootstrap/bootstrap-button",
-                "bootstrap-alert"     : "vendor/bootstrap/bootstrap-alert",
+                "bootstrap":            "vendor/bootstrap.min",
+                "bootstrap-tab":        "vendor/bootstrap/bootstrap-tab",
+                "bootstrap-tooltip":    "vendor/bootstrap/bootstrap-tooltip",
+                "bootstrap-dropdown":   "vendor/bootstrap/bootstrap-dropdown",
+                "bootstrap-button":     "vendor/bootstrap/bootstrap-button",
+                "bootstrap-alert":      "vendor/bootstrap/bootstrap-alert",
                 "bootstrap-transition": "vendor/bootstrap/bootstrap-transition",
-                "bootstrap-collapse"  : "vendor/bootstrap/bootstrap-collapse",
-                "bootstrap-modal"     : "vendor/bootstrap/bootstrap-modal",
-                "jquery"              : "vendor/jquery-1.9.1.min"
+                "bootstrap-affix":      "vendor/bootstrap/bootstrap-affix",
+                "bootstrap-collapse":   "vendor/bootstrap/bootstrap-collapse",
+                "bootstrap-modal":      "vendor/bootstrap/bootstrap-modal",
+                "handlebars":           "vendor/handlebars",
+                "jquery":               "vendor/jquery-1.9.1.min",
+                "ko":                   "vendor/knockout-2.2.1"
             },
-            "shim" : {
-                "bootstrap"           : {
+            "shim":  {
+                "handlebars":           {
+                    "exports": "Handlebars"
+                },
+                "bootstrap":            {
                     "deps": ["jquery"]
                 },
-                "bootstrap-tab"       : {
+                "bootstrap-tooltip":    {
                     "deps": ["jquery"]
                 },
-                "bootstrap-button"    : {
+                "bootstrap-tab":        {
                     "deps": ["jquery"]
                 },
-                "bootstrap-alert"     : {
+                "bootstrap-affix":      {
                     "deps": ["jquery"]
                 },
-                "bootstrap-dropdown"  : {
+                "bootstrap-button":     {
+                    "deps": ["jquery"]
+                },
+                "bootstrap-alert":      {
+                    "deps": ["jquery"]
+                },
+                "bootstrap-dropdown":   {
                     "deps": ["jquery", "bootstrap-transition"]
                 },
-                "bootstrap-collapse"  : {
+                "bootstrap-collapse":   {
                     "deps": ["jquery", "bootstrap-transition"]
                 },
-                "bootstrap-modal"     : {
+                "bootstrap-modal":      {
                     "deps": ["jquery", "bootstrap-transition"]
                 },
                 "bootstrap-transition": {
@@ -73,15 +81,10 @@
             }
         });
     </script>
-
-    <?php echo $this->Html->css('bootstrap-responsive.min'); ?>
-    <?php //echo $this->Html->css('custom-theme/jquery-ui-1.8.23.custom'); ?>
-    <?php echo $this->Html->css('main'); ?>
-    <!--<?php echo $this->Html->script('vendor/modernizr-2.6.1-respond-1.1.0.min'); ?>-->
 </head>
-<body>
 
-<!--[if lt IE 7]>
+<body>
+<!--[if lt IE 8]>
 <p class="chromeframe">You are using an outdated browser. <a
     href="http://browsehappy.com/">Upgrade your browser today</a> or <a
     href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.
@@ -118,7 +121,7 @@
                 </ul>
 
                 <ul class="nav pull-right">
-                    <?php if ($group === 'admin'): ?>
+                    <?php if ($isAdmin): ?>
                         <li class="nav-search">
                             <?php echo $this->Form->create(null, array('class' => 'form-search', 'url' => array('controller' => 'bookings', 'action' => 'index'))); ?>
                             <?php echo $this->Form->input('Course.name', array('div' => false, 'label' => false, 'class' => 'span3 input-medium search-query')); ?>
@@ -143,7 +146,6 @@
                     <?php if (!$loggedIn) : ?>
                         <li><?php echo $this->Html->link(__('Kontakt'), array('controller' => 'pages', 'action' => 'contact')); ?></li>
                     <?php endif; ?>
-
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -189,28 +191,21 @@
     </div>
 </div>
 <!-- /container -->
-</body>
-</html>
 
-<script id="alert" type="text/html">
-    <div class="alert {{className}}" style="display:none;">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <p>{{message}}</p>
-    </div>
-</script>
-
-<div id="alert" class="modal hide fade">
-
+<div id="modalError" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>{{header}}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3><?php echo __('Es ist ein Fehler aufgetreten'); ?></h3>
     </div>
 
-    <div class="modal-body">
-        <p>{{message}}</p>
-    </div>
+    <div class="modal-body"></div>
 
     <div class="modal-footer">
-        <a href="#" class="btn">Ok</a>
+        <button id="#btnSubmitError" class="btn btn-primary"
+                aria-hidden="true"><?php echo __('Ja, bitte dieses Problem melden'); ?></button>
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true"><?php echo __('Abbrechen'); ?></button>
     </div>
 </div>
+</body>
+</html>

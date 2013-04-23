@@ -1,5 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('Sanitize', 'Utility');
+
 /**
  * Invoices Controller
  *
@@ -18,8 +20,24 @@ class InvoicesController extends AppController {
     }
 
     public function index() {
-        $this->Invoice->recursive = 0;
-        $this->set('invoices', $this->paginate());
+        $this->autoRender = false;
+
+        $invoices = $this->Invoice->find(
+            'all',
+            array(
+                'recursive'  => -1,
+                'fields'     => array('id', 'type_name', 'institution', 'department', 'postbox', 'to_person', 'street', 'zip', 'location', 'name'),
+                'conditions' => array('user_id' => $this->getUserId())
+            )
+        );
+        return json_encode($invoices);
+    }
+
+    public function types() {
+        $this->autoRender               = false;
+        $this->Invoice->Type->recursive = -1;
+        $types                          = $this->Invoice->Type->find('all');
+        return json_encode($types);
     }
 
     /**
@@ -54,29 +72,23 @@ class InvoicesController extends AppController {
         $this->set('invoice', $invoice);
     }
 
-    public function view($id = null) {
-        $invoice = $this->Invoice->find('first', array(
-            'conditions' => array(
-                'Invoice.user_id' => $this->getUserId(),
-                'Invoice.id'      => $id,
-            ),
-            'contain'    => array(
-                'Type'    => array('fields' => 'name'),
-                'Booking' => array(
-                    'CoursesTerm' => array(
-                        'Term'   => array('fields' => array('Term.name')),
-                        'fields' => array('CoursesTerm.id'),
-                        'Course' => array('fields' => 'Course.name')
-                    )
-                )
+    public function view($id) {
+        $this->autoRender = false;
+
+        $invoices = $this->Invoice->find(
+            'first',
+            array(
+                'recursive'  => -1,
+                'fields'     => array('id', 'type_name', 'institution', 'department', 'postbox', 'to_person', 'street', 'zip', 'location', 'name'),
+                'conditions' => array('user_id' => $this->getUserId(), 'id' => $id)
             )
-        ));
-
-        if (empty($invoice)) {
-            throw new NotFoundException(__('Ungültige Rechnung'));
-
+        );
+        if (sizeof($invoices) > 0) {
+            return json_encode($invoices);
         }
-        $this->set('invoice', $invoice);
+        else {
+            throw new NotFoundException(__('Rechnung nicht gefunden'));
+        }
     }
 
     /**
@@ -101,26 +113,31 @@ class InvoicesController extends AppController {
     }
 
     public function add() {
-        if ($this->request->is('post')) {
-            $this->Invoice->create();
-
-            $this->request->data['Invoice']['user_id'] = $this->getUserId();
-            if ($this->Invoice->save($this->request->data)) {
-                if ($this->request->is('ajax')) {
-                    $this->autoRender = false;
-                    return json_encode(array('message' => __('Die Vorlage wurde gespeichert'), 'id' => $this->Invoice->id, 'name' => $this->Invoice->name));
-                }
-                else {
-                    $this->Session->setFlash(__('The invoice has been saved'));
-                    $this->redirect(array('action' => 'index'));
-                }
-            }
-            else {
-                $this->Session->setFlash(__('The invoice could not be saved. Please, try again.'));
-            }
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException();
         }
-        $types = $this->Invoice->Type->find('list');
-        $this->set(compact('types'));
+        $this->autoRender = false;
+
+        $this->Invoice->create();
+        if ($this->Invoice->save(array(
+            'Invoice' => array(
+                'user_id'     => $this->getUserId(),
+                'type_name'   => $this->request->data['type_name'],
+                'institution' => $this->request->data['institution'],
+                'department'  => $this->request->data['department'],
+                'postbox'     => $this->request->data['postbox'],
+                'to_person'   => $this->request->data['to_person'],
+                'street'      => $this->request->data['street'],
+                'zip'         => $this->request->data['zip'],
+                'location'    => $this->request->data['location']
+            )
+        ))
+        ) {
+            return json_encode($this->Invoice->findById($this->Invoice->getLastInsertID()));
+        }
+        else {
+            return json_encode(array('message' => __('Fehler beim Speichern')));
+        }
     }
 
     /**
@@ -151,44 +168,35 @@ class InvoicesController extends AppController {
         $this->set(compact('types'));
     }
 
-    public function edit($id = null) {
-        $this->Invoice->recursive = -1;
-        $invoice                  = $this->Invoice->find('first', array(
-            'conditions' => array('Invoice.id' => $id, 'Invoice.user_id' => $this->getUserId())
-        ));
-
-        if (!is_array($invoice)) {
-            throw new NotFoundException(__('Ungültige Rechnung'));
+    public function edit() {
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException();
         }
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Invoice->save(array(
-                'Invoice' => array(
-                    'id'          => $id,
-                    'name'        => $this->request->data['Invoice']['name'],
-                    'type_id'     => $this->request->data['Invoice']['type_id'],
-                    'user_id'     => $this->getUserId(),
-                    'institution' => $this->request->data['Invoice']['institution'],
-                    'department'  => $this->request->data['Invoice']['department'],
-                    'postbox'     => $this->request->data['Invoice']['postbox'],
-                    'to_person'   => $this->request->data['Invoice']['to_person'],
-                    'street'      => $this->request->data['Invoice']['street'],
-                    'zip'         => $this->request->data['Invoice']['zip'],
-                    'location'    => $this->request->data['Invoice']['location'],
-                )
-            ))
-            ) {
-                $this->Session->setFlash(__('The invoice has been saved'));
-                $this->redirect(array('action' => 'index'));
-            }
-            else {
-                $this->Session->setFlash(__('The invoice could not be saved. Please, try again.'));
-            }
+        $this->autoRender = false;
+
+        $this->Invoice->recursive = -1;
+        if ($this->Invoice->updateAll(
+            array(
+                'Invoice.type_name'   => "'" . Sanitize::escape($this->request->data['type_name']) . "'",
+                'Invoice.institution' => "'" . Sanitize::escape($this->request->data['institution']) . "'",
+                'Invoice.department'  => "'" . Sanitize::escape($this->request->data['department']) . "'",
+                'Invoice.postbox'     => "'" . Sanitize::escape($this->request->data['postbox']) . "'",
+                'Invoice.to_person'   => "'" . Sanitize::escape($this->request->data['to_person']) . "'",
+                'Invoice.street'      => "'" . Sanitize::escape($this->request->data['street']) . "'",
+                'Invoice.zip'         => "'" . Sanitize::escape($this->request->data['zip']) . "'",
+                'Invoice.location'    => "'" . Sanitize::escape($this->request->data['location']) . "'"
+            ),
+            array(
+                'Invoice.user_id' => $this->getUserId(),
+                'Invoice.id'      => intval($this->request->data['invoice_id'])
+            )
+        )
+        ) {
+            return json_encode($this->Invoice->findById($this->request->data['invoice_id']));
         }
         else {
-            $this->request->data = $invoice;
+            return json_encode(array('message' => __('Fehler beim Speichern')));
         }
-        $types = $this->Invoice->Type->find('list');
-        $this->set(compact('types'));
     }
 
     /**
@@ -215,20 +223,22 @@ class InvoicesController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
-    public function delete($id = null) {
+    public function delete() {
+        $this->autoRender = false;
         if (!$this->request->is('post')) {
             throw new MethodNotAllowedException();
         }
-        $this->Invoice->id = $id;
-        if (!$this->Invoice->exists()) {
-            throw new NotFoundException(__('Invalid invoice'));
+
+        if (!$this->Invoice->deleteAll(
+            array(
+                'Invoice.id'      => $this->request->data['id'],
+                'Invoice.user_id' => $this->getUserId()
+            ),
+            false
+        )
+        ) {
+            throw new Exception(__('Die Rechnung konnte nicht gelöscht werden'));
         }
-        if ($this->Invoice->delete()) {
-            $this->Session->setFlash(__('Invoice deleted'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->Session->setFlash(__('Invoice was not deleted'));
-        $this->redirect(array('action' => 'index'));
     }
 
 }

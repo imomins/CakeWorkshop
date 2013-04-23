@@ -57,6 +57,7 @@ class AppController extends Controller {
         // Used in views
         $this->set('loggedIn', $this->Auth->loggedIn());
         $this->set('group', $this->Auth->user('Group.name'));
+        $this->set('isAdmin', $this->isAdmin());
         $this->set('username', $this->Auth->user('name'));
         $this->set('brandLink', $this->brandLink());
     }
