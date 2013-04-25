@@ -27,7 +27,7 @@ class CategoriesController extends AppController {
     public function admin_view($id = null) {
         $this->Category->id = $id;
         if (!$this->Category->exists()) {
-            throw new NotFoundException(__('Invalid category'));
+            throw new NotFoundException(__('Ungültige Kategorie'), 'flash_error');
         }
         $this->set('category', $this->Category->read(null, $id));
     }
@@ -41,11 +41,11 @@ class CategoriesController extends AppController {
         if ($this->request->is('post')) {
             $this->Category->create();
             if ($this->Category->save($this->request->data)) {
-                $this->Session->setFlash(__('The category has been saved'));
+                $this->Session->setFlash(__('Kategorie gespeichert'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The category could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Kategorie konnte nicht gespeichert werden'), 'flash_error');
             }
         }
     }
@@ -60,15 +60,15 @@ class CategoriesController extends AppController {
     public function admin_edit($id = null) {
         $this->Category->id = $id;
         if (!$this->Category->exists()) {
-            throw new NotFoundException(__('Invalid category'));
+            throw new NotFoundException(__('Ungültige Kategorie'), 'flash_error');
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Category->save($this->request->data)) {
-                $this->Session->setFlash(__('The category has been saved'));
+                $this->Session->setFlash(__('Kategorie gespeichert'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The category could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Kategorie konnte nicht gespeichert werden'), 'flash_error');
             }
         }
         else {
@@ -90,13 +90,13 @@ class CategoriesController extends AppController {
         }
         $this->Category->id = $id;
         if (!$this->Category->exists()) {
-            throw new NotFoundException(__('Invalid category'));
+            throw new NotFoundException(__('Ungültige Kateogorie'), 'flash_error');
         }
         if ($this->Category->delete()) {
-            $this->Session->setFlash(__('Category deleted'));
+            $this->Session->setFlash(__('Kategorie gelöscht'), 'flash_success');
             $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash(__('Category was not deleted'));
+        $this->Session->setFlash(__('Kategorie konnte nicht gelöscht werden'), 'flash_error');
         $this->redirect(array('action' => 'index'));
     }
 }

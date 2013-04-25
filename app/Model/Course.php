@@ -83,7 +83,7 @@ class Course extends AppModel {
         'CoursesTerm' => array(
             'className'    => 'CoursesTerm',
             'foreignKey'   => 'course_id',
-            'dependent'    => true,
+            'dependent'    => false, // TODO: Check if it is really really requested to kill of all related courses
             'conditions'   => '',
             'fields'       => '',
             'order'        => '',

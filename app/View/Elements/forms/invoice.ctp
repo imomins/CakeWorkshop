@@ -1,5 +1,5 @@
 <div class="well">
-    <?php echo $this->Form->create('Invoice', array('action' => 'add', 'class' => 'form-horizontal form-invoice')); ?>
+    <?php echo $this->Form->create('Invoice', array('id' => 'formInvoice', 'action' => 'add', 'class' => 'form-horizontal form-invoice')); ?>
     <p class="lead"><?php echo __('Rechnungsdaten'); ?></p>
     <hr/>
 

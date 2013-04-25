@@ -1,5 +1,10 @@
 html { overflow-y: scroll; }
 
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
 #logo { display: none; height: 60px; }
 
 .nav-search, .form-search {
@@ -363,6 +368,10 @@ table.table-courses .inner-table {
     font-size: 15px;
 }
 
+table td.course-id {
+    text-align: right;
+}
+
 table.table-courses .inner-table td {
     background: transparent !important;
 }
@@ -399,9 +408,40 @@ table.table-courses thead tr th {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
 }
 
+table tbody tr.choice td.check span.label {
+    line-height: 18px !important;
+    text-align: center;
+    vertical-align: middle;
+    width: 60px !important;
+}
+
+table tr td, table tr th {
+    vertical-align: middle !important;
+}
+
 /**
 Invoice
 */
 .formInvoice label, .formInvoice form {
     margin: 0 !important;
+}
+
+#invoice .well { padding: 5px 20px !important; }
+#invoice .control-group { margin-bottom: 6px !important; }
+#invoice hr { margin: 10px 0px; }
+#invoice legend {
+    font-size: 19px;
+    line-height: 35px;
+    margin-bottom: 10px;
+}
+
+/**
+|----------------------------------------------------------
+| Admin styles
+|----------------------------------------------------------
+*/
+#courses-admin-edit input[type="checkbox"] {
+    float: left;
+    margin-right: 5px;
+    width: auto;
 }

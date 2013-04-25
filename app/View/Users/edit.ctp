@@ -37,7 +37,7 @@
                 echo $this->Form->input('firstname', array('required' => true, 'class' => 'span4', 'label' => __('Vorname')));
                 echo $this->Form->input('lastname', array('required' => true, 'class' => 'span4', 'label' => __('Nachname')));
                 echo $this->Form->input('department_id', array('class' => 'span5'));
-                echo $this->Form->input('occupation', array('class' => 'span5'));
+                echo $this->Form->input('occupation_id', array('class' => 'span5'));
                 echo $this->Form->input('hrz', array('class' => 'span3'));
                 echo $this->Form->input('phone', array('required' => true, 'class' => 'span3'));
                 ?>
@@ -52,3 +52,5 @@
     </div>
 
 </div>
+
+<?php echo $this->Html->script('users/edit'); ?>

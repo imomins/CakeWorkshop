@@ -28,6 +28,106 @@ class CoursesTerm extends AppModel {
     }
 
     /**
+     * Loops awfully inefficient, but the query is ok
+     * and there is a lot of stuff to set for the view.
+     * And caching can be done at any time.
+     *
+     * @param $param
+     * @return array
+     */
+    public function findCoursesTermGroupedByCategoryWithBookingStateName($param) {
+        // TODO: Replace term max by selectable term
+        $query = <<<EOD
+            SELECT
+              (SELECT bookings.booking_state_name FROM bookings WHERE bookings.courses_term_id = courses_terms.id AND bookings.user_id = ?) booking_state_name,
+              categories.id,categories.name,
+              courses.id, courses.name,
+              courses_terms.id, courses_terms.attendees,courses_terms.max,courses_terms.locked,
+              terms.name,
+              DATE_FORMAT(days.start_date, ' %d.%m.%Y') start_date, TIME_FORMAT(days.start_time, '%H:%m') start_time,TIME_FORMAT(days.end_time, '%H:%m') end_time
+            FROM categories
+                LEFT OUTER JOIN courses ON (categories.id = courses.category_id)
+                LEFT OUTER JOIN courses_terms ON (courses.id = courses_terms.course_id)
+                LEFT OUTER JOIN terms ON (courses_terms.term_id = terms.id)
+                LEFT OUTER JOIN days ON (courses_terms.id = days.courses_term_id)
+            WHERE terms.id = (SELECT id FROM terms ORDER BY id DESC LIMIT 1)
+                ORDER BY categories.name ASC, courses.name ASC
+EOD;
+
+        $editable = (isset($param['Editable']) ? $param['Editable'] : false);
+        $rows     = $this->query($query, array($param['User']['id']));
+
+        $categories = array();
+        foreach ($rows as $row) {
+            // Parent Categories->id
+            if (!isset($categories[$row['categories']['id']])) {
+                $categories[$row['categories']['id']]['Category']               = $row['categories'];
+                $categories[$row['categories']['id']]['Category']['isEditable'] = $editable;
+            }
+            // Categories->Courses->id
+            if (!isset($categories[$row['categories']['id']]['Category']['CoursesTerm'][$row['courses_terms']['id']])) {
+                $locked = intval($row['courses_terms']['locked']) === 1;
+
+                $categories[$row['categories']['id']]['Category']['CoursesTerm'][$row['courses_terms']['id']] = array(
+                    'id'             => $row['courses_terms']['id'],
+                    'isEditable'     => $editable,
+                    'locked'         => $locked,
+                    'Course'         => array(
+                        'id'   => $row['courses']['id'],
+                        'name' => $row['courses']['name'],
+                    ),
+                    'Booking'        => array(
+                        'allowSubscribe'     => !$locked && !in_array($row[0]['booking_state_name'], array('admin_unsubscribed', 'confirmed', 'unconfirmed'), true),
+                        'allowUnsubscribe'   => !$locked && !in_array($row[0]['booking_state_name'], array('admin_unsubscribed', null, 'self_unsubscribed'), true),
+                        'booking_state_name' => $row[0]['booking_state_name'],
+                        'isSubscribed'       => (($row[0]['booking_state_name'] === 'unconfirmed') || ($row[0]['booking_state_name'] === 'confirmed')),
+                        'isConfirmed'        => $row[0]['booking_state_name'] === 'confirmed',
+                        'adminUnsubscribed'  => $row[0]['booking_state_name'] === 'admin_unsubscribed',
+                    ),
+                    'Term'           => array('name' => $row['terms']['name']),
+                    'attendees'      => $row['courses_terms']['attendees'],
+                    'max'            => $row['courses_terms']['max'],
+                    'lockedClass'    => $locked ? 'error' : '',
+                    'confirmedClass' => ($row[0]['booking_state_name'] === 'confirmed') ? 'success' : '',
+                    'errorClass'     => ($row['courses_terms']['attendees'] > $row['courses_terms']['max']) ? 'warning' : '',
+                    'booking_state'  => ($row[0]['booking_state_name'] !== null) ? $row[0]['booking_state_name'] : '',
+                    'days'           => array(
+                        array(
+                            'start_date' => $row[0]['start_date'],
+                            'start_time' => $row[0]['start_time'],
+                            'end_time'   => $row[0]['end_time']
+                        )
+                    )
+                );
+            }
+            // Add new days
+            else {
+                array_push(
+                    $categories[$row['categories']['id']]['Category']['CoursesTerm'][$row['courses_terms']['id']]['days'],
+                    array(
+                        'start_date' => $row[0]['start_date'],
+                        'start_time' => $row[0]['start_time'],
+                        'end_time'   => $row[0]['end_time']
+                    ));
+            }
+        }
+
+        // Convert hashed Category and CoursesTerm to flat
+        // arrays and set stuff for the view template.
+        $categories_array = array();
+        foreach ($categories as $category) {
+            $coursesTerms                    = array();
+            $category['Category']['isEmpty'] = sizeof($category['Category']['CoursesTerm']) === 0;
+            foreach ($category['Category']['CoursesTerm'] as $coursesTerm) {
+                array_push($coursesTerms, $coursesTerm);
+            }
+            $category['Category']['CoursesTerm'] = $coursesTerms;
+            array_push($categories_array, $category);
+        }
+        return $categories_array;
+    }
+
+    /**
      * Returns the courses optionally for a certain semester and or courses which a
      * user hasn't booked yet.
      * Nicely formatted the full query:
@@ -198,6 +298,16 @@ class CoursesTerm extends AppModel {
         'max'       => array(
             'numeric' => array(
                 'rule' => array('numeric'),
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ),
+        ),
+        'locked'    => array(
+            'boolean' => array(
+                'rule' => array('boolean'),
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,

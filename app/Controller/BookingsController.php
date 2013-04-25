@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('CakeEmail', 'Network/Email');
 /**
  * Bookings Controller
  *
@@ -89,28 +90,74 @@ class BookingsController extends AppController {
     }
 
     /**
-     * @return string json
+     * 2. Cases possible:
+     * 2.1. Booking exists and has status self_unsubscribed -> set self_subscribed
+     * 2.2. Or is completely new -> create record
+     * After that an email is sent to the user with details about the subscription.
+     *
+     * @return string
+     * @throws MethodNotAllowedException
+     * @throws Exception
      */
     public function add() {
         $this->autoRender = false;
-        if ($this->request->is('ajax')) {
-            $this->Booking->create();
 
-            if ($this->Booking->save(array(
-                'Booking' => array(
-                    'user_id'            => $this->getUserId(),
-                    'courses_term_id'    => $this->request->data['CoursesTerm']['id'],
-                    'invoice_id'         => $this->request->data['Invoice']['id'],
-                    'booking_state_name' => 'unconfirmed'
-                )
-            ))
-            ) {
-                return json_encode(array('message' => __('Der Kurs wurde gebucht'), 'id' => $this->Booking->id));
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException();
+        }
+        $ids = array(); // Retain courses for confirmation email
+        foreach ($this->request->data['CoursesTerm'] as $id) {
+            array_push($ids, intval($id));
+
+            $data = array(
+                'Booking.user_id'            => intval($this->getUserId()),
+                'Booking.courses_term_id'    => $id,
+                'Booking.invoice_id'         => $this->request->data['Invoice']['id'],
+                'Booking.booking_state_name' => "'unconfirmed'",
+                'Booking.certificate'        => false,
+                'Booking.unsubscribed_at'    => null
+            );
+
+            $conditions = array(
+                'Booking.user_id'                                                       => $this->getUserId(),
+                'Booking.courses_term_id'                                               => $id,
+                '(SELECT locked FROM courses_terms WHERE id = Booking.courses_term_id)' => 0 // Prevents injection for locked courses
+            );
+
+            // Check if exists then update...
+            if ($this->Booking->hasAny($conditions)) {
+                $status = $this->Booking->updateAll(
+                    $data,
+                    $conditions
+                );
             }
+            // ...otherwise insert
             else {
-                return json_encode(array('message' => __('Der Kurs konnte nicht gebucht werden: ' . json_encode($this->Booking->validationErrors))));
+                // TODO: why is this crap not working, used SQL
+                // No condition, we assume that if the user can choose a course then it's not locked
+                //                $this->Booking->create();
+                //     $status = $this->Booking->save($data);
+                $sql = "INSERT INTO bookings (user_id,courses_term_id,invoice_id,booking_state_name) VALUES (?,?,?,'unconfirmed')";
+                $this->Booking->query($sql, array($this->getUserId(), $id, $this->request->data['Invoice']['id']));
+                $status = true;
+            }
+
+            if (!$status) {
+                throw new Exception(__('Es ist ein Fehler aufgetreten: ') . json_encode($this->Booking->validationErrors));
             }
         }
+
+        $email = new CakeEmail('gmail');
+        $email->template('preliminary_course_confirmation')
+            ->viewVars(array('categories' => $this->Booking->findBookingsByIds($this->getUserId(), $ids)))
+            ->subject(__('Übersicht Ihrer Anmeldung vom ' . date('d.m.Y, H:i') . ' Uhr'))
+            ->from('nicht-antworten@test.com')
+            ->emailFormat('html')
+            ->to($this->Auth->user('email'))
+            ->replyTo('nicht-antworten@test.com')
+            ->send();
+
+        return json_encode(array('message' => __('Die Kurse wurden gebucht'), 'id' => $this->Booking->id));
     }
 
     /**
@@ -189,50 +236,44 @@ class BookingsController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
+    /**
+     * The forms are built via ajax, only
+     * the invoice type if static in the form.
+     *
+     * @param null $term_id
+     */
     public function index($term_id = null) {
-        $coursesByCategory = $this->Booking->findCoursesTermGroupedByCategoryWithBookingStateName(
-            array('User' => array('id' => $this->getUserId()))
-        );
-        $types    = $this->Booking->Invoice->Type->find('list');
-        $terms    = $this->Booking->CoursesTerm->Term->find('list');
-        $invoices = $this->Booking->Invoice->find('list', array('conditions' => array('Invoice.user_id' => $this->getUserId())));
+        if ($this->request->is('ajax')) {
+            $coursesByCategory = $this->Booking->CoursesTerm->findCoursesTermGroupedByCategoryWithBookingStateName(
+                array('Editable' => true, 'User' => array('id' => $this->getUserId()))
+            );
 
-        $this->set(compact('types', 'terms', 'coursesByCategory', 'bookings', 'term_id', 'invoices'));
+            $this->set(compact('coursesByCategory'));
+            $this->set('_serialize', array('coursesByCategory'));
+        }
     }
 
     /**
      * Attendees can only change their training status zu unsubscribed,
      * but they can't delete their booking.
      *
-     * @param $id
      * @return string
      * @throws NotFoundException
      * @throws MethodNotAllowedException
      */
-    public function delete($id) {
+    public function delete() {
         $this->autoRender = false;
+
         if (!$this->request->is('post')) {
             throw new MethodNotAllowedException();
         }
 
-        // Be sure it's the user's own booking
-        $booking = $this->Booking->find('first', array(
-            'conditions' => array(
-                'Booking.id'      => $id,
-                'Booking.user_id' => $this->getUserId()
-            )
-        ));
-        if (!is_array($booking) || empty($booking)) {
-            throw new NotFoundException(__('Ungültige Buchung'), 'flash_error');
-        }
-
-        $this->Booking->id = $id;
-        if ($this->Booking->saveField('booking_state_name', 'self_unsubscribed')) {
-            $message = array('message' => __('Sie wurden von dem Kurs abgemeldet, Sie können sich auch wieder selbst anmelden'));
-        }
-        else {
-            $message = array('message' => __('Ein Fehler ist aufgetreten: ') . json_encode($this->Booking->validationErrors));
-        }
+        // Only mark as unsubscribed
+        $this->Booking->query(
+            "UPDATE bookings SET booking_state_name='self_unsubscribed', unsubscribed_at=CURRENT_TIMESTAMP() WHERE user_id = ? AND courses_term_id = ?",
+            array($this->getUserId(), $this->request->data['CoursesTerm']['id'])
+        );
+        $message = array('message' => __('Sie wurden von dem Kurs abgemeldet, Sie können sich auch wieder selbst anmelden'));
         return json_encode($message);
     }
 

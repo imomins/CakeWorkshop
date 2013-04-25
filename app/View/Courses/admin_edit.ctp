@@ -1,9 +1,8 @@
 <div class="page-header">
-    <h3><?php  echo __('Kurs bearbeiten'); ?></h3>
+    <h4><?php echo __('Kursdaten bearbeiten'); ?></h4>
 </div>
 
-<div class="well">
-
+<div id="courses-admin-edit" class="well">
     <?php echo $this->Form->create('Course', array('id' => 'formCourse', 'class' => 'form-horizontal')); ?>
 
     <?php echo $this->Form->input('id'); ?>
@@ -20,7 +19,7 @@
         <label class="control-label"><?php echo __('Name'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('name', array('required' => true, 'class' => 'span5', 'label' => false)); ?>
+            <?php echo $this->Form->input('name', array('required' => true, 'class' => 'span7', 'label' => false)); ?>
         </div>
     </div>
 
@@ -28,7 +27,7 @@
         <label class="control-label"><?php echo __('Abkürzung'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('code', array('required' => true, 'class' => 'span5', 'label' => false)); ?>
+            <?php echo $this->Form->input('code', array('class' => 'span7', 'label' => false)); ?>
         </div>
     </div>
 
@@ -36,15 +35,7 @@
         <label class="control-label"><?php echo __('Beschreibung (optional)'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('description', array('required' => true, 'class' => 'span5', 'label' => false)); ?>
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label"><?php echo __('Für folgende Semester schon festlegen'); ?></label>
-
-        <div class="controls">
-            <?php echo $this->Form->input('Term', array('required' => true, 'class' => 'span3', 'label' => false)); ?>
+            <?php echo $this->Form->input('description', array('class' => 'span7', 'label' => false)); ?>
         </div>
     </div>
 
@@ -52,9 +43,15 @@
         <hr/>
         <div class="controls">
             <input type="submit" class="btn btn-primary" value="<?php echo __('Speichern'); ?>"/>
+            <input type="button" class="btn btn-danger confirm" value="<?php echo __('Löschen'); ?>"
+                   data-id=""
+                   data-confirm="<?php echo __('Soll der Kurs wirklich gelöscht werden?'); ?>"
+                   data-url="<?php echo Router::url('/admin/courses/delete/') . $this->request->data['Course']['id']; ?>"/>
         </div>
     </div>
 
     <?php echo $this->Form->end(); ?>
 
 </div>
+
+<?php echo $this->Element('courses/related', array(compact('courses_terms'))); ?>

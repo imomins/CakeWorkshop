@@ -25,56 +25,56 @@ foreach ($coursesByCategory as $categories): ?>
             </thead>
 
             <tbody>
-            <?php if (!isset($categories['Category']['CoursesTerm'])): ?>
+                <?php if (!isset($categories['Category']['CoursesTerm'])): ?>
                 <tr>
                     <td colspan="8"><?php echo __('Momentan stehen keine Kurse zur Auswahl'); ?></td>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($categories['Category']['CoursesTerm'] as $coursesTerm): ?>
-                    <tr class="choice <?php echo ($coursesTerm['attendees'] > $coursesTerm['max']) ? 'error' : ''; ?>">
+                <?php else: ?>
+                    <?php foreach ($categories['Category']['CoursesTerm'] as $coursesTerm): ?>
+                    <tr data-id="<?php echo $coursesTerm['id']; ?>" class="choice <?php echo ($coursesTerm['attendees'] > $coursesTerm['max']) ? 'error' : ''; ?>">
                         <td><?php echo $coursesTerm['id']; ?></td>
                         <td class="course-name"><?php echo h($coursesTerm['Course']['name']); ?></td>
                         <td><?php echo h($coursesTerm['Term']['name']); ?></td>
                         <!-- days -->
                         <td colspan="3" style="min-width: 230px;">
-                            <?php if (empty($coursesTerm['days'])): ?>
-                                <?php echo __('Noch kein Termin festgelegt'); ?>
-                            <?php else: ?>
-                                <?php foreach ($coursesTerm['days'] as $day): ?>
-                                    <?php echo h(date('d.m.Y', strtotime($day['start_date']))) . ', ' . h(substr($day['start_time'], 0, 5) . ' ' . __('Uhr')) . ', ' . h(substr($day['end_time'], 0, 5) . ' ' . __('Uhr')); ?>
-                                    <br/>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                        <?php if (empty($coursesTerm['days'])): ?>
+                            <?php echo __('Noch kein Termin festgelegt'); ?>
+                        <?php else: ?>
+                            <?php foreach ($coursesTerm['days'] as $day): ?>
+                                <?php echo h(date('d.m.Y', strtotime($day['start_date']))) . ', ' . h(substr($day['start_time'], 0, 5) . ' ' . __('Uhr')) . ', ' . h(substr($day['end_time'], 0, 5) . ' ' . __('Uhr')); ?>
+                                <br/>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                         </td>
                         <!-- end days -->
                         <td class="table-center"><?php echo h($coursesTerm['attendees']); ?></td>
                         <td class="table-center"><?php echo h($coursesTerm['max']); ?></td>
                         <?php if ($form): ?>
                             <td class="check">
-                                <?php if ($coursesTerm['Booking']['booking_state_name'] === null): ?>
-                                    <a class="btn btn-info btn-mini" data-toggle="button"><?php echo __('Auswählen'); ?></a>
-                                    <?php echo $this->Form->input('CoursesTerm.id.' . $coursesTerm['id'], array('hidden' => true, 'type' => 'checkbox', 'label' => false, 'div' => false)); ?>
-                                <?php else: ?>
-                                    <?php
-                                    switch ($coursesTerm['Booking']['booking_state_name']):
-                                        case 'self_unsubscribed':
-                                        case 'confirmed':
-                                        case 'unconfirmed':
-                                            echo $this->Form->postLink(__('Abmelden'), array('action' => 'delete'), array('class' => 'btn btn-inverse btn-mini'), __('Wollen Sie sich abmelden?'));
-                                            break;
-                                        case 'admin_unsubscribed':
-                                            echo '<span class="label label-warning">' . __('Abgemeldet') . '</span>';
-                                            break;
-                                        default:
-                                            echo $this->Form->input('CoursesTerm.id.' . $coursesTerm['id'], array('label' => false, 'class' => 'attend', 'type' => 'checkbox'));
-                                    endswitch;
-                                    ?>
-                                <?php endif; ?>
+                            <?php if ($coursesTerm['Booking']['booking_state_name'] === null): ?>
+                                <a class="btn btn-primary btn-mini" data-toggle="button"><?php echo __('Auswählen'); ?></a>
+                                <?php echo $this->Form->input('CoursesTerm.id.' . $coursesTerm['id'], array('hidden' => true, 'type' => 'checkbox', 'label' => false, 'div' => false)); ?>
+                            <?php else: ?>
+                                <?php
+                                switch ($coursesTerm['Booking']['booking_state_name']):
+                                    case 'self_unsubscribed':
+                                    case 'confirmed':
+                                    case 'unconfirmed':
+                                        echo $this->Form->postLink(__('Abmelden'), array('action' => 'delete'), array('class' => 'btn btn-inverse btn-mini'), __('Wollen Sie sich abmelden?'));
+                                        break;
+                                    case 'admin_unsubscribed':
+                                        echo '<span class="label label-warning">' . __('Abgemeldet') . '</span>';
+                                        break;
+                                    default:
+                                        echo $this->Form->input('CoursesTerm.id.' . $coursesTerm['id'], array('label' => false, 'class' => 'attend', 'type' => 'checkbox'));
+                                endswitch;
+                                ?>
+                            <?php endif; ?>
                             </td>
                         <?php endif; ?>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

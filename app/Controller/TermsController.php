@@ -30,9 +30,9 @@ class TermsController extends AppController {
         }
 
         $terms = $this->Term->find('all', array(
-            'recursive' => 2,
+            'recursive'  => 2,
             'conditions' => array('Term.id' => $id),
-            'fields' => array('Term.name', 'CoursesTerm.max')
+            'fields'     => array('Term.name', 'CoursesTerm.max')
         ));
         debug($terms);
 
@@ -48,15 +48,13 @@ class TermsController extends AppController {
         if ($this->request->is('post')) {
             $this->Term->create();
             if ($this->Term->save($this->request->data)) {
-                $this->Session->setFlash(__('The term has been saved'));
+                $this->Session->setFlash(__('Das Semester wurde angelegt'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The term could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Speichern fehlgeschlagen'), 'flash_error');
             }
         }
-        $courses = $this->Term->Course->find('list');
-        $this->set(compact('courses'));
     }
 
     /**
@@ -73,18 +71,16 @@ class TermsController extends AppController {
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Term->save($this->request->data)) {
-                $this->Session->setFlash(__('The term has been saved'));
+                $this->Session->setFlash(__('Das Semester wurde gespeichert'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The term could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Fehler beim Speichern'), 'flash_error');
             }
         }
         else {
             $this->request->data = $this->Term->read(null, $id);
         }
-        $courses = $this->Term->Course->find('list');
-        $this->set(compact('courses'));
     }
 
     /**
@@ -101,13 +97,13 @@ class TermsController extends AppController {
         }
         $this->Term->id = $id;
         if (!$this->Term->exists()) {
-            throw new NotFoundException(__('Invalid term'));
+            throw new NotFoundException(__('Ungültiges Semester'));
         }
         if ($this->Term->delete()) {
-            $this->Session->setFlash(__('Term deleted'));
+            $this->Session->setFlash(__('Semester gelöscht'), 'flash_success');
             $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash(__('Term was not deleted'));
+        $this->Session->setFlash(__('Das Semester wurde nicht gelöscht'), 'flash_error');
         $this->redirect(array('action' => 'index'));
     }
 }

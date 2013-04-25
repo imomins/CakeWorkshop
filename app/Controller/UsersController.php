@@ -23,6 +23,13 @@ class UsersController extends AppController {
     }
 
     public function login() {
+        if ($this->request->is('ajax')) {
+            $this->autoRender = false;
+            $coursesByCategory = $this->User->CoursesTerm->findCoursesTermGroupedByCategoryWithBookingStateName(
+                array('User' => array('id' => $this->getUserId()))
+            );
+            return json_encode(array('coursesByCategory' => $coursesByCategory));
+        }
         $this->gotoHomeScreen();
 
         if ($this->request->is('post')) {

@@ -1,19 +1,21 @@
-<div class="categories form">
-<?php echo $this->Form->create('Category'); ?>
-	<fieldset>
-		<legend><?php echo __('Add Category'); ?></legend>
-	<?php
-		echo $this->Form->input('name');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<div class="page-header">
+    <h4><?php echo __('Kategorie anlegen'); ?></h4>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
 
-		<li><?php echo $this->Html->link(__('List Categories'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Courses'), array('controller' => 'courses', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Course'), array('controller' => 'courses', 'action' => 'add')); ?> </li>
-	</ul>
+<div class="well">
+    <?php echo $this->Form->create('Category'); ?>
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label"><?php echo __('Name der Kategorie'); ?></label>
+
+            <div class="controls">
+                <?php echo $this->Form->input('name', array('required' => true, 'label' => false, 'class' => 'span3')); ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
+            </div>
+        </div>
+    </fieldset>
 </div>

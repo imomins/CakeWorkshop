@@ -9,31 +9,59 @@ class CoursesTermsController extends AppController {
 
     public $components = array('RequestHandler');
 
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Auth->allow('get');
+    }
+
     /**
-     * index method
-     *
-     * @return void
+     * Used by login and bookings screen
      */
-    public function admin_index($term_id = 77) {
-        $this->paginate = array(
-            'fields'  => array(
-                'CoursesTerm.id',
-                'CoursesTerm.attendees',
-                'CoursesTerm.max'
-            ),
-            'contain' => array(
-                'Day',
-                'Term'   => array('fields' => array('Term.id', 'Term.name')),
-                'Course' => array('fields' => array('Course.id', 'Course.name'))
-            ),
-            'conditions' => array('term_id' => $term_id)
+    public function get() {
+        $coursesByCategory = $this->CoursesTerm->findCoursesTermGroupedByCategoryWithBookingStateName(
+            array('Editable' => true, 'User' => array('id' => $this->getUserId()))
         );
-        $p              = $this->paginate();
+        $this->set(compact('coursesByCategory'));
+        $this->set('_serialize', array('coursesByCategory'));
+    }
+
+    /**
+     * @param int $term_id
+     */
+    public function admin_index($term_id = null) {
+        $this->request->data['term_id'] = $term_id;
+
+        // TODO: array_push explodes for conditions, reason for ugly code below, check again
+        $this->paginate = array(
+            'order'      => array('id' => 'DESC'),
+            'conditions' => array()
+        );
+
+        // Search condition
+        if ($this->request->is('post')) {
+            $this->paginate = array('conditions' => array('Course.name LIKE' => '%' . trim($this->request->data['query']) . '%'));
+        }
+        // Term condition
+        if ($term_id !== null) {
+            // Combine
+            if (isset($this->request->data['query'])) {
+                $this->paginate = array(
+                    'conditions' => array(
+                        'CoursesTerm.term_id' => $term_id,
+                        'Course.name LIKE'    => '%' . trim($this->request->data['query']) . '%'
+                    )
+                );
+            }
+            else {
+                $this->paginate = array('conditions' => array('CoursesTerm.term_id' => $term_id));
+            }
+        }
+
         $terms = $this->CoursesTerm->Term->find('list', array(
             'order' => 'Term.id DESC'
         ));
         $this->set('terms', $terms);
-        $this->set('coursesTerms', $p);
+        $this->set('coursesTerms', $this->paginate());
     }
 
     /**

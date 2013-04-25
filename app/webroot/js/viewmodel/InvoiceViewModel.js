@@ -27,6 +27,7 @@ define(['ko', 'jquery'], function (ko, $) {
         this.loaded = ko.observable(false);
         this.business = ko.observable(true);
         this.private = ko.observable(true);
+        this.showInvoiceControls = ko.observable(false);
 
         /**
          * Form specific methods.
@@ -52,32 +53,35 @@ define(['ko', 'jquery'], function (ko, $) {
             this.value = value;
         }
 
-        // Load form data
-        $.getJSON('invoices/types.json')
-            .success(function (data) {
-                var i;
-                for (i = 0; i < data.length; i += 1) {
-                    self.types.push(new Type(data[i].Type.display, data[i].Type.name));
-                }
-            })
-            .error(function (response) {
-                alert($.parseJSON(response.responseText).name);
-            });
+        this.fetch = function () {
+            // Load form data
+            $.getJSON('invoices/types.json')
+                .success(function (data) {
+                    var i;
+                    for (i = 0; i < data.length; i += 1) {
+                        self.types.push(new Type(data[i].Type.display, data[i].Type.name));
+                    }
+                })
+                .error(function (response) {
+                    alert($.parseJSON(response.responseText).name);
+                });
 
-        $.getJSON('invoices.json')
-            .success(function (data) {
-                var i;
-                for (i = 0; i < data.length; i += 1) {
-                    self.invoices.push(data[i].Invoice);
-                }
-                // Just load the first invoice as default if is exists
-                if (data.length > 0) {
-                    self.load(undefined, undefined, data[0].Invoice.id);
-                }
-            })
-            .error(function (response) {
-                alert($.parseJSON(response.responseText).name);
-            });
+            $.getJSON('invoices.json')
+                .success(function (data) {
+                    var i;
+                    for (i = 0; i < data.length; i += 1) {
+                        self.invoices.push(data[i].Invoice);
+                        self.showInvoiceControls(data.length > 0);
+                    }
+                    // Just load the first invoice as default if is exists
+                    if (data.length > 0) {
+                        self.load(undefined, undefined, data[0].Invoice.id);
+                    }
+                })
+                .error(function (response) {
+                    alert($.parseJSON(response.responseText).name);
+                });
+        };
 
         this.add = function () {
             form.clear();
@@ -161,6 +165,7 @@ define(['ko', 'jquery'], function (ko, $) {
                         self.saveCaption('Speichern');
                         self.working(false);
                     }, 2000);
+                    self.showInvoiceControls(true);
                 })
                 .error(function (response) {
                     alert($.parseJSON(response.responseText).name);
@@ -198,6 +203,9 @@ define(['ko', 'jquery'], function (ko, $) {
             this.private(this.type_name() === 'private');
             this.business(this.type_name() === 'business');
         };
+
+        // Go go Gadgeto form data...
+        this.fetch();
     }
 
     return InvoiceViewModel;

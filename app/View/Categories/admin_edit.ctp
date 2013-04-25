@@ -1,21 +1,25 @@
-<div class="categories form">
-<?php echo $this->Form->create('Category'); ?>
-	<fieldset>
-		<legend><?php echo __('Edit Category'); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('name');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<div class="page-header">
+    <h4><?php echo __('Kategorie Bearbeiten'); ?></h4>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
 
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Category.id')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Category.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Categories'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Courses'), array('controller' => 'courses', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Course'), array('controller' => 'courses', 'action' => 'add')); ?> </li>
-	</ul>
+<div class="well">
+    <?php echo $this->Form->create('Category'); ?>
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label"><?php echo __('Name der Kategorie'); ?></label>
+
+            <div class="controls">
+                <?php echo $this->Form->input('name', array('required' => true, 'label' => false, 'class' => 'span3')); ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
+                <input type="button" class="btn btn-danger confirm" value="<?php echo __('Löschen'); ?>"
+                       data-id=""
+                       data-confirm="<?php echo __('Wirklich löschen?'); ?>"
+                       data-url="<?php echo Router::url('/admin/categories/delete/') . $this->Form->value('Category.id'); ?>"/>
+            </div>
+        </div>
+    </fieldset>
 </div>

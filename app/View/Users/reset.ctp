@@ -2,7 +2,7 @@
 <br/>
 <br/>
 <div class="well span4 offset4">
-    <p class="lead"><?php echo __('Passwort zurücksetzen'); ?></p>
+    <p class="lead"><?php echo __('Neues Passwort erhalten'); ?></p>
 
     <p><?php echo __('Sie bekommen eine Email zugesandt mit weiteren Anweisungen.'); ?></p>
     <hr/>
@@ -11,6 +11,6 @@
     echo $this->Form->input('email', array('required' => true, 'class' => 'span4'));
     ?>
     <hr/>
-    <input type="submit" class="btn" value="<?php echo __('Zurücksetzen'); ?>"/>
+    <input type="submit" class="btn btn-info" value="<?php echo __('Ok, bitte Mir eine E-Mail senden'); ?>"/>
     <?php echo $this->Form->end(); ?>
 </div>

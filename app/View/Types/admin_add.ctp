@@ -1,19 +1,32 @@
-<div class="types form">
-<?php echo $this->Form->create('Type'); ?>
-	<fieldset>
-		<legend><?php echo __('Add Type'); ?></legend>
-	<?php
-		echo $this->Form->input('name');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<div class="page-header">
+    <h4><?php echo __('Rechnungsart Anlegen'); ?></h4>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
 
-		<li><?php echo $this->Html->link(__('List Types'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Invoices'), array('controller' => 'invoices', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Invoice'), array('controller' => 'invoices', 'action' => 'add')); ?> </li>
-	</ul>
+<div class="well ">
+    <?php echo $this->Form->create('Type', array('class' => 'form')); ?>
+
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Anzeigename'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('display', array('required' => true, 'label' => false, 'class' => 'span3')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Interner-Name'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('name', array('type' => 'text', 'required' => true, 'label' => false, 'class' => 'span3')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <hr/>
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">Speichern</button>
+        </div>
+    </div>
+    <?php echo $this->Form->end(); ?>
 </div>

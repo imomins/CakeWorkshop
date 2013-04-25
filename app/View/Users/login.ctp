@@ -1,4 +1,4 @@
-<div class="tabbable" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<div class="tabbable">
 
     <ul class="nav nav-tabs">
         <li class="active"><a href="#register" data-toggle="tab"><?php echo __('Anmeldung'); ?></a></li>
@@ -38,15 +38,11 @@
                 <p>Vielen Dank für Ihr Interesse an unserem Workshopangebot. Auch wenn Workshops ausgebucht sind, melden Sie sich bitte trotzdem an. Oft werden noch Plätze über die Warteliste frei bzw. bei großem Interesse bieten wir auch Wiederholungstermine für einzelne Workshops an.</p>
             </div>
 
-            <?php echo $this->element('tables/courses_by_category', array($coursesByCategory, 'form' => false)); ?>
+            <div id="tableCourses">Lade...</div>
         </div>
 
     </div>
 </div>
 
 <?php echo $this->Html->css('users/login'); ?>
-<script>
-    require(['bootstrap-tab'], function (_tab) {
-        "use strict";
-    });
-</script>
+<?php echo $this->Html->script('users/login'); ?>
