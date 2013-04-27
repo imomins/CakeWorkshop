@@ -83,26 +83,26 @@ EOT;
      * @var array
      */
     public $validate = array(
-        'user_id'               => array(
+        'user_id'            => array(
             'numeric' => array(
                 'rule'    => array('numeric'),
                 'message' => 'Bitte einen Teilnehmer eingeben',
             ),
         ),
-        'courses_term_id'       => array(
+        'courses_term_id'    => array(
             'numeric' => array(
                 'rule' => array('numeric'),
             ),
         ),
-        'invoice_id'            => array(
+        'invoice_id'         => array(
             'numeric' => array(
                 'rule'    => array('numeric'),
                 'message' => 'Bitte geben Sie eine Rechnung an',
             ),
         ),
-        'booking_state_name'    => array(
+        'booking_state_name' => array(
             'notempty' => array(
-                'rule'    => array('notempty'),
+                'rule' => array('notempty'),
             ),
         ),
     );

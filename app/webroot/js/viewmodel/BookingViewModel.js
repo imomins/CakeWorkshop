@@ -23,6 +23,10 @@ define(['ko', 'jquery'], function (ko, $) {
                     for (i = 0; i < cats.length; i += 1) {
                         self.categories.push(cats[i]);
                     }
+                    // Highlight first button
+                    if (cats.length > 0) {
+                        $('#invoice').find('.btn-group button').first().addClass('active');
+                    }
                 })
                 .error(function (response) {
                     alert($.parseJSON(response.responseText).name);

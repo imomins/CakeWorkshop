@@ -6,8 +6,7 @@
 
     <ul class="nav nav-tabs">
         <li class="active"><a href="#current" data-toggle="tab"><?php echo __('Aktuelle Kurse'); ?></a></li>
-        <li><a href="#invoices" data-toggle="tab"><?php echo __('Meine Rechnungsdaten'); ?></a></li>
-        <li><a href="#past" data-toggle="tab"><?php echo __('Meine vergangenen Kurse'); ?></a></li>
+        <li><a href="#past" data-toggle="tab"><?php echo __('Bereits besuchte Kurse'); ?></a></li>
     </ul>
 
     <div class="tab-content">
@@ -25,9 +24,9 @@
 
             <div id="invoice">
                 <form class="form-inline" data-bind="visible: showInvoiceControls">
-                    <label>Wählen Sie einen Ihrer bisherigen Rechnungsvorlagen:</label><br />
+                    <label>Bitte wählen Sie einer Ihrer bestehende Rechnungsvorlagen oder erstellen Sie eine neue:</label><br />
                     <div class="btn-group" data-toggle="buttons-radio" data-bind="click: load, foreach: invoices">
-                        <button data-bind="attr: { 'data-id': id }, text: name" type="button" class="btn btn-small"></button>
+                        <button data-bind="attr: { 'data-id': id }, text: name + '-' + ($index() + 1)" type="button" class="btn btn-small"></button>
                     </div>
                     <button type="button" class="btn btn-small" data-bind="click: add, disable: working">Neue Rechnungsvorlage anlegen</button>
                 </form>
@@ -105,7 +104,7 @@
                         <div class="control-group">
                             <button type="submit" data-bind="disable: working, text: saveCaption" class="btn btn-primary">Speichern</button>
                             <button type="button" data-bind="click: destroy, disable: working, visible: loaded" class="btn btn-danger">Löschen </button>
-                            <button type="button" data-bind="click: cancel, disable: working" class="btn">Abbrechen</button>
+                            <!--<button type="button" data-bind="click: cancel, disable: working" class="btn">Abbrechen</button>-->
                         </div>
                     </fieldset>
                 </form>
@@ -211,9 +210,6 @@
         </div>
 
         <div class="tab-pane" id="invoices">
-        </div>
-
-        <div class="tab-pane" id="past">
         </div>
 
     </div>

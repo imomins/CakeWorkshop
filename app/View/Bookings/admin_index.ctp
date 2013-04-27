@@ -1,12 +1,18 @@
 <div class="page-header">
-    <h3><?php echo __('Aktuelle Buchungen'); ?></h3>
+    <h4><?php echo __('Aktuelle Buchungen'); ?></h4>
     <div class="pull-right"></div>
 </div>
 
-<table class="table table-bordered table-striped">
+<?php echo $this->Form->create('Booking', array('class' => 'form-inline')); ?>
+<input type="text" name="query" class="span4 search-query"
+       value="<?php echo isset($this->request->data['query']) ? $this->request->data['query'] : ''; ?>"
+       placeholder="Person suchen">
+<?php echo $this->Form->end(); ?>
+
+<table class="table table-bordered table-striped table-hover">
     <tr>
         <th><?php echo $this->Paginator->sort('user_id', __('Teilnehmer')); ?></th>
-        <th><?php echo $this->Paginator->sort('courses_term_id', __('Kurs')); ?></th>
+        <th><?php echo $this->Paginator->sort('courses_term_id', __('Semester-Kurs')); ?></th>
         <th><?php echo $this->Paginator->sort('term_id', __('Semester')); ?></th>
         <th style="min-width:140px;"><?php echo $this->Paginator->sort('created', __('Gebucht am')); ?></th>
         <th style="min-width: 200px;" class="actions"><?php echo __('Buchungsaktionen'); ?></th>

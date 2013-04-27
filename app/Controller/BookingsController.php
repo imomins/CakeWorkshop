@@ -38,9 +38,13 @@ class BookingsController extends AppController {
             $termId = $this->Booking->query('SELECT id FROM terms ORDER BY id DESC LIMIT 1');
             $termId = $termId[0]['terms']['id'];
         }
+        if (!isset($this->request->data['query'])) {
+            $this->request->data['query'] = '';
+        }
         $this->paginate = array(
-            'order'   => array('Booking.created' => 'DESC'),
-            'contain' => array(
+            'conditions' => array("CONCAT(firstname, ' ', lastname) LIKE" => '%' . trim($this->request->data['query']) . '%'),
+            'order'      => array('Booking.created' => 'DESC'),
+            'contain'    => array(
                 'User'        => array('fields' => array('name', 'id')),
                 'CoursesTerm' => array(
                     'Course' => array('fields' => array('name')),
@@ -56,9 +60,7 @@ class BookingsController extends AppController {
         }
 
         $bookings = $this->paginate('Booking');
-
-        $terms = $this->Booking->CoursesTerm->Term->find('list');
-
+        $terms    = $this->Booking->CoursesTerm->Term->find('list');
         $this->set(compact('bookings', 'terms'));
     }
 
@@ -198,8 +200,17 @@ class BookingsController extends AppController {
             throw new NotFoundException(__('Diese Buchung existiert nicht.'));
         }
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Booking->save($this->request->data)) {
-                $this->Session->setFlash(__('Daten gespeichert'));
+            if ($this->Booking->save(array(
+                'Booking' => array(
+                    'courses_term_id'       => $this->request->data['Booking']['courses_term_id'],
+                    'booking_state_name'    => $this->request->data['Booking']['booking_state_name'],
+                    'attendance_state_name' => ($this->request->data['Booking']['attendance_state_name'] === '') ? null : $this->request->data['Booking']['attendance_state_name'],
+                    'notes'                 => $this->request->data['Booking']['notes'],
+                    'certificate'           => $this->request->data['Booking']['certificate']
+                )
+            ))
+            ) {
+                $this->Session->setFlash(__('Die Buchung wurde gepspeichert'));
                 $this->redirect(array('action' => 'index'));
             }
             else {
@@ -208,8 +219,19 @@ class BookingsController extends AppController {
         }
         else {
             $this->request->data = $this->Booking->read(null, $id);
+            $this->request->data['Booking']['unsubscribed_at'] = date("d.m.Y, H:i", strtotime($this->request->data['Booking']['unsubscribed_at'])). ' Uhr';
+
+            $users            = $this->Booking->User->find('list');
+            $courses_terms    = $this->Booking->CoursesTerm->getCoursesList();
+            $attendance_state = $this->Booking->AttendanceState->find('list');
+            $types            = $this->Booking->Invoice->Type->find('list');
+
+            $booking_state = $this->Booking->BookingState->find('list', array(
+                'fields' => array('name', 'display')
+            ));
+
+            $this->set(compact('users', 'booking_state', 'attendance_state', 'courses_terms', 'types'));
         }
-        $booking = $this->Booking->find('first');
     }
 
     /**
