@@ -5,11 +5,20 @@ body {
     padding-bottom: 40px;
 }
 
+h3 {
+    font-size: 20.5px;
+}
+
+h1, h2, h3 {
+    line-height: 20px;
+}
+
 #logo { display: none; height: 60px; }
 
 .nav-search, .form-search {
-    margin:0 !important;
+    margin: 0 !important;
 }
+
 .nav-search { margin: 6px 0px !important; }
 
 .message {
@@ -354,6 +363,7 @@ dt, dd {
 
 .page-header {
     margin-top: 0;
+    margin-bottom: 20px;
 }
 
 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
@@ -366,6 +376,17 @@ table-courses
 table.table-courses .inner-table {
     width: 100%;
     font-size: 15px;
+}
+
+table.table th {
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #F2F2F2 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #F2F2F2));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #F2F2F2 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #F2F2F2 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #F2F2F2 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #F2F2F2 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#F2F2F2', GradientType=0);
 }
 
 table td.course-id {
@@ -399,12 +420,12 @@ table.table-courses tr.choice a.btn {
 table.table-courses thead tr th {
     background: #ffffff;
     background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ3JSIgc3RvcC1jb2xvcj0iI2Y2ZjZmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNGY0ZjQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-    background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #f6f6f6), color-stop(100%, #f4f4f4));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 47%, #f4f4f4 100%);
+    background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 100%, #f4f4f4 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f6f6f6), color-stop(100%, #f4f4f4));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 100%, #f4f4f4 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 100%, #f4f4f4 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 100%, #f4f4f4 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 100%, #f4f4f4 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
 }
 
@@ -427,8 +448,11 @@ Invoice
 }
 
 #invoice .well { padding: 5px 20px !important; }
+
 #invoice .control-group { margin-bottom: 6px !important; }
+
 #invoice hr { margin: 10px 0px; }
+
 #invoice legend {
     font-size: 19px;
     line-height: 35px;
