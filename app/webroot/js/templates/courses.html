@@ -1,0 +1,80 @@
+<form id="formBooking">
+    {{#each categories}}
+    <div id="categories">
+        <h5>{{Category.name}}</h5>
+        <table class="table-courses table table-bordered table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th rowspan="2" width="5%">Kurs-Nr.</th>
+                <th rowspan="2" width="50%">Kurs-Titel</th>
+                <th rowspan="2" width="15%">Semester</th>
+                <th colspan="3">Verantstaltungstag(e)</th>
+                <th rowspan="2" width="5%">Aktuelle Belegung</th>
+                <th rowspan="2" width="5%">Maximale Teilnehmer</th>
+                {{#if Category.isEditable}}
+                <th rowspan="2" width="5%">
+                    Auswahl
+                </th>
+                {{/if}}
+            </tr>
+            <tr>
+                <th>Am</th>
+                <th>Von</th>
+                <th>Bis</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {{#if Category.isEmpty}}
+            <tr>
+                <td colspan="8">Momentan stehen keine Kurse zur Auswahl</td>
+            </tr>
+            {{/if}}
+            {{#each Category.CoursesTerm}}
+            <tr data-id="{{id}}" data-status="{{booking_state}}" class="choice {{errorClass}} {{lockedClass}} {{confirmedClass}}">
+                <td>{{id}}</td>
+                <td class="course-name">{{Course.name}}</td>
+                <td>{{Term.name}}</td>
+                <!-- days -->
+                <td colspan="3" style="min-width: 230px;">
+                {{#if noDays}}
+                    Noch kein Termin festgelegt
+                {{/if}}
+                {{#each days}}
+                    {{start_date}}, {{start_time}} Uhr, {{end_time}} Uhr
+                    <br/>
+                {{/each}}
+                </td>
+                <!-- end days -->
+                <td class="table-center">{{attendees}}</td>
+                <td class="table-center">{{max}}</td>
+                {{#if isEditable}}
+                <td class="check">
+                    {{#if Booking.allowSubscribe}}
+                    <a class="btn btn-primary btn-mini" data-do="select" data-toggle="button">Auswählen</a>
+                    {{/if}}
+
+                    {{#if Booking.allowUnsubscribe}}
+                    <a class="btn btn-mini" data-do="unsubscribe">Abmelden</a>
+                    {{/if}}
+
+                    {{#if Booking.adminUnsubscribed}}
+                    <span class="label label-important">Abgemeldet</span>
+                    {{/if}}
+
+                    {{#if locked}}
+                    <span class="label label-important">Gesperrt</span>
+                    {{/if}}
+                </td>
+                {{/if}}
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{/each}}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Ausgewählte Kurse Belegen</button>
+    </div>
+</form>

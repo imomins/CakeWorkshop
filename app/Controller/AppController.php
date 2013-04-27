@@ -31,10 +31,7 @@ class AppController extends Controller {
     public $components = array(
         'Session',
         'Auth' => array(
-            'loginAction'  => array(
-                'controller' => 'users',
-                'action'     => 'login',
-            ),
+            'loginAction'  => '/users/login',
             'authError'    => 'Bitte melden Sie sich an',
             'authenticate' => array(
                 'Form' => array(
