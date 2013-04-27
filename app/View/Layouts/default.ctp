@@ -123,9 +123,9 @@
                 <ul class="nav pull-right">
                     <?php if ($isAdmin): ?>
                         <li class="nav-search">
-                            <?php echo $this->Form->create(null, array('class' => 'form-search', 'url' => array('controller' => 'bookings', 'action' => 'index'))); ?>
-                            <?php echo $this->Form->input('Course.name', array('div' => false, 'label' => false, 'class' => 'span3 input-medium search-query')); ?>
-                            <?php echo $this->Form->end(); ?>
+                            <form class="form-search" method="POST" action="<?php echo Router::url('/admin/courses_terms/index'); ?>">
+                                <input type="text" class="span3 input-medium search-query" name="query" placeholder="Semester-Kurs suchen"  />
+                            </form>
                         </li>
                     <?php endif; ?>
 
