@@ -6,6 +6,7 @@ App::uses('AppModel', 'Model');
  * @property Term $Term
  * @property Course $Course
  * @property User $User
+ * @property Schedule $Schedule
  */
 class CoursesTerm extends AppModel {
 
@@ -22,7 +23,7 @@ class CoursesTerm extends AppModel {
                 )
             )
         ));
-        $coursesTerms = Set::combine($coursesTerms, '{n}.CoursesTerm.id', array('{0} - {1}', '{n}.Course.name', '{n}.Term.name'));
+        $coursesTerms = Set::combine($coursesTerms, '{n}.CoursesTerm.id', array('{0} ({1})', '{n}.Course.name', '{n}.Term.name'));
 
         return $coursesTerms;
     }

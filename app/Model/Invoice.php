@@ -9,10 +9,8 @@ App::uses('AppModel', 'Model');
  */
 class Invoice extends AppModel {
 
-    public $displayField = 'name';
-
     public $virtualFields = array(
-        'name' => 'CONCAT("Rechnung", "")'
+        'name' => '"Rechnungsvorlage"'
     );
 
     /**
