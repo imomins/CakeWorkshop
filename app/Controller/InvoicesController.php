@@ -162,10 +162,23 @@ class InvoicesController extends AppController {
             }
         }
         else {
-            $this->request->data = $this->Invoice->read(null, $id);
+            $this->request->data   = $this->Invoice->read(null, $id);
+
+            $related_courses_terms = $this->Invoice->query('
+                SELECT Invoice.id,Booking.id,CoursesTerm.id,Schedule.display,Course.name,Category.name,Term.id,Term.name FROM invoices Invoice
+                    LEFT OUTER JOIN bookings Booking ON (Invoice.id = Booking.invoice_id)
+                    LEFT OUTER JOIN courses_terms CoursesTerm ON (Booking.courses_term_id = CoursesTerm.id)
+                    LEFT OUTER JOIN courses Course ON (CoursesTerm.course_id = Course.id)
+                    LEFT OUTER JOIN terms Term ON (CoursesTerm.term_id = Term.id)
+                    LEFT OUTER JOIN categories Category ON (Course.category_id = Category.id)
+                    LEFT OUTER JOIN schedules Schedule ON (CoursesTerm.schedule_name = Schedule.name)
+                WHERE Invoice.id = ?
+                    ORDER BY Term.id DESC,Course.name ASC
+            ', array($id));
+
+            $types = $this->Invoice->Type->find('list');
+            $this->set(compact('types', 'related_courses_terms'));
         }
-        $types = $this->Invoice->Type->find('list');
-        $this->set(compact('types'));
     }
 
     public function edit() {

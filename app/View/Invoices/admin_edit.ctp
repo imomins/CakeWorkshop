@@ -1,34 +1,116 @@
-<div class="invoices form">
-<?php echo $this->Form->create('Invoice'); ?>
-	<fieldset>
-		<legend><?php echo __('Admin Edit Invoice'); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('type_id');
-		echo $this->Form->input('user_id');
-		echo $this->Form->input('name');
-		echo $this->Form->input('institution');
-		echo $this->Form->input('department');
-		echo $this->Form->input('postbox');
-		echo $this->Form->input('to_person');
-		echo $this->Form->input('street');
-		echo $this->Form->input('zip');
-		echo $this->Form->input('location');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<div class="page-header">
+    <h3><?php echo __('Rechnungsadresse bearbeiten'); ?></h3>
+    <small><?php echo __('Bitte beachten, dass mehrere Kurse unter Rechungsadresse gruppiert sein könnten'); ?></small>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
 
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Invoice.id')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Invoice.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Invoices'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Types'), array('controller' => 'types', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Type'), array('controller' => 'types', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Bookings'), array('controller' => 'bookings', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Booking'), array('controller' => 'bookings', 'action' => 'add')); ?> </li>
-	</ul>
+<div class="well">
+    <?php echo $this->Form->create('Invoice', array('class' => 'form-horizontal')); ?>
+    <?php echo $this->Form->input('id'); ?>
+
+    <legend><?php echo __('Anmeldungsdaten'); ?></legend>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Benutzer'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('User.name', array('disabled' => true, 'empty' => false, 'div' => false, 'label' => false, 'required' => true, 'class' => 'span3')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Rechnung an'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->select('type_name', $types, array('empty' => false, 'div' => false, 'label' => false, 'required' => true, 'class' => 'span3')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Institution'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('institution', array('div' => false, 'label' => false, 'class' => 'span5')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Einrichtung'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('department', array('div' => false, 'label' => false, 'class' => 'span5')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Hauspostfach'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('postbox', array('div' => false, 'label' => false, 'class' => 'span5')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Straße'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('street', array('div' => false, 'label' => false, 'class' => 'span5')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Zu Händen von'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('to_person', array('div' => false, 'label' => false, 'class' => 'span5')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('PLZ'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('zip', array('div' => false, 'label' => false, 'class' => 'span2')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Ort'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('location', array('div' => false, 'label' => false, 'class' => 'span5')); ?>
+        </div>
+    </div>
+
+    <hr/>
+    <button type="submit" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
+    <button type="button" class="btn btn-danger confirm"
+            data-url="<?php echo Router::url('/admin/invoices/delete/') . $this->request->data['Invoice']['id']; ?>"
+            data-confirm="<?php echo __('Rechnungsadresse löschen?'); ?>"><?php echo __('Löschen'); ?></button>
+
+    <?php echo $this->Form->end(); ?>
 </div>
+
+<div class="page-header">
+    <h3><?php echo __('Kurse die unter dieser Adresse gebucht wurden'); ?></h3>
+</div>
+
+<table class="table table-bordered table-hovered table-striped">
+    <thead>
+        <th><?php echo __('Kurs'); ?></th>
+        <th><?php echo __('Kategorie'); ?></th>
+        <th><?php echo __('Semester'); ?></th>
+        <th><?php echo __('Status'); ?></th>
+        <th><?php echo __('Bearbeiten'); ?></th>
+    </thead>
+    <tbody>
+    <?php foreach ($related_courses_terms as $booking): ?>
+        <tr>
+            <td><?php echo $booking['Course']['name']; ?></td>
+            <td><?php echo substr($booking['Category']['name'], 0, 40) . '...'; ?></td>
+            <td><?php echo $booking['Term']['name']; ?></td>
+            <td><?php echo $booking['Schedule']['display']; ?></td>
+            <td><a class="btn-link" href="<?php echo Router::url('/admin/bookings/edit/') . $booking['Booking']['id']; ?>"><?php echo __('Berarbeiten'); ?></a></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
