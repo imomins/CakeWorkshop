@@ -1,6 +1,13 @@
-/**
- * Author: Saman Sedighi Rad
- * Email: sasedigh@gmail.com
- * Date: 26.04.13
- * Time: 23:11
- */
+require([
+    'domReady',
+    'ko',
+    'viewmodel/CoursesTermViewModel',
+    'bootstrap-button'
+], function (domReady, ko, CoursesTermViewModel) {
+    "use strict";
+
+    domReady(function () {
+        var id = +document.getElementById('CoursesTermId').value;
+        ko.applyBindings(new CoursesTermViewModel(id), document.getElementById('booking'));
+    });
+});
