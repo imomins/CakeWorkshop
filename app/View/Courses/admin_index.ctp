@@ -1,8 +1,8 @@
 <div class="page-header">
-    <h3><?php  echo __('Kurse'); ?></h3>
+    <h3><?php echo __('Kurse'); ?></h3>
 </div>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered table-hover">
     <tr>
         <th style="width: 50%;"><?php echo $this->Paginator->sort('name'); ?></th>
         <th><?php echo $this->Paginator->sort('code', __('Kürzel')); ?></th>

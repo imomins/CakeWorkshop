@@ -1,21 +1,21 @@
 <div class="page-header">
-    <h3><?php  echo __('Kategorie: ') . h($categories['Category']['name']); ?></h3>
+    <h3><?php echo __('Kategorie: ') . h($category['Category']['name']); ?></h3>
 </div>
 
 <div class="btn-group">
-    <?php echo $this->Html->link(__('Kategorie bearbeiten'), array('action' => 'edit', $categories['Category']['id']), array('class' => 'btn')); ?>
+    <?php echo $this->Html->link(__('Kategorie bearbeiten'), array('action' => 'edit', $category['Category']['id']), array('class' => 'btn')); ?>
     <?php echo $this->Html->link(__('Kategorie anlegen'), array('action' => 'add'), array('class' => 'btn')); ?>
-    <?php echo $this->Form->postLink(__('Kategorie löschen'), array('action' => 'delete', $categories['Category']['id']), array('class' => 'btn'), __('Are you sure you want to delete # %s?', $categories['Category']['id'])); ?>
+    <?php echo $this->Form->postLink(__('Kategorie löschen'), array('action' => 'delete', $category['Category']['id']), array('class' => 'btn'), __('Are you sure you want to delete # %s?', $category['Category']['id'])); ?>
 </div>
 
 <br/>
 <br/>
 
 <div class="page-header">
-    <h4><?php  echo __('Referentierte Kurse'); ?></h4>
+    <h4><?php echo __('Referentierte Kurse'); ?></h4>
 </div>
 
-<?php if (!empty($categories['Course'])): ?>
+<?php if (!empty($category['Course'])): ?>
     <table class="table table-bordered table-striped">
         <tr>
             <th><?php echo __('Kurstitel'); ?></th>
@@ -24,7 +24,7 @@
         </tr>
         <?php
         $i = 0;
-        foreach ($categories['Course'] as $course): ?>
+        foreach ($category['Course'] as $course): ?>
             <tr>
                 <td><?php echo $this->Html->link($course['name'], array('controller' => 'courses', 'action' => 'view', $course['id'])); ?></td>
                 <td><?php echo $course['code']; ?></td>

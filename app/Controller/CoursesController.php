@@ -18,6 +18,21 @@ class CoursesController extends AppController {
     }
 
     /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function admin_view($id = null) {
+        $this->Course->id = $id;
+        if (!$this->Course->exists()) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $this->set('course', $this->Course->read(null, $id));
+    }
+
+    /**
      * add method
      *
      * @return void
@@ -47,7 +62,7 @@ class CoursesController extends AppController {
      */
     public function admin_edit($id = null) {
         $this->Course->recursive = -1;
-        $this->Course->id = $id;
+        $this->Course->id        = $id;
         if (!$this->Course->exists()) {
             throw new NotFoundException(__('Invalid course'));
         }
