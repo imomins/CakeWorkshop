@@ -71,19 +71,27 @@ class CoursesTermsController extends AppController {
      * @param string $id
      * @return void
      */
-    public function admin_view($id = null) {
+    public function admin_view($id) {
         $this->CoursesTerm->id = $id;
         if (!$this->CoursesTerm->exists()) {
             throw new NotFoundException(__('Invalid courses term'));
         }
-        $params = array(
-            'download'         => true,
-            'name'             => 'example.pdf',
-            'paperOrientation' => 'portrait',
-            'paperSize'        => 'legal'
-        );
-        $this->set($params);
-        $this->set('coursesTerm', $this->CoursesTerm->read(null, $id));
+        // Request
+        if ($this->request->is('ajax')) {
+            $this->autoRender = false;
+            $bookings = $this->CoursesTerm->query("
+                SELECT User.id, CONCAT(User.firstname, ' ', User.lastname) User_name, User.email, Booking.id,DATE_FORMAT(Booking.created, '%d.%m.%Y, %H:%i') Booking_created,DATE_FORMAT(Booking.unsubscribed_at, '%d.%m.%Y, %H:%i') Booking_unsubscribed_at,BookingState.name,BookingState.display FROM bookings Booking
+                    LEFT OUTER JOIN users User ON (Booking.user_id = User.id)
+                    LEFT OUTER JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
+                WHERE Booking.courses_term_id = ?
+                    ORDER BY FIELD(BookingState.display,'unconfirmed','self_unsubscribed','admin_unsubscribed','confirmed'), User_name ASC
+                ", array($id));
+
+            return json_encode($bookings);
+        }
+        else {
+            $this->set('coursesTerm', $this->CoursesTerm->read(null, $id));
+        }
     }
 
     public function admin_nameplates($id) {
@@ -129,10 +137,11 @@ class CoursesTermsController extends AppController {
                 $this->Session->setFlash(__('The courses term could not be saved. Please, try again.'));
             }
         }
-        $terms   = $this->CoursesTerm->Term->find('list');
-        $courses = $this->CoursesTerm->Course->find('list');
-        $users   = $this->CoursesTerm->User->find('list');
-        $this->set(compact('terms', 'courses', 'users'));
+        $schedules = $this->CoursesTerm->Schedule->find('list');
+        $terms     = $this->CoursesTerm->Term->find('list');
+        $courses   = $this->CoursesTerm->Course->find('list');
+        $users     = $this->CoursesTerm->User->find('list');
+        $this->set(compact('terms', 'courses', 'users', 'schedules'));
     }
 
     /**
@@ -157,12 +166,19 @@ class CoursesTermsController extends AppController {
             }
         }
         else {
-            $this->request->data = $this->CoursesTerm->read(null, $id);
+            $this->CoursesTerm->unbindModel(array(
+                'hasAndBelongsToMany' => array('User'),
+                'hasMany'             => array('Booking')
+            ));
+            $this->request->data = $this->CoursesTerm->read(array(
+                'Course.name', 'CoursesTerm.schedule_name', 'Term.name', 'CoursesTerm.id', 'CoursesTerm.max'
+            ), $id);
         }
-        $terms   = $this->CoursesTerm->Term->find('list');
-        $courses = $this->CoursesTerm->Course->find('list');
-        $users   = $this->CoursesTerm->User->find('list');
-        $this->set(compact('terms', 'courses', 'users'));
+        $terms     = $this->CoursesTerm->Term->find('list', array('order' => array('Term.name' => 'ASC')));
+        $schedules = $this->CoursesTerm->Schedule->find('list', array('order' => array('Schedule.display' => 'ASC')));
+        $courses   = $this->CoursesTerm->Course->find('list', array('order' => array('Course.name' => 'ASC')));
+        $users     = $this->CoursesTerm->User->find('list');
+        $this->set(compact('terms', 'courses', 'users', 'schedules'));
     }
 
     /**

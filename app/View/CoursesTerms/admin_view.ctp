@@ -11,14 +11,19 @@
 
 <div class="well">
     <dl class="dl-horizontal">
-        <dt><?php echo __('Semester'); ?></dt>
-        <dd>
-            <?php echo $this->Html->link($coursesTerm['Term']['name'], array('controller' => 'terms', 'action' => 'view', $coursesTerm['Term']['id'])); ?>
-            &nbsp;
-        </dd>
         <dt><?php echo __('Kurs'); ?></dt>
         <dd>
             <?php echo $this->Html->link($coursesTerm['Course']['name'], array('controller' => 'courses', 'action' => 'view', $coursesTerm['Course']['id'])); ?>
+            &nbsp;
+        </dd>
+        <dt><?php echo __('Status'); ?></dt>
+        <dd>
+            <?php echo $coursesTerm['Schedule']['display']; ?>
+            &nbsp;
+        </dd>
+        <dt><?php echo __('Semester'); ?></dt>
+        <dd>
+            <?php echo $this->Html->link($coursesTerm['Term']['name'], array('controller' => 'terms', 'action' => 'view', $coursesTerm['Term']['id'])); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Angemeldet'); ?></dt>
@@ -31,36 +36,106 @@
             <?php echo h($coursesTerm['CoursesTerm']['max']); ?>
             &nbsp;
         </dd>
+        <dt><?php echo __('Gesperrt?'); ?></dt>
+        <dd>
+            <?php echo ($coursesTerm['CoursesTerm']['locked']) ? __('Ja') : __('Nein'); ?>
+            &nbsp;
+        </dd>
     </dl>
 </div>
 
-<div class="page-header">
-    <h4><?php echo __('Teilnehmer'); ?></h4>
+<div id="booking">
+    <input id="CoursesTermId" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
+
+    <div class="page-header">
+        <h4><?php echo __('Unbestätigte Anmeldungen'); ?></h4>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <th><?php echo __('Name'); ?></th>
+            <th><?php echo __('Gebucht am'); ?></th>
+            <th><?php echo __('Bestätigen'); ?></th>
+            <th><?php echo __('Bearbeiten'); ?></th>
+            <th><?php echo __('Löschen'); ?></th>
+        </thead>
+        <tbody data-bind="foreach: { data: bookings.unconfirmed.data, as: 'unconfirmed' }">
+            <tr data-bind="attr: { 'data-id' : unconfirmed.Booking.id }">
+                <td><span data-bind="text: unconfirmed['0'].User_name"></span></td>
+                <td><span data-bind="text: unconfirmed['0'].Booking_created + ' Uhr'"></span></td>
+                <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Bestätigen'); ?></a></td>
+                <td><a class="btn-link" data-bind="click: $parent.edit"><?php echo __('Bearbeiten'); ?></a></td>
+                <td><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-header">
+        <h4><?php echo __('Selbst abgemeldet'); ?></h4>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <th><?php echo __('Name'); ?></th>
+            <th><?php echo __('Gebucht am'); ?></th>
+            <th><?php echo __('Abgemeldet am'); ?></th>
+            <th><?php echo __('Anmelden'); ?></th>
+            <th><?php echo __('Bearbeiten'); ?></th>
+            <th><?php echo __('Löschen'); ?></th>
+        </thead>
+        <tbody data-bind="foreach: { data: bookings.self_unsubscribed.data, as: 'self_unsubscribed' }">
+            <tr data-bind="attr: { 'data-id' : self_unsubscribed.Booking.id }">
+                <td><span data-bind="text: self_unsubscribed['0'].User_name"></span></td>
+                <td><span data-bind="text: self_unsubscribed['0'].Booking_created + ' Uhr'"></span></td>
+                <td><span data-bind="text: self_unsubscribed['0'].Booking_unsubscribed_at + ' Uhr'"></span></td>
+                <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a></td>
+                <td><a class="btn-link" data-bind="click: $parent.edit"><?php echo __('Bearbeiten'); ?></a></td>
+                <td><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-header">
+        <h4><?php echo __('Wurde abgemeldet'); ?></h4>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <th><?php echo __('Name'); ?></th>
+        <th><?php echo __('Gebucht am'); ?></th>
+        <th><?php echo __('Anmelden'); ?></th>
+        <th><?php echo __('Bearbeiten'); ?></th>
+        <th><?php echo __('Löschen'); ?></th>
+        </thead>
+        <tbody data-bind="foreach: { data: bookings.admin_unsubscribed.data, as: 'admin_unsubscribed' }">
+        <tr data-bind="attr: { 'data-id' : admin_unsubscribed.Booking.id }">
+            <td><span data-bind="text: admin_unsubscribed['0'].User_name"></span></td>
+            <td><span data-bind="text: admin_unsubscribed['0'].Booking_created + ' Uhr'"></span></td>
+            <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a></td>
+            <td><a class="btn-link" data-bind="click: $parent.edit"><?php echo __('Bearbeiten'); ?></a></td>
+            <td><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="page-header">
+        <h4><?php echo __('Bestätigt'); ?></h4>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <th><?php echo __('Name'); ?></th>
+        <th><?php echo __('Gebucht am'); ?></th>
+        <th><?php echo __('Abmelden'); ?></th>
+        </thead>
+        <tr data-bind="foreach: { data: bookings.confirmed, as: 'confirmed' }">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="actions">
+            </td>
+        </tr>
+    </table>
 </div>
 
-<?php if (!empty($coursesTerm['User'])): ?>
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th><?php echo __('Name'); ?></th>
-            <th><?php echo __('Email'); ?></th>
-            <th><?php echo __('Gebucht am'); ?></th>
-            <th class="actions"><?php echo __('Optionen zur Buchung'); ?></th>
-        </tr>
-        <?php
-        $i = 0;
-        foreach ($coursesTerm['User'] as $user): ?>
-            <tr>
-                <td><?php echo $this->Html->link($user['name'], array('controller' => 'users', 'action' => 'view', $user['id'])); ?></td>
-                <td><?php echo $user['email']; ?></td>
-                <td><?php echo date('d.m.Y, h:i', strtotime($user['created'])); ?></td>
-                <td class="actions">
-                    <?php echo $this->Html->link(__('Anzeigen'), array('controller' => 'bookings', 'action' => 'view', $user['Booking']['id'])); ?>
-                    <?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'bookings', 'action' => 'edit', $user['Booking']['id'])); ?>
-                    <?php echo $this->Form->postLink(__('Löschen'), array('controller' => 'bookings', 'action' => 'delete', $user['Booking']['id']), null, __('Are you sure you want to delete # %s?', $user['id'])); ?>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-<?php else: ?>
-    <p><?php echo __('Keine Buchungen'); ?></p>
-<?php endif; ?>
+<?php echo $this->Html->script('courses_terms/view'); ?>

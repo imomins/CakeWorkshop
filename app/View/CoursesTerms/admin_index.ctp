@@ -19,7 +19,7 @@
 ); ?>
 <?php echo $this->Form->end(); ?>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered table-hover">
     <tr>
         <th><?php echo $this->Paginator->sort('CoursesTerm.id', __('Kurs-Nr.')); ?></th>
         <th><?php echo $this->Paginator->sort('Course.name', __('Kurs')); ?></th>
