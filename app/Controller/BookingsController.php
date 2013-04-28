@@ -76,19 +76,39 @@ class BookingsController extends AppController {
         if (!$this->Booking->exists()) {
             throw new NotFoundException(__('Invalid courses terms user'));
         }
-        $booking = $this->Booking->find('first', array(
-            'conditions' => array('Booking.id' => $id),
-            'contain'    => array(
-                'Invoice',
-                'CoursesTerm' => array(
-                    'Course', 'Term'
-                ),
-                'User'        => array(
-                    'fields' => array('User.id', 'User.name')
-                ),
-            )
-        ));
-        $this->set('booking', $booking);
+
+        $sql = "
+            SELECT Booking.id,Booking.notes,Booking.certificate,DATE_FORMAT(Booking.unsubscribed_at, '%d.%m.%Y, %H:%i') Booking_unsubscribed_at,DATE_FORMAT(Booking.created, '%d.%m.%Y, %H:%i') Booking_created,
+                   Invoice.*,CoursesTerm.id,
+                   Type.display,
+                   BookingState.*,
+                   User.id,User.firstname,User.lastname, User.notes,
+                   AttendanceStatus.display,
+                   Course.name,
+                   Term.id,Term.name
+            FROM bookings Booking
+                LEFT JOIN users User ON (Booking.user_id = User.id)
+                LEFT JOIN courses_terms CoursesTerm ON (Booking.courses_term_id = CoursesTerm.id)
+                LEFT JOIN courses Course ON (CoursesTerm.course_id = Course.id)
+                LEFT JOIN terms Term ON (CoursesTerm.term_id = Term.id)
+                LEFT JOIN invoices Invoice ON (Booking.invoice_id = Invoice.id)
+                LEFT JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
+                LEFT OUTER JOIN types Type ON (Invoice.type_name = Type.name)
+                LEFT OUTER JOIN attendance_states AttendanceStatus ON (Booking.attendance_state_name = AttendanceStatus.name)
+            WHERE Booking.id = ?
+            LIMIT 1
+        ";
+
+        $booking = $this->Booking->query($sql, array($id));
+
+        // Limit 1...
+        $booking = $booking[0];
+
+        // DATE_FORMAT removes the context, restore...
+        $booking['Booking']['created']         = $booking['0']['Booking_created'];
+        $booking['Booking']['unsubscribed_at'] = $booking['0']['Booking_unsubscribed_at'];
+
+        $this->set(compact('booking'));
     }
 
     /**
@@ -218,8 +238,8 @@ class BookingsController extends AppController {
             }
         }
         else {
-            $this->request->data = $this->Booking->read(null, $id);
-            $this->request->data['Booking']['unsubscribed_at'] = date("d.m.Y, H:i", strtotime($this->request->data['Booking']['unsubscribed_at'])). ' Uhr';
+            $this->request->data                               = $this->Booking->read(null, $id);
+            $this->request->data['Booking']['unsubscribed_at'] = date("d.m.Y, H:i", strtotime($this->request->data['Booking']['unsubscribed_at'])) . ' Uhr';
 
             $users            = $this->Booking->User->find('list');
             $courses_terms    = $this->Booking->CoursesTerm->getCoursesList();

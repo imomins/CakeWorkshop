@@ -29,7 +29,23 @@ class CoursesController extends AppController {
         if (!$this->Course->exists()) {
             throw new NotFoundException(__('Invalid course'));
         }
-        $this->set('course', $this->Course->read(null, $id));
+
+        $result = $this->Course->query('
+            SELECT Course.*,Category.*,Term.name,CoursesTerm.id,Schedule.display FROM courses Course
+                LEFT JOIN courses_terms CoursesTerm ON (Course.id = CoursesTerm.course_id)
+                LEFT JOIN categories Category ON (Course.category_id = Category.id)
+                LEFT JOIN terms Term ON (CoursesTerm.term_id = Term.id)
+                LEFT JOIN schedules Schedule ON (CoursesTerm.schedule_name = Schedule.name)
+            WHERE Course.id = ?;
+        ', array($id));
+
+        $course['children'] = $result;
+        // The data are repetitions, copy to root for main course data
+        $course['Term']     = $course['children'][0]['Term'];
+        $course['Course']   = $course['children'][0]['Course'];
+        $course['Category'] = $course['children'][0]['Category'];
+
+        $this->set(compact('course'));
     }
 
     /**
@@ -41,8 +57,8 @@ class CoursesController extends AppController {
         if ($this->request->is('post')) {
             $this->Course->create();
             if ($this->Course->save($this->request->data)) {
-                $this->Session->setFlash(__('The course has been saved'));
-                $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash(__('Der Kurs wurde gespeichert'), 'flash_success');
+                $this->redirect(array('action' => 'view', $this->Course->getLastInsertID()));
             }
             else {
                 $this->Session->setFlash(__('The course could not be saved. Please, try again.'));

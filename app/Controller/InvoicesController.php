@@ -47,29 +47,38 @@ class InvoicesController extends AppController {
      * @param string $id
      * @return void
      */
-    public function admin_view($id = null) {
-        $invoice = $this->Invoice->find('first', array(
-            'conditions' => array(
-                'Invoice.id' => $id,
-            ),
-            'contain'    => array(
-                'User'    => array('fields' => array('name', 'id')),
-                'Type'    => array('fields' => 'name'),
-                'Booking' => array(
-                    'CoursesTerm' => array(
-                        'Term'   => array('fields' => array('Term.name')),
-                        'fields' => array('CoursesTerm.id'),
-                        'Course' => array('fields' => 'Course.name')
-                    )
-                )
-            )
-        ));
+    public function admin_view($id) {
+        $sql_invoice = '
+            SELECT User.id,User.firstname,User.lastname,Type.display,Invoice.* FROM invoices Invoice
+                LEFT JOIN users User ON (Invoice.user_id = User.id)
+                LEFT JOIN types Type ON (Invoice.type_name = Type.name)
+            WHERE
+                Invoice.id = ?
+            LIMIT 1
+        ';
+
+        $sql_related_bookings = '
+            SELECT Booking.id, Type.display, Course.name, Schedule.display, Term.name FROM bookings Booking
+                LEFT JOIN invoices Invoice ON (Booking.invoice_id = Invoice.id)
+                LEFT JOIN types Type ON (Invoice.type_name = Type.name)
+                LEFT JOIN courses_terms CoursesTerm ON (Booking.courses_term_id = CoursesTerm.id)
+                LEFT JOIN courses Course ON (CoursesTerm.course_id = Course.id)
+                LEFT JOIN schedules Schedule ON (CoursesTerm.schedule_name = Schedule.name)
+                LEFT JOIN terms Term ON (CoursesTerm.term_id = Term.id)
+            WHERE
+                Booking.invoice_id = ?
+        ';
+
+        $invoice          = $this->Invoice->query($sql_invoice, array($id));
+        $invoice          = $invoice[0];
+
+        $related_bookings = $this->Invoice->query($sql_related_bookings, array($id));
 
         if (empty($invoice)) {
             throw new NotFoundException(__('Ungültige Rechnung'));
 
         }
-        $this->set('invoice', $invoice);
+        $this->set(compact('invoice', 'related_bookings'));
     }
 
     public function view($id) {
@@ -162,7 +171,7 @@ class InvoicesController extends AppController {
             }
         }
         else {
-            $this->request->data   = $this->Invoice->read(null, $id);
+            $this->request->data = $this->Invoice->read(null, $id);
 
             $related_courses_terms = $this->Invoice->query('
                 SELECT Invoice.id,Booking.id,CoursesTerm.id,Schedule.display,Course.name,Category.name,Term.id,Term.name FROM invoices Invoice
