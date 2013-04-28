@@ -1,22 +1,24 @@
 <div class="days form">
-<?php echo $this->Form->create('Day'); ?>
-	<fieldset>
-		<legend><?php echo __('Admin Add Day'); ?></legend>
-	<?php
-		echo $this->Form->input('courses_term_id');
-		echo $this->Form->input('date');
-		echo $this->Form->input('start_time');
-		echo $this->Form->input('end_time');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+    <?php echo $this->Form->create('Day', array('action' => 'add/'. $coursesTerms['CoursesTerm']['id'],'class' => 'well')); ?>
+    <fieldset>
+        <legend><?php echo __('Kurstag anlegen'); ?></legend>
+        <?php echo $this->Form->input('Day.start_date', array('required' => true, 'type' => 'text', 'dateFormat' => 'DMY', 'id' => 'date', 'label' => __('Datum'))); ?>
+        <?php echo $this->Form->input('Day.start_time', array(
+            'type'       => 'time',
+            'timeFormat' => 24,
+            'label'      => __('Von'),
+            'required'   => true
+        )); ?>
+        <?php echo $this->Form->input('Day.end_time', array(
+            'type'       => 'time',
+            'timeFormat' => 24,
+            'label'      => __('Bis'),
+            'required'   => true
+        )); ?>
+    </fieldset>
+    <hr/>
+    <input type="submit" class="btn btn-primary" value="<?php echo __('Speichern'); ?>"/>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
 
-		<li><?php echo $this->Html->link(__('List Days'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Courses Terms'), array('controller' => 'courses_terms', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Courses Term'), array('controller' => 'courses_terms', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+<?php echo $this->Html->css('jquery-ui-custom/css/flick/jquery-ui-1.10.2.custom.min'); ?>
+<?php echo $this->Html->script('days/add'); ?>
