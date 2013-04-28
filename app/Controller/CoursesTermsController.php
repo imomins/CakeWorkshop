@@ -9,6 +9,8 @@ class CoursesTermsController extends AppController {
 
     public $components = array('RequestHandler');
 
+    public $helpers = array('Frontend');
+
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('get');
@@ -49,7 +51,8 @@ class CoursesTermsController extends AppController {
                     'conditions' => array(
                         'CoursesTerm.term_id' => $term_id,
                         'Course.name LIKE'    => '%' . trim($this->request->data['query']) . '%'
-                    )
+                    ),
+                    'order'      => array('CoursesTerm.id DESC')
                 );
             }
             else {
@@ -79,7 +82,7 @@ class CoursesTermsController extends AppController {
         // Request
         if ($this->request->is('ajax')) {
             $this->autoRender = false;
-            $bookings = $this->CoursesTerm->query("
+            $bookings         = $this->CoursesTerm->query("
                 SELECT User.id, CONCAT(User.firstname, ' ', User.lastname) User_name, User.email, Booking.id,DATE_FORMAT(Booking.created, '%d.%m.%Y, %H:%i') Booking_created,DATE_FORMAT(Booking.unsubscribed_at, '%d.%m.%Y, %H:%i') Booking_unsubscribed_at,BookingState.name,BookingState.display FROM bookings Booking
                     LEFT OUTER JOIN users User ON (Booking.user_id = User.id)
                     LEFT OUTER JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
@@ -90,7 +93,15 @@ class CoursesTermsController extends AppController {
             return json_encode($bookings);
         }
         else {
-            $this->set('coursesTerm', $this->CoursesTerm->read(null, $id));
+            // Don't need all for main data, rest is loaded via json
+            $this->CoursesTerm->unbindModel(array(
+                'hasMany'             => array('Booking'),
+                'hasAndBelongsToMany' => array('User')
+            ));
+            $coursesTerm = $this->CoursesTerm->read(null, $id);
+
+            $this->set('title_for_layout', 'Übersicht - Kurs-Nr.: ' . $coursesTerm['CoursesTerm']['id']);
+            $this->set('coursesTerm', $coursesTerm);
         }
     }
 
@@ -130,11 +141,11 @@ class CoursesTermsController extends AppController {
         if ($this->request->is('post')) {
             $this->CoursesTerm->create();
             if ($this->CoursesTerm->save($this->request->data)) {
-                $this->Session->setFlash(__('The courses term has been saved'));
-                $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash(__('Der Semester-Kurs wurde angelegt'), 'flash_success');
+                $this->redirect(array('action' => 'view', $this->CoursesTerm->getLastInsertID()));
             }
             else {
-                $this->Session->setFlash(__('The courses term could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Der Kurs konnte nicht gespeichert werden'), 'flash_error');
             }
         }
         $schedules = $this->CoursesTerm->Schedule->find('list');
@@ -158,11 +169,11 @@ class CoursesTermsController extends AppController {
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->CoursesTerm->save($this->request->data)) {
-                $this->Session->setFlash(__('The courses term has been saved'));
-                $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash(__('Die Daten wurden gespeichert'), 'flash_success');
+                $this->redirect(array('action' => 'view', $id));
             }
             else {
-                $this->Session->setFlash(__('The courses term could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Fehler beim Speichern'), 'flash_error');
             }
         }
         else {
@@ -171,7 +182,7 @@ class CoursesTermsController extends AppController {
                 'hasMany'             => array('Booking')
             ));
             $this->request->data = $this->CoursesTerm->read(array(
-                'Course.name', 'CoursesTerm.schedule_name', 'Term.name', 'CoursesTerm.id', 'CoursesTerm.max'
+                'Course.name', 'CoursesTerm.location', 'CoursesTerm.schedule_name', 'Term.name', 'CoursesTerm.id', 'CoursesTerm.max'
             ), $id);
         }
         $terms     = $this->CoursesTerm->Term->find('list', array('order' => array('Term.name' => 'ASC')));

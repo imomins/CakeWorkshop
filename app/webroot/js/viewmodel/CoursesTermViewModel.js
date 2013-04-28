@@ -6,15 +6,20 @@ define(['ko', 'jquery'], function (ko, $) {
         this.id = id;
 
         this.bookings = {
-            unconfirmed:        { data: ko.observableArray(), hasChildren: false },
-            self_unsubscribed:  { data: ko.observableArray(), hasChildren: false },
-            admin_unsubscribed: { data: ko.observableArray(), hasChildren: false },
-            confirmed:          { data: ko.observableArray(), hasChildren: false }
+            unconfirmed:        { data: ko.observableArray(), hasChildren: ko.observable(false) },
+            self_unsubscribed:  { data: ko.observableArray(), hasChildren: ko.observable(false) },
+            admin_unsubscribed: { data: ko.observableArray(), hasChildren: ko.observable(false) },
+            confirmed:          { data: ko.observableArray(), hasChildren: ko.observable(false) },
+            cleared:            { data: ko.observableArray(), hasChildren: ko.observable(false) }
         };
 
         function getId(event) {
             return $(event.target).closest('tr').data('id');
         }
+
+        this.cleared = function () {
+            alert(getId(event));
+        };
 
         this.unsubscribe = function (data, event) {
             alert(getId(event));
@@ -35,7 +40,7 @@ define(['ko', 'jquery'], function (ko, $) {
         this.removeAll = function () {
             for (var name in self.bookings) {
                 self.bookings[name].data.removeAll();
-                self.bookings[name].hasChildren = false;
+                self.bookings[name].hasChildren(false);
             }
         };
 
@@ -51,9 +56,8 @@ define(['ko', 'jquery'], function (ko, $) {
                     }
                     // For views to toggle empty areas
                     for (key in self.bookings) {
-                        self.bookings[key].hasChildren = self.bookings[key].data().length > 0;
+                        self.bookings[key].hasChildren(self.bookings[key].data().length > 0);
                     }
-                    console.log(self.bookings);
                 });
         }());
     }

@@ -36,10 +36,26 @@
     </div>
 
     <div class="control-group">
+        <label class="control-label"><?php echo __('Schulungsort'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('location', array('class' => 'span3', 'label' => false)); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
         <label class="control-label"><?php echo __('Maximale Teilnehmerzahl'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('max', array('div' => false, 'label' => false, 'class' => 'span1')); ?>
+            <?php echo $this->Form->input('max', array('type' => 'number', 'class' => 'span2', 'label' => false)); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Für Anmeldungen sperren'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('locked', array('class' => 'span3', 'label' => false)); ?>
         </div>
     </div>
 

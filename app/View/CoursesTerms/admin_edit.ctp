@@ -6,6 +6,8 @@
 </div>
 
 <div class="well">
+    <legend><?php echo __('Kursdaten'); ?></legend>
+
     <?php echo $this->Form->create('CoursesTerm', array('class' => 'form-horizontal')); ?>
     <?php echo $this->Form->input('id'); ?>
     <div class="control-group">
@@ -33,10 +35,26 @@
     </div>
 
     <div class="control-group">
+        <label class="control-label"><?php echo __('Schulungsort'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('location', array('class' => 'span3', 'label' => false)); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
         <label class="control-label"><?php echo __('Maximale Teilnehmerzahl'); ?></label>
 
         <div class="controls">
             <?php echo $this->Form->input('max', array('type' => 'number', 'class' => 'span2', 'label' => false)); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Für Anmeldungen sperren'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('locked', array('class' => 'span3', 'label' => false)); ?>
         </div>
     </div>
 
