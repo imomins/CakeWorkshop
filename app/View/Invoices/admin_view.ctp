@@ -1,24 +1,18 @@
 <div class="page-header">
-    <h3><?php  echo __('Rechnungsdaten'); ?></h3>
+    <h3><?php echo __('Rechnungsadresse'); ?></h3>
 </div>
 
 <div class="well">
     <dl class="dl-horizontal">
-        <dt><?php echo __('Rechnungsart'); ?></dt>
+        <dt><?php echo __('An'); ?></dt>
         <dd>
-            <?php echo h($invoice['Type']['name']); ?>
-            &nbsp;
-        </dd>
-
-        <dt><?php echo __('User'); ?></dt>
-        <dd>
-            <?php echo $this->Html->link($invoice['User']['name'], array('controller' => 'users', 'action' => 'view', $invoice['User']['id'])); ?>
+            <?php echo h($invoice['Type']['display']); ?>
             &nbsp;
         </dd>
 
         <dt><?php echo __('Teilnehmer'); ?></dt>
         <dd>
-            <?php echo h($invoice['Invoice']['name']); ?>
+            <?php echo $this->Html->link($invoice['User']['firstname'] . ' ' . $invoice['User']['lastname'], array('controller' => 'users', 'action' => 'view', $invoice['User']['id'])); ?>
             &nbsp;
         </dd>
 
@@ -73,36 +67,35 @@
 </div>
 
 <div class="btn-group">
-    <?php echo $this->Html->link(__('Edit Invoice'), array('action' => 'edit', $invoice['Invoice']['id']), array('class' => 'btn')); ?>
-    <?php echo $this->Form->postLink(__('Delete Invoice'), array('action' => 'delete', $invoice['Invoice']['id']), array('class' => 'btn'), __('Are you sure you want to delete # %s?', $invoice['Invoice']['id'])); ?>
-    <?php echo $this->Html->link(__('New Invoice'), array('action' => 'add'), array('class' => 'btn')); ?>
+    <?php echo $this->Html->link(__('Rechnungsadresse bearbeiten'), array('action' => 'edit', $invoice['Invoice']['id']), array('class' => 'btn btn-primary')); ?>
+    <?php echo $this->Html->link(__('Neue Rechnungsadresse anlegen'), array('action' => 'add'), array('class' => 'btn')); ?>
+    <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $invoice['Invoice']['id']), array('class' => 'btn btn-danger'), __('Are you sure you want to delete # %s?', $invoice['Invoice']['id'])); ?>
 </div>
 
 <br/>
 <br/>
 
 <div class="page-header">
-    <h3><?php  echo __('Gebuchte Kurse unter dieser Rechnung'); ?></h3>
+    <h3><?php echo __('Gebuchte Kurse unter dieser Adresse'); ?></h3>
 </div>
 
-<?php if (!empty($invoice['Booking'])): ?>
+<?php if (!empty($related_bookings)): ?>
     <table class="table table-bordered table-striped">
         <tr>
+            <th><?php echo __('Kurs-Nr.'); ?></th>
             <th><?php echo __('Kurs'); ?></th>
             <th><?php echo __('Semester'); ?></th>
-            <th class="actions"><?php echo __('Actions'); ?></th>
+            <th><?php echo __('Anzeigen'); ?></th>
+            <th><?php echo __('Bearbeiten'); ?></th>
+
         </tr>
-        <?php
-        $i = 0;
-        foreach ($invoice['Booking'] as $booking): ?>
+        <?php foreach ($related_bookings as $booking): ?>
             <tr>
-                <td><?php echo $booking['CoursesTerm']['Course']['name']; ?></td>
-                <td><?php echo $booking['CoursesTerm']['Term']['name']; ?></td>
-                <td class="actions">
-                    <?php echo $this->Html->link(__('View'), array('controller' => 'bookings', 'action' => 'view', $booking['id'])); ?>
-                    <?php echo $this->Html->link(__('Edit'), array('controller' => 'bookings', 'action' => 'edit', $booking['id'])); ?>
-                    <?php echo $this->Form->postLink(__('Delete'), array('controller' => 'bookings', 'action' => 'delete', $booking['id']), null, __('Are you sure you want to delete # %s?', $booking['id'])); ?>
-                </td>
+                <td><?php echo $booking['Booking']['id']; ?></td>
+                <td><?php echo $booking['Course']['name']; ?></td>
+                <td><?php echo $booking['Term']['name']; ?></td>
+                <td><?php echo $this->Html->link(__('Anzeigen'), array('controller' => 'bookings', 'action' => 'view', $booking['Booking']['id'])); ?></td>
+                <td><?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'bookings', 'action' => 'edit', $booking['Booking']['id'])); ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

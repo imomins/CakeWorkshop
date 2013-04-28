@@ -1,6 +1,6 @@
 html { overflow-y: scroll; }
 
-body {
+#content {
     padding-top: 60px;
     padding-bottom: 40px;
 }
@@ -464,8 +464,26 @@ Invoice
 | Admin styles
 |----------------------------------------------------------
 */
+
 #courses-admin-edit input[type="checkbox"] {
     float: left;
     margin-right: 5px;
     width: auto;
+}
+
+.dl-horizontal { margin-top: 0px; }
+
+.dl-big {
+    font-size: 16px;
+}
+
+.dl-big .dl-horizontal dt {
+    width: 200px;
+
+    line-height: 25px !important;
+}
+
+.dl-big .dl-horizontal dd {
+    margin-left: 220px;
+    line-height: 25px !important;
 }

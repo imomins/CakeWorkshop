@@ -5,6 +5,8 @@
 <div class="well">
     <?php echo $this->Form->create('Course'); ?>
 
+    <legend><?php echo __('Kursdaten'); ?></legend>
+
     <div class="control-group">
         <label class="control-label"><?php echo __('Kategorie'); ?></label>
 
@@ -34,14 +36,6 @@
 
         <div class="controls">
             <?php echo $this->Form->textarea('description', array('rows' => 5, 'label' => false, 'class' => 'span6')); ?>
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label"><?php echo __('Anlegen für Folgende Semester'); ?></label>
-
-        <div class="controls">
-            <?php echo $this->Form->input('Term', array('class' => 'span5', 'label' => false)); ?>
         </div>
     </div>
 

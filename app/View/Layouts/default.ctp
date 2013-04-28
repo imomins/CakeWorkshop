@@ -42,11 +42,15 @@
                 "bootstrap-modal":      "vendor/bootstrap/bootstrap-modal",
                 "handlebars":           "vendor/handlebars",
                 "jquery":               "vendor/jquery-1.9.1.min",
-                "ko":                   "vendor/knockout-2.2.1"
+                "ko":                   "vendor/knockout-2.2.1",
+                "datepicker":           "vendor/jquery-ui-custom/js/jquery-ui-1.10.2.custom.min"
             },
             "shim":  {
                 "handlebars":           {
                     "exports": "Handlebars"
+                },
+                "datepicker":           {
+                    "deps": ["jquery", "vendor/jquery-ui-custom/js/jquery.ui.datepicker-de"]
                 },
                 "bootstrap":            {
                     "deps": ["jquery"]
@@ -123,8 +127,10 @@
                 <ul class="nav pull-right">
                     <?php if ($isAdmin): ?>
                         <li class="nav-search">
-                            <form class="form-search" method="POST" action="<?php echo Router::url('/admin/courses_terms/index'); ?>">
-                                <input type="text" class="span3 input-medium search-query" name="query" placeholder="Semester-Kurs suchen"  />
+                            <form class="form-search" method="POST"
+                                  action="<?php echo Router::url('/admin/courses_terms/index'); ?>">
+                                <input type="text" class="span3 input-medium search-query" name="query"
+                                       placeholder="Semester-Kurs suchen"/>
                             </form>
                         </li>
                     <?php endif; ?>
@@ -153,7 +159,7 @@
     </div>
 </div>
 
-<div class="container">
+<div id="content" class="container">
     <div class="row">
         <div class="span12">
             <div class="row">
