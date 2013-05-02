@@ -1,10 +1,16 @@
 /**
  * @module base
  */
-define(['jquery'], function ($) {
+define(['jquery', 'handlebars'], function ($, Handlebars) {
     "use strict";
 
     var exporter = {};
+
+    exporter.showError = function (message) {
+        var $modal = $('#modalError');
+        $modal.find('modal-body').text(message);
+        $modal.modal('show');
+    };
 
     /**
      * Show a boostrap alert message at the page top.
@@ -15,7 +21,9 @@ define(['jquery'], function ($) {
      * @param params.message The actual message that is visible to thse user.
      */
     exporter.showMessage = function (params) {
-        var $alerts = $('#messages'),
+        var html = '<div ng-style="display:none;" class="alert {{className}}" style="display:none;"><button type="button" class="close" data-dismiss="alert">×</button><p>{{message}}</p></div>',
+            template = Handlebars.compile(html),
+            $alerts = $('#messages'),
             className = '',
             message;
 
@@ -33,7 +41,7 @@ define(['jquery'], function ($) {
             break;
         }
 
-        message = ich.alert({
+        message = template({
             "className": className,
             "message"  : params.message
         });

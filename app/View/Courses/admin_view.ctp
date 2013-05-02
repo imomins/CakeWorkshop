@@ -28,17 +28,15 @@
     </dl>
 </div>
 
-<div class="btn-group">
     <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $course['Course']['id']), array('class' => 'btn')); ?>
     <?php echo $this->Html->link(__('Übersicher aller Kurse'), array('action' => 'index'), array('class' => 'btn')); ?>
     <?php echo $this->Html->link(__('Weiteren Kurs anlegen'), array('action' => 'add'), array('class' => 'btn')); ?>
-    <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $course['Course']['id']), array('class' => 'btn btn-danger'), __('Are you sure you want to delete # %s?', $course['Course']['id'])); ?>
-</div>
+    <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $course['Course']['id']), array('class' => 'btn btn-red'), __('Are you sure you want to delete # %s?', $course['Course']['id'])); ?>
 <br/>
 <br/>
 
 <div class="page-header">
-    <h4><?php echo __('Angelegt für folgende Semester'); ?></h4>
+    <h3><?php echo __('Angelegt für folgende Semester'); ?></h3>
 </div>
 
 <table class="table table-bordered table-hover table-striped">
@@ -59,7 +57,7 @@
                 <td><?php echo $coursesTerm['Term']['name']; ?></td>
                 <td><?php echo $coursesTerm['Schedule']['display']; ?></td>
                 <td><?php echo $this->Html->link(__('Anzeigen'), array('controller' => 'courses_terms', 'action' => 'view', $coursesTerm['CoursesTerm']['id'])); ?></td>
-                <td><?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edir', $coursesTerm['CoursesTerm']['id'])); ?></td>
+                <td><?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id'])); ?></td>
             </tr>
         <?php endforeach; ?>
     <?php endif; ?>

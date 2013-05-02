@@ -1,8 +1,10 @@
 <div class="page-header">
-    <h4><?php echo __('Kursdaten bearbeiten'); ?></h4>
+    <h3><?php echo __('Kursdaten'); ?></h3>
 </div>
 
 <div id="courses-admin-edit" class="well">
+    <legend><?php echo __('Kursdaten bearbeiten'); ?></legend>
+
     <?php echo $this->Form->create('Course', array('id' => 'formCourse', 'class' => 'form-horizontal')); ?>
 
     <?php echo $this->Form->input('id'); ?>
@@ -42,8 +44,8 @@
     <div class="control-group">
         <hr/>
         <div class="controls">
-            <input type="submit" class="btn btn-primary" value="<?php echo __('Speichern'); ?>"/>
-            <input type="button" class="btn btn-danger confirm" value="<?php echo __('Löschen'); ?>"
+            <input type="submit" class="btn btn-darkblue btn-medium" value="<?php echo __('Speichern'); ?>"/>
+            <input type="button" class="btn btn-orange btn-medium" value="<?php echo __('Löschen'); ?>"
                    data-id=""
                    data-confirm="<?php echo __('Soll der Kurs wirklich gelöscht werden?'); ?>"
                    data-url="<?php echo Router::url('/admin/courses/delete/') . $this->request->data['Course']['id']; ?>"/>

@@ -17,7 +17,7 @@
         )); ?>
     </fieldset>
     <hr/>
-    <input type="submit" class="btn btn-primary" value="<?php echo __('Speichern'); ?>"/>
+    <input type="submit" class="btn btn-medium btn-darkblue" value="<?php echo __('Speichern'); ?>"/>
 </div>
 
 <?php echo $this->Html->css('jquery-ui-custom/css/flick/jquery-ui-1.10.2.custom.min'); ?>

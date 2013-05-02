@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h4><?php  echo __('Semester-Übersicht'); ?></h4>
+    <h3><?php  echo __('Semester-Übersicht'); ?></h3>
 </div>
 
 <table class="table table-bordered table-striped">
@@ -7,7 +7,8 @@
         <th><?php echo $this->Paginator->sort('name', __('Bezeichnung')); ?></th>
         <th><?php echo $this->Paginator->sort('start', __('Von')); ?></th>
         <th><?php echo $this->Paginator->sort('end', __('Bis')); ?></th>
-        <th class="actions"><?php echo __('Optionen'); ?></th>
+        <th><?php echo __('Bearbeiten'); ?></th>
+        <th><?php echo __('Löschen'); ?></th>
     </tr>
     <?php
     foreach ($terms as $term): ?>
@@ -15,8 +16,10 @@
             <td><?php echo $this->Html->link($term['Term']['name'], array('action' => 'view', $term['Term']['id'])); ?></td>
             <td><?php echo h($term['Term']['start']); ?></td>
             <td><?php echo h($term['Term']['end']); ?></td>
-            <td class="actions">
+            <td>
                 <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $term['Term']['id'])); ?>
+            </td>
+            <td>
                 <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $term['Term']['id']), null, __('Are you sure you want to delete # %s?', $term['Term']['id'])); ?>
             </td>
         </tr>

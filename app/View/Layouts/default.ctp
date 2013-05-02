@@ -43,7 +43,9 @@
                 "handlebars":           "vendor/handlebars",
                 "jquery":               "vendor/jquery-1.9.1.min",
                 "ko":                   "vendor/knockout-2.2.1",
-                "datepicker":           "vendor/jquery-ui-custom/js/jquery-ui-1.10.2.custom.min"
+                "datepicker":           "vendor/jquery-ui-custom/js/jquery-ui-1.10.2.custom.min",
+                "jquery-ui":            "vendor/jquery-ui-custom/js/jquery-ui-1.10.2.custom.min",
+                "block-ui":             "vendor/jquery.blockUI"
             },
             "shim":  {
                 "handlebars":           {
@@ -53,6 +55,12 @@
                     "deps": ["jquery", "vendor/jquery-ui-custom/js/jquery.ui.datepicker-de"]
                 },
                 "bootstrap":            {
+                    "deps": ["jquery"]
+                },
+                "jquery-ui":            {
+                    "deps": ["jquery"]
+                },
+                "block-ui":             {
                     "deps": ["jquery"]
                 },
                 "bootstrap-tooltip":    {
@@ -89,7 +97,7 @@
 
 <body>
 <!--[if lt IE 8]>
-<p class="chromeframe">You are using an outdated browser. <a
+<p class="chromeframe">Ihr Webbrowser ist veraltet. <a
     href="http://browsehappy.com/">Upgrade your browser today</a> or <a
     href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.
 </p>

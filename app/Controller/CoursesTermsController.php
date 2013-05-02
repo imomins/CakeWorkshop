@@ -215,4 +215,21 @@ class CoursesTermsController extends AppController {
         $this->Session->setFlash(__('Courses term was not deleted'));
         $this->redirect(array('action' => 'index'));
     }
+
+    public function admin_find() {
+        $this->autoRender = false;
+
+        return json_encode($this->CoursesTerm->find('all', array(
+            'fields'     => array('CoursesTerm.id', 'Term.name', 'Course.name'),
+            'limit'      => '10',
+            'conditions' => array(
+                'OR' => array(
+                    "Course.name LIKE" => '%' . $this->request->data('name') . '%',
+                    "Term.name LIKE"   => '%' . $this->request->data('name') . '%'
+                )
+            ),
+            'order'      => array('CoursesTerm.id DESC')
+        )));
+    }
+
 }

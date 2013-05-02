@@ -24,7 +24,7 @@ class UsersController extends AppController {
 
     public function login() {
         if ($this->request->is('ajax')) {
-            $this->autoRender = false;
+            $this->autoRender  = false;
             $coursesByCategory = $this->User->CoursesTerm->findCoursesTermGroupedByCategoryWithBookingStateName(
                 array('User' => array('id' => $this->getUserId()))
             );
@@ -165,7 +165,6 @@ class UsersController extends AppController {
     }
 
     public function index() {
-
     }
 
     public function admin_index() {
@@ -506,6 +505,19 @@ class UsersController extends AppController {
         }
         $this->Session->setFlash(__('User was not deleted'));
         $this->redirect(array('action' => 'index'));
+    }
+
+    public function admin_find() {
+        $this->autoRender = false;
+
+        return json_encode($this->User->find('all', array(
+            'fields'     => array('id', 'name', 'email'),
+            'limit'      => '10',
+            'recursive'  => -1,
+            'conditions' => array(
+                "CONCAT(firstname, ' ', lastname, '(', email, ')') LIKE" => '%' . $this->request->data('name') . '%'
+            )
+        )));
     }
 
 }

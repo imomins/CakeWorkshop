@@ -95,7 +95,7 @@
     <hr/>
 
     <div class="form-controls">
-        <input type="submit" class="btn" value="<?php echo __('Registrieren'); ?>"/>
+        <input type="submit" class="btn btn-bluegrey btn-medium" value="<?php echo __('Registrieren'); ?>"/>
     </div>
 
     <?php echo $this->Form->end(); ?>

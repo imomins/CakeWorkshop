@@ -82,8 +82,8 @@
     </div>
 
     <hr/>
-    <button type="submit" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
-    <button type="button" class="btn btn-danger confirm"
+    <button type="submit" class="btn btn-darkblue"><?php echo __('Speichern'); ?></button>
+    <button type="button" class="btn btn-red confirm"
             data-url="<?php echo Router::url('/admin/invoices/delete/') . $this->request->data['Invoice']['id']; ?>"
             data-confirm="<?php echo __('Rechnungsadresse löschen?'); ?>"><?php echo __('Löschen'); ?></button>
 

@@ -1,15 +1,14 @@
 <div class="page-header">
-    <h4><?php echo __('Neuen Teilnehmer/Benutzer anlegen'); ?></h4>
+    <h3><?php echo __('Neuen Teilnehmer/Benutzer anlegen'); ?></h3>
 </div>
 
 <div class="well">
     <?php echo $this->Form->create('User', array('class' => 'form-horizontal')); ?>
 
     <legend>
-        <?php echo __('Benutzerdaten'); ?><br />
-        <small><?php echo __('Die Benutzer müssen die "Passwort vergessen" Funktion verwenden, um ein Passwort zu erhalten'); ?></small><br />
+        <?php echo __('Benutzerdaten'); ?>
     </legend>
-
+    <div class="alert btn-orange"><?php echo __('Die Benutzer müssen die "Passwort vergessen" Funktion verwenden, um ein Passwort zu erhalten'); ?></div>
     <div class="control-group">
         <label class="control-label"><?php echo __('Anrede'); ?></label>
 
@@ -96,7 +95,7 @@
         <div class="controls">
             <label class="checkbox">
                 <?php echo $this->Form->checkbox('active', array('label' => false, 'class' => 'span3 pull-right')); ?>
-                <span class="label label-info help-inline"><?php echo __('Wenn dieser Haken deaktiviert ist, dann kann sich der Benutzer nicht anmelden'); ?></span>
+                <span class="label label-warning help-inline"><?php echo __('Wenn dieser Haken deaktiviert ist, dann kann sich der Benutzer nicht anmelden'); ?></span>
             </label>
         </div>
     </div>
@@ -104,7 +103,7 @@
     <hr />
 
     <div class="form-controls">
-        <button type="submit" class="btn btn-primary">Speichern</button>
+        <button type="submit" class="btn btn-medium btn-darkblue"><?php echo __('Speichern'); ?></button>
     </div>
     <?php echo $this->Form->end(); ?>
 

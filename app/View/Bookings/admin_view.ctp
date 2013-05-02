@@ -2,7 +2,16 @@
     <h3><?php echo __('Anmeldungsdetails'); ?></h3>
 </div>
 
-<div class="well dl-big">
+<div class="row">
+    <div class="span12">
+        <?php echo $this->Html->link(__('Anmeldung bearbeiten'), array('action' => 'edit', $booking['Booking']['id']), array('class' => 'btn btn-darkblue')); ?>
+        <?php echo $this->Form->postLink(__('Anmeldung löschen'), array('action' => 'delete', $booking['Booking']['id']), array('class' => 'btn btn-orange'), __('Soll diese Buchung wirklich gelöscht werden')); ?>
+        <br />
+        <br />
+    </div>
+</div>
+
+<div class="well dl-big legend-medium">
     <dl class="dl-horizontal">
         <legend><?php echo __('Teilnehmer-Daten'); ?></legend>
 
@@ -133,10 +142,4 @@
     </dl>
     <hr />
     <?php echo $this->Html->link(__('Rechnungsadresse bearbeiten'), array('controller' => 'invoices', 'action' => 'edit', $booking['Invoice']['id']), array('class' => 'btn')); ?>
-</div>
-
-<div class="btn-group">
-    <?php echo $this->Html->link(__('Anmeldung bearbeiten'), array('action' => 'edit', $booking['Booking']['id']), array('class' => 'btn btn-primary')); ?>
-    <?php echo $this->Html->link(__('Jemanden anmelden'), array('action' => 'add'), array('class' => 'btn')); ?>
-    <?php echo $this->Form->postLink(__('Anmeldung löschen'), array('action' => 'delete', $booking['Booking']['id']), array('class' => 'btn btn-danger'), __('Soll diese Buchung wirklich gelöscht werden')); ?>
 </div>

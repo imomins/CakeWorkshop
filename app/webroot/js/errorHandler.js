@@ -20,18 +20,22 @@ define(['jquery'], function ($) {
 
     expose.submitError = function (message, callback) {
         $.ajax({
-            type   : 'POST',
-            url    : CAKEWORKSHOP.webroot + 'users/error',
-            data   : {message: message},
+            type:    'POST',
+            url:     CAKEWORKSHOP.webroot + 'users/error',
+            data:    {message: message},
             success: function (response) {
                 if (typeof callback === 'function') {
                     callback(response);
                 }
             },
-            error  : function (error) {
+            error:   function (error) {
                 expose.showError(error.name);
             }
         });
+    };
+
+    expose.showAjaxError = function (response) {
+        expose.showError($.parseJSON(response.responseText).name);
     };
 
     return expose;

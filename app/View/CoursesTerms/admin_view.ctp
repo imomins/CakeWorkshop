@@ -1,11 +1,10 @@
 <div class="row">
-    <div class="span12">
-        <h4><?php echo __('Semester-Kurs Übersicht'); ?></h4>
-        <br/>
+<div class="span12">
+    <h3 class="page-header"><?php echo __('Semester-Kurs Übersicht'); ?></h3    >
     </div>
 </div>
 
-<div class="row dl-big">
+<div class="row">
     <div class="span7">
         <h5 class="page-header"><?php echo __('Kursdaten'); ?></h5>
         <dl class="well dl-horizontal">
@@ -89,29 +88,27 @@
             <?php endif; ?>
             </tbody>
         </table>
-        <?php echo $this->Html->link(__('Neuer Tag'), array('controller' => 'days', 'action' => 'add', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-primary', 'style' => 'margin:0;margin-top:-10px;')); ?>
+        <?php echo $this->Html->link(__('Neuer Tag'), array('controller' => 'days', 'action' => 'add', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-darkblue btn-small btn-primary', 'style' => 'margin:0;margin-top:-10px;')); ?>
     </div>
 </div>
 
 <div class="row">
-    <div class="btn-toolbar span12">
-        <div class="btn-group" style="margin-top: -30px;">
-            <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-primary')); ?>
-            <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small')); ?>
-            <?php echo $this->Html->link(__('Unterschriftenliste Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small')); ?>
-            <?php echo $this->Html->link(__('Kurs absagen und neu ansetzen'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-danger')); ?>
-        </div>
+    <div class="span12" style="margin-top: -10px;">
+        <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-darkblue')); ?>
+        <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn')); ?>
+        <?php echo $this->Html->link(__('Unterschriftenliste Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn')); ?>
+        <?php echo $this->Html->link(__('Kurs absagen und neu ansetzen'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-orange')); ?>
     </div>
 </div>
+
+<hr/>
 
 <div class="row">
     <div class="span12">
         <div id="booking">
             <input id="CoursesTermId" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
 
-            <h4><?php echo __('Unbestätigte Anmeldungen'); ?></h4>
-            <hr/>
-
+            <div class="type bg-light-brown"><?php echo __('Unbestätigte Anmeldungen'); ?></div>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
@@ -129,7 +126,7 @@
                 <!-- /ko -->
                 <!-- ko if: bookings.unconfirmed.hasChildren -->
                 <tbody data-bind="foreach: { data: bookings.unconfirmed.data, as: 'unconfirmed' }">
-                <tr data-bind="attr: { 'data-id' : unconfirmed.Booking.id }">
+                <tr data-bind="attr: { 'data-id' : unconfirmed.Booking.id, 'data-type': 'unconfirmed' }">
                     <td><span data-bind="text: unconfirmed['0'].User_name"></span></td>
                     <td><span data-bind="text: unconfirmed['0'].Booking_created + ' Uhr'"></span></td>
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Bestätigen'); ?></a>
@@ -141,9 +138,7 @@
                 <!-- /ko -->
             </table>
 
-            <h4><?php echo __('Selbst abgemeldet'); ?></h4>
-            <hr/>
-
+            <div class="type bg-light-purple"><?php echo __('Selbst abgemeldet'); ?></div>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
@@ -162,7 +157,7 @@
                 <!-- /ko -->
                 <!-- ko if: bookings.unconfirmed.hasChildren -->
                 <tbody data-bind="foreach: { data: bookings.self_unsubscribed.data, as: 'self_unsubscribed' }">
-                <tr data-bind="attr: { 'data-id' : self_unsubscribed.Booking.id }">
+                <tr data-bind="attr: { 'data-id' : self_unsubscribed.Booking.id, 'data-type': 'self_unsubscribed' }">
                     <td><span data-bind="text: self_unsubscribed['0'].User_name"></span></td>
                     <td><span data-bind="text: self_unsubscribed['0'].Booking_created + ' Uhr'"></span></td>
                     <td><span data-bind="text: self_unsubscribed['0'].Booking_unsubscribed_at + ' Uhr'"></span></td>
@@ -175,9 +170,7 @@
                 <!-- /ko -->
             </table>
 
-            <h4><?php echo __('Wurde abgemeldet'); ?></h4>
-            <hr/>
-
+            <div class="type bg-light-orange"><?php echo __('Wurde abgemeldet'); ?></div>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
@@ -195,7 +188,7 @@
                 <!-- /ko -->
                 <!-- ko if: bookings.admin_unsubscribed.hasChildren -->
                 <tbody data-bind="foreach: { data: bookings.admin_unsubscribed.data, as: 'admin_unsubscribed' }">
-                <tr data-bind="attr: { 'data-id' : admin_unsubscribed.Booking.id }">
+                <tr data-bind="attr: { 'data-id' : admin_unsubscribed.Booking.id, 'data-type': 'admin_unsubscribed' }">
                     <td><span data-bind="text: admin_unsubscribed['0'].User_name"></span></td>
                     <td><span data-bind="text: admin_unsubscribed['0'].Booking_created + ' Uhr'"></span></td>
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
@@ -207,14 +200,14 @@
                 <!-- /ko -->
             </table>
 
-            <h4><?php echo __('Bestätigt'); ?></h4>
-            <hr/>
+            <div class="type bg-light-blue"><?php echo __('Bestätigt'); ?></div>
 
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
-                <th><?php echo __('Anmelden'); ?></th>
+                <th><?php echo __('Abgerechnet'); ?></th>
+                <th><?php echo __('Abmelden'); ?></th>
                 <th><?php echo __('Bearbeiten'); ?></th>
                 <th><?php echo __('Löschen'); ?></th>
                 </thead>
@@ -227,10 +220,11 @@
                 <!-- /ko -->
                 <!-- ko if: bookings.confirmed.hasChildren -->
                 <tbody data-bind="foreach: { data: bookings.confirmed.data, as: 'confirmed' }">
-                <tr data-bind="attr: { 'data-id' : confirmed.Booking.id }">
+                <tr data-bind="attr: { 'data-id' : confirmed.Booking.id, 'data-type': 'confirmed' }">
                     <td><span data-bind="text: confirmed['0'].User_name"></span></td>
                     <td><span data-bind="text: confirmed['0'].Booking_created + ' Uhr'"></span></td>
-                    <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
+                    <td><a class="btn-link" data-bind="click: $parent.cleared"><?php echo __('Abgerechnet'); ?></a></td>
+                    <td><a class="btn-link" data-bind="click: $parent.unsubscribe"><?php echo __('Abmelden'); ?></a>
                     </td>
                     <td><a class="btn-link" data-bind="click: $parent.edit"><?php echo __('Bearbeiten'); ?></a></td>
                     <td><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
@@ -239,8 +233,7 @@
                 <!-- /ko -->
             </table>
 
-            <h4><?php echo __('Abgerechnet'); ?></h4>
-            <hr/>
+            <div class="type bg-light-green"><?php echo __('Abgerechnet'); ?></div>
 
             <table class="table table-bordered table-striped table-hover">
                 <thead>
@@ -259,7 +252,7 @@
                 <!-- /ko -->
                 <!-- ko if: bookings.cleared.hasChildren -->
                 <tbody data-bind="foreach: { data: bookings.cleared.data, as: 'cleared' }">
-                <tr data-bind="attr: { 'data-id' : cleared.Booking.id }">
+                <tr data-bind="attr: { 'data-id' : cleared.Booking.id, 'data-type': 'cleared' }">
                     <td><span data-bind="text: cleared['0'].User_name"></span></td>
                     <td><span data-bind="text: cleared['0'].Booking_created + ' Uhr'"></span></td>
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
@@ -273,5 +266,6 @@
         </div>
     </div>
 </div>
+
 
 <?php echo $this->Html->script('courses_terms/view'); ?>

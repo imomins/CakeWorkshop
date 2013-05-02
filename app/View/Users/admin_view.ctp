@@ -1,5 +1,14 @@
 <div class="page-header">
-    <h4><?php  echo __('Daten des Benutzers: ' . h($user['User']['firstname']) . ' ' . h($user['User']['lastname'])); ?></h4>
+    <h3><?php echo __('Daten des Benutzers: ' . h($user['User']['firstname']) . ' ' . h($user['User']['lastname'])); ?></h3>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <?php echo $this->Html->link(__('Daten bearbeiten'), array('action' => 'edit', $user['User']['id']), array('class' => 'btn btn-darkblue')); ?>
+        <?php echo $this->Form->postLink(__('Benutzer löschen'), array('action' => 'delete', $user['User']['id']), array('class' => 'btn btn-orange'), __('Soll dieser Benutzer wirklich gelöscht werden')); ?>
+        <br/>
+        <br/>
+    </div>
 </div>
 
 <div class="well">
@@ -79,7 +88,7 @@
 </div>
 
 <div class="page-header">
-    <h4><?php  echo __('Gebuchte Kurse'); ?></h4>
+    <h3><?php echo __('Belegte Semesterkurse'); ?></h3>
 </div>
 
 <?php if (!empty($user['Booking'])): ?>
@@ -87,7 +96,9 @@
         <tr>
             <th><?php echo __('Semester'); ?></th>
             <th><?php echo __('Kurs'); ?></th>
-            <th class="actions"><?php echo __('Optionen'); ?></th>
+            <th><?php echo __('Anzeigen'); ?></th>
+            <th><?php echo __('Bearbeiten'); ?></th>
+            <th><?php echo __('Löschen'); ?></th>
         </tr>
         <?php
         $i = 0;
@@ -95,10 +106,14 @@
             <tr>
                 <td><?php echo $booking['CoursesTerm']['Term']['name']; ?></td>
                 <td><?php echo $booking['CoursesTerm']['Course']['name']; ?></td>
-                <td class="actions">
-                    <?php echo $this->Html->link(__('View'), array('controller' => 'bookings', 'action' => 'view', $booking['id'])); ?>
-                    <?php echo $this->Html->link(__('Edit'), array('controller' => 'bookings', 'action' => 'edit', $booking['id'])); ?>
-                    <?php echo $this->Form->postLink(__('Delete'), array('controller' => 'bookings', 'action' => 'delete', $booking['id']), null, __('Soll die Buchung gelöscht werden?')); ?>
+                <td>
+                    <?php echo $this->Html->link(__('Anzeigen'), array('controller' => 'bookings', 'action' => 'view', $booking['id'])); ?>
+                </td>
+                <td>
+                    <?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'bookings', 'action' => 'edit', $booking['id'])); ?>
+                </td>
+                <td>
+                    <?php echo $this->Form->postLink(__('Löschen'), array('controller' => 'bookings', 'action' => 'delete', $booking['id']), null, __('Soll die Buchung gelöscht werden?')); ?>
                 </td>
             </tr>
         <?php endforeach; ?>

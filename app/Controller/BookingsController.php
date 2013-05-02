@@ -182,6 +182,19 @@ class BookingsController extends AppController {
         return json_encode(array('message' => __('Die Kurse wurden gebucht'), 'id' => $this->Booking->id));
     }
 
+    public function admin_status($booking_state_name, $id) {
+        $this->autoRender = false;
+
+        $this->Booking->id = $id;
+        if (!$this->Booking->exists()) {
+            throw new Exception(__('Die Buchung wurde nicht gefunden'));
+        }
+
+        if (!$this->Booking->saveField('booking_state_name', $booking_state_name)) {
+            throw new Exception(__('Fehler beim Speichern: ') . $this->Booking->validationErrors['booking_state_name']);
+        }
+    }
+
     /**
      * add method
      *
@@ -199,12 +212,18 @@ class BookingsController extends AppController {
             }
         }
 
-        $invoices     = $this->Booking->Invoice->find('list');
-        $users        = $this->Booking->User->find('list');
-        $coursesTerms = $this->Booking->CoursesTerm->getCoursesList();
-        $types        = $this->Booking->Invoice->Type->find('list');
+        $attendance_state = $this->Booking->AttendanceState->find('list');
+        $booking_state = $this->Booking->BookingState->find('list', array(
+            'fields' => array('name', 'display')
+        ));
 
-        $this->set(compact('users', 'coursesTerms', 'types', 'invoices'));
+
+        //$invoices     = $this->Booking->Invoice->find('list');
+        //$users        = $this->Booking->User->find('list');
+        //$coursesTerms = $this->Booking->CoursesTerm->getCoursesList();
+        //$types        = $this->Booking->Invoice->Type->find('list');
+
+        $this->set(compact('attendance_state', 'booking_state'));
     }
 
     /**
@@ -255,12 +274,10 @@ class BookingsController extends AppController {
     }
 
     /**
-     * delete method
-     *
-     * @throws MethodNotAllowedException
+     * @param null $id
      * @throws NotFoundException
-     * @param string $id
-     * @return void
+     * @throws MethodNotAllowedException
+     * @throws Exception
      */
     public function admin_delete($id = null) {
         if (!$this->request->is('post')) {
@@ -270,12 +287,25 @@ class BookingsController extends AppController {
         if (!$this->Booking->exists()) {
             throw new NotFoundException(__('Invalid courses terms user'));
         }
-        if ($this->Booking->delete()) {
-            $this->Session->setFlash(__('Die Buchung wurde gelöscht'));
-            $this->redirect('/admin/bookings/index/sort:created/direction:desc');
+
+        $deleted = $this->Booking->delete();
+
+        if ($this->request->is('ajax')) {
+            $this->autoRender = false;
+            if (!$deleted) {
+                throw new Exception(__('Fehler beim Speichern'));
+            }
         }
-        $this->Session->setFlash(__('Courses terms user was not deleted'));
-        $this->redirect(array('action' => 'index'));
+        else {
+            if ($deleted) {
+                $this->Session->setFlash(__('Die Buchung wurde gelöscht'));
+                $this->redirect('/admin/bookings/index/sort:created/direction:desc');
+            }
+            else {
+                $this->Session->setFlash(__('Der Kurs konnte nicht gelöscht werden'));
+                $this->redirect(array('action' => 'index'));
+            }
+        }
     }
 
     /**
