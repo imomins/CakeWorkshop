@@ -10,23 +10,6 @@ class BookingsController extends AppController {
 
     public $components = array('RequestHandler');
 
-    public $paginate = array(
-        'order'   => array('Booking.created DESC'),
-        'contain' => array(
-            'User'        => array(
-                'fields' => array('User.id', 'User.name')
-            ),
-            'CoursesTerm' => array(
-                'Course' => array(
-                    'fields' => array('Course.name')
-                ),
-                'Term'   => array(
-                    'fields' => array('Term.id', 'Term.name')
-                )
-            )
-        )
-    );
-
     /**
      * index method
      *
@@ -38,11 +21,11 @@ class BookingsController extends AppController {
             $termId = $this->Booking->query('SELECT id FROM terms ORDER BY id DESC LIMIT 1');
             $termId = $termId[0]['terms']['id'];
         }
-        if (!isset($this->request->data['query'])) {
-            $this->request->data['query'] = '';
-        }
+
+        $query          = isset($this->request->data['query']) ? $this->request->data['query'] : '';
+
         $this->paginate = array(
-            'conditions' => array("CONCAT(firstname, ' ', lastname) LIKE" => '%' . trim($this->request->data['query']) . '%'),
+            'conditions' => array("CONCAT(firstname, ' ', lastname) LIKE" => '%' . trim($query) . '%'),
             'order'      => array('Booking.created' => 'DESC'),
             'contain'    => array(
                 'User'        => array('fields' => array('name', 'id')),
@@ -52,16 +35,18 @@ class BookingsController extends AppController {
                 )
             )
         );
-        if ($this->request->is('post')) {
-            $this->paginate['contain']['CoursesTerm']['Course'] = array(
-                'fields'     => array('name'),
-                'conditions' => array('Course.name' => trim($this->request->data['Course']['name']))
-            );
-        }
+
+//        if ($this->request->is('post')) {
+//            $this->paginate['contain']['CoursesTerm']['Course'] = array(
+//                'fields'     => array('name'),
+//                'conditions' => array('Course.name' => trim($this->request->data['Course']['name']))
+//            );
+//        }
 
         $title_for_layout = __('Neusten Anmeldungen');
-        $bookings = $this->paginate('Booking');
-        $terms    = $this->Booking->CoursesTerm->Term->find('list');
+        $bookings         = $this->paginate('Booking');
+        $terms            = $this->Booking->CoursesTerm->Term->find('list');
+
         $this->set(compact('bookings', 'terms', 'title_for_layout'));
     }
 
@@ -214,10 +199,9 @@ class BookingsController extends AppController {
         }
 
         $attendance_state = $this->Booking->AttendanceState->find('list');
-        $booking_state = $this->Booking->BookingState->find('list', array(
+        $booking_state    = $this->Booking->BookingState->find('list', array(
             'fields' => array('name', 'display')
         ));
-
 
         //$invoices     = $this->Booking->Invoice->find('list');
         //$users        = $this->Booking->User->find('list');

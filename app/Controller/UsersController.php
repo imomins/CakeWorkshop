@@ -54,7 +54,7 @@ class UsersController extends AppController {
 
             $coursesByCategory = $this->Category->findCoursesGroupedByCategory();
             $occupations       = $this->Occupation->find('list');
-            $title_for_layout = __('Bitte melden Sie sich an');
+            $title_for_layout  = __('Bitte melden Sie sich an');
 
             $this->set(compact('genders', 'departments', 'coursesByCategory', 'occupations', 'title_for_layout'));
         }
@@ -170,19 +170,35 @@ class UsersController extends AppController {
     }
 
     public function admin_index() {
+        $query = (isset($this->request->data['query'])) ? $this->request->data['query'] : '';
+
         $this->paginate = array(
-            'fields'  => array(
+            'fields'     => array(
                 'User.id',
                 'User.group_name',
                 'User.email',
-                'Group.name',
-                "CONCAT(Gender.name, ' ', User.title, ' ', User.firstname, ' ', User.lastname) As name"
+                'User.title',
+                'User.firstname',
+                'User.lastname',
+                'Group.name'
             ),
-            'contain' => array(
+            'contain'    => array(
                 'Group'  => array('fields' => array('name', 'display')),
                 'Gender' => array('fields' => array('name')),
+            ),
+            'conditions' => array(
+                'OR' => array(
+                    "User.firstname LIKE" => '%' . trim($query) . '%',
+                    "User.lastname LIKE"  => '%' . trim($query) . '%'
+                )
+            ),
+            'order'      => array(
+                'User.lastname'  => 'ASC',
+                'User.firstname' => 'ASC',
             )
         );
+
+        $this->set('query', $query);
         $this->set('users', $this->paginate());
     }
 
@@ -245,7 +261,7 @@ class UsersController extends AppController {
             throw new NotFoundException(__('Der Benutzer wurde nicht gefunden'));
         }
 
-        $user = $this->User->find('first',
+        $user             = $this->User->find('first',
             array(
                 'conditions' => array('User.id' => $id),
                 'fields'     => array(
@@ -290,17 +306,19 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('Der Benutzer wurde angelegt'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Es ist ein Fehler aufgetreten'), 'flash_error');
             }
         }
         $genders     = $this->User->Gender->find('list');
         $departments = $this->User->Department->find('list');
+        $occupations = $this->User->Occupation->find('list');
         $groups      = $this->User->Group->find('list');
-        $this->set(compact('genders', 'departments', 'groups', 'coursesTerms'));
+
+        $this->set(compact('genders', 'departments', 'groups', 'coursesTerms', 'occupations'));
     }
 
     /**

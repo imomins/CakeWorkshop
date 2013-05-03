@@ -8,6 +8,7 @@ App::uses('AppModel', 'Model');
  * @property Department $Department
  * @property Group $Group
  * @property CoursesTerm $CoursesTerm
+ * @property Occupation $Occupation
  */
 class User extends AppModel {
 

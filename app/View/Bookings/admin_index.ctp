@@ -1,13 +1,11 @@
-<?php echo $this->Form->create('Booking', array('class' => 'form-inline')); ?>
 <div class="page-header">
     <h3><?php echo __('Neusten Anmeldungen'); ?></h3>
 </div>
-<?php echo $this->Form->end(); ?>
+<?php echo $this->Form->create('Booking', array('class' => 'form-inline')); ?>
 <input type="text" name="query" class="span4 search-query"
        value="<?php echo isset($this->request->data['query']) ? $this->request->data['query'] : ''; ?>"
-       placeholder="Person suchen">
-<br />
-<br />
+       placeholder="Person suchen"/>
+<?php echo $this->Form->end(); ?>
 
 <table class="table table-bordered table-striped table-hover">
     <thead>
