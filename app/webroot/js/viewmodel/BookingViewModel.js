@@ -4,34 +4,15 @@
  * Date: 24.04.13
  * Time: 00:38
  */
-define(['ko', 'jquery'], function (ko, $) {
+define(['ko', 'jquery', 'block-ui'], function (ko, $) {
     "use strict";
 
     function BookingViewModel() {
         var self = this;
+
         this.categories = ko.observableArray([]);
         this.saveBooking = ko.observable('Auswahl bestätigen');
         this.working = ko.observable(false);
-
-        this.fetch = function () {
-            $.getJSON(CAKEWORKSHOP.webroot + 'bookings/index.json')
-                .success(function (data) {
-                    self.categories.removeAll();
-                    var cats = data.coursesByCategory,
-                        i;
-
-                    for (i = 0; i < cats.length; i += 1) {
-                        self.categories.push(cats[i]);
-                    }
-                    // Highlight first button
-                    if (cats.length > 0) {
-                        $('#invoice').find('.btn-group button').first().addClass('active');
-                    }
-                })
-                .error(function (response) {
-                    alert($.parseJSON(response.responseText).name);
-                });
-        };
 
         this.confirm = function (data, event) {
             var $selected = $('#course tr.selected');
@@ -49,6 +30,47 @@ define(['ko', 'jquery'], function (ko, $) {
                 $confirm.find('.modal-body ol').html(html);
                 $confirm.modal('show');
             }
+        };
+
+        this.select = function (data, event) {
+            $(event.target).closest('tr').toggleClass('info selected');
+        };
+
+        this.unsubscribe = function (data, event) {
+            var id = +$(event.target).closest('tr').data('id');
+
+            $.post(CAKEWORKSHOP.webroot + 'bookings/delete.json', {CoursesTerm: { id: id}})
+                .success(function (response) {
+                    // Update data
+                    self.fetch();
+                    alert(response.message);
+                })
+                .error(function (response) {
+                    alert($.parseJSON(response.responseText).name);
+                });
+        };
+
+        this.fetch = function () {
+            $.blockUI({ message: 'Lade, bitte warten...' });
+
+            $.getJSON(CAKEWORKSHOP.webroot + 'bookings/index.json')
+                .success(function (data) {
+                    self.categories.removeAll();
+                    var cats = data.coursesByCategory,
+                        i;
+
+                    for (i = 0; i < cats.length; i += 1) {
+                        self.categories.push(cats[i]);
+                    }
+                    // Highlight first button
+                    if (cats.length > 0) {
+                        $('#invoice').find('.btn-group button').first().addClass('active');
+                    }
+                    $.unblockUI();
+                })
+                .error(function (response) {
+                    alert($.parseJSON(response.responseText).name);
+                });
         };
 
         this.save = function () {
@@ -81,24 +103,6 @@ define(['ko', 'jquery'], function (ko, $) {
                 })
                 .error(function (response) {
                     self.saveBooking(originalCaption);
-                    alert($.parseJSON(response.responseText).name);
-                });
-        };
-
-        this.select = function (data, event) {
-            $(event.target).closest('tr').toggleClass('info selected');
-        };
-
-        this.unsubscribe = function (data, event) {
-            var id = +$(event.target).closest('tr').data('id');
-
-            $.post(CAKEWORKSHOP.webroot + 'bookings/delete.json', {CoursesTerm: { id: id}})
-                .success(function (response) {
-                    // Update data
-                    self.fetch();
-                    alert(response.message);
-                })
-                .error(function (response) {
                     alert($.parseJSON(response.responseText).name);
                 });
         };

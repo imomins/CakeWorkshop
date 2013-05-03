@@ -2,7 +2,7 @@
 
 <h3 class="page-header"><?php echo __('Kontaktformular'); ?></h3>
 
-<div class="alert btn-darkblue">
+<div class="alert bg-light-blue">
     <?php echo __('Falls Sie irgendwelche Fragen haben, dann füllen Sie bitte das folgende Forumlar aus und wir werden uns bei Ihnen melden.'); ?>
 </div >
 
@@ -35,7 +35,7 @@
     <hr/>
 
     <div class="controls">
-        <input type="submit" class="btn btn-medium btn-darkblue" value="<?php echo __('Absenden'); ?>"/>
+        <input type="submit" class="btn btn-medium btn-primary" value="<?php echo __('Absenden'); ?>"/>
     </div>
 
     <?php echo $this->Form->end(); ?>

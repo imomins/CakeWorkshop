@@ -148,8 +148,8 @@
 
     <div class="">
         <hr />
-        <button type="submit" class="btn btn-darkblue"><?php echo __('Speichern'); ?></button>
-        <button type="button" class="btn btn-orange confirm"
+        <button type="submit" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
+        <button type="button" class="btn btn-danger confirm"
                 data-url="<?php echo Router::url('/admin/bookings/delete/') . $this->request->data['Booking']['id']; ?>"
                 data-confirm="<?php echo __('Buchung löschen?'); ?>"><?php echo __('Löschen'); ?></button>
         <button type="button"

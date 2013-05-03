@@ -8,7 +8,7 @@
     <legend>
         <?php echo __('Benutzerdaten'); ?>
     </legend>
-    <div class="alert btn-orange"><?php echo __('Die Benutzer müssen die "Passwort vergessen" Funktion verwenden, um ein Passwort zu erhalten'); ?></div>
+    <div class="alert bg-green"><?php echo __('Die Benutzer müssen die "Passwort vergessen" Funktion verwenden, um ein Passwort zu erhalten'); ?></div>
     <div class="control-group">
         <label class="control-label"><?php echo __('Anrede'); ?></label>
 
@@ -103,7 +103,7 @@
     <hr />
 
     <div class="form-controls">
-        <button type="submit" class="btn btn-medium btn-darkblue"><?php echo __('Speichern'); ?></button>
+        <button type="submit" class="btn btn-medium btn-primary"><?php echo __('Speichern'); ?></button>
     </div>
     <?php echo $this->Form->end(); ?>
 

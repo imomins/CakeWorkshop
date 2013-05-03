@@ -2,7 +2,7 @@
     <h3><?php  echo __('Neuen Kurs anlegen'); ?></h3>
 </div>
 
-<div class="alert bg-green">
+<div class="alert bg-light-blue">
     <?php echo __('Hinweis: Dieser Kurs wird unabhängig vom einem Semester angelegt und kann zu beliebigen Semestern angesetzt werden.'); ?>
 </div>
 
@@ -45,7 +45,7 @@
 
     <div class="control-group">
         <div class="controls">
-            <button type="submit" class="btn btn-darkblue">Speichern</button>
+            <button type="submit" class="btn btn-primary">Speichern</button>
         </div>
     </div>
 

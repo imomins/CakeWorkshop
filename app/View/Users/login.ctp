@@ -11,7 +11,7 @@
 
             <div class="row">
                 <div class="span12">
-                    <div class="alert alert-info">
+                    <div class="alert bg-light-blue">
                         <button data-dismiss="alert" class="close" type="button">×</button>
 
                         <?php echo __('Bitte registrieren Sie sich oder melden Sie sich an, um Kurse zu belegen. Eine aktuelle Übersicht der Kurse können Sie auch ohne anmeldung einsehen.'); ?>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="tab-pane" id="courses">
-            <div class="alert alert-info">
+            <div class="alert bg-light-blue">
                 <button data-dismiss="alert" class="close" type="button">×</button>
 
                 <p><strong>Hinweis zur Anmeldung bei ausgebuchten Workshops</strong></p>

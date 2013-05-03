@@ -1,0 +1,1 @@
+<?php echo $this->element('bookings/confirmation_list', array(compact('bookings', 'coursesTerm'), 'logo' => true)); ?>

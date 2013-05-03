@@ -12,16 +12,11 @@
 <table class="table table-bordered table-striped table-hover">
     <thead>
     <tr>
-        <th rowspan="2" style="min-width:140px;"><?php echo $this->Paginator->sort('user_id', __('Teilnehmer')); ?></th>
-        <th rowspan="2"><?php echo $this->Paginator->sort('courses_term_id', __('Semester-Kurs')); ?></th>
-        <th rowspan="2" style="min-width:110px;"><?php echo $this->Paginator->sort('term_id', __('Semester')); ?></th>
-        <th rowspan="2" style="min-width:150px;"><?php echo $this->Paginator->sort('created', __('Gebucht am')); ?></th>
-        <th colspan="3" style="min-width: 200px;" class="actions"><?php echo __('Anmeldung'); ?></th>
-    </tr>
-    <tr>
-        <th><?php echo __('Anzeigen'); ?></th>
-        <th><?php echo __('Bearbeiten'); ?></th>
-        <th><?php echo __('Löschen'); ?></th>
+        <th style="min-width:140px;"><?php echo $this->Paginator->sort('user_id', __('Teilnehmer')); ?></th>
+        <th><?php echo $this->Paginator->sort('courses_term_id', __('Semester-Kurs')); ?></th>
+        <th style="min-width:110px;"><?php echo $this->Paginator->sort('term_id', __('Semester')); ?></th>
+        <th style="min-width:150px;"><?php echo $this->Paginator->sort('created', __('Gebucht am')); ?></th>
+        <th colspan="3" style="min-width: 200px;" class="actions"><?php echo __('Optionen'); ?></th>
     </tr>
     </thead>
     <tbody>

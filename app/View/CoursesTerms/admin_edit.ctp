@@ -58,16 +58,14 @@
         </div>
     </div>
 
-    <div class="control-group">
-        <hr/>
-        <div class="controls">
-            <input type="submit" class="btn btn-medium btn-darkblue" value="<?php echo __('Speichern'); ?>"/>
-            <input type="button" class="btn btn-medium btn-orange" value="<?php echo __('Löschen'); ?>"
-                   data-id=""
-                   data-confirm="<?php echo __('Soll der Semester-Kurs wirklich gelöscht werden?'); ?>"
-                   data-url="<?php echo Router::url('/admin/courses_terms/delete/') . $this->request->data['CoursesTerm']['id']; ?>"/>
-        </div>
-    </div>
+    <hr />
+    <input type="submit" class="btn btn-medium btn-primary" value="<?php echo __('Speichern'); ?>"/>
+    <input type="button" class="btn btn-medium btn-danger" value="<?php echo __('Löschen'); ?>"
+           data-id=""
+           data-confirm="<?php echo __('Soll der Semester-Kurs wirklich gelöscht werden?'); ?>"
+           data-url="<?php echo Router::url('/admin/courses_terms/delete/') . $this->request->data['CoursesTerm']['id']; ?>"/>
+
+
 
     <?php echo $this->Form->end(); ?>
 

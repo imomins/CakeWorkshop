@@ -59,9 +59,10 @@ class BookingsController extends AppController {
             );
         }
 
+        $title_for_layout = __('Neusten Anmeldungen');
         $bookings = $this->paginate('Booking');
         $terms    = $this->Booking->CoursesTerm->Term->find('list');
-        $this->set(compact('bookings', 'terms'));
+        $this->set(compact('bookings', 'terms', 'title_for_layout'));
     }
 
     /**

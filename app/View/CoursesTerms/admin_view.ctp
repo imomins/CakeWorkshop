@@ -1,6 +1,6 @@
 <div class="row">
-<div class="span12">
-    <h3 class="page-header"><?php echo __('Semester-Kurs Übersicht'); ?></h3    >
+    <div class="span12">
+        <h3 class="page-header"><?php echo __('Semester-Kurs Übersicht'); ?></h3>
     </div>
 </div>
 
@@ -59,7 +59,7 @@
     </div>
     <div class="span5">
         <h5 class="page-header"><?php echo __('Angesetzte Kurstage'); ?></h5>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table-condensed table table-bordered table-striped table-hover">
             <thead>
             <th><?php echo __('Am'); ?></th>
             <th><?php echo __('Von'); ?></th>
@@ -88,16 +88,25 @@
             <?php endif; ?>
             </tbody>
         </table>
-        <?php echo $this->Html->link(__('Neuer Tag'), array('controller' => 'days', 'action' => 'add', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-darkblue btn-small btn-primary', 'style' => 'margin:0;margin-top:-10px;')); ?>
+        <?php echo $this->Html->link(__('Neuer Tag'), array('controller' => 'days', 'action' => 'add', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-primary btn-small btn-primary', 'style' => 'margin:0;margin-top:-10px;')); ?>
     </div>
 </div>
 
 <div class="row">
     <div class="span12" style="margin-top: -10px;">
-        <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-darkblue')); ?>
-        <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn')); ?>
-        <?php echo $this->Html->link(__('Unterschriftenliste Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn')); ?>
-        <?php echo $this->Html->link(__('Kurs absagen und neu ansetzen'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-orange')); ?>
+        <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-primary')); ?>
+        <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small')); ?>
+        <div class="btn-group">
+            <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+                <?php echo __('Unterschriftenliste generieren'); ?>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><?php echo $this->Html->link(__('HTML'), array('controller' => 'courses_terms', 'action' => 'list', $coursesTerm['CoursesTerm']['id'], 'default')); ?></li>
+                <li><?php echo $this->Html->link(__('PDF'), array('controller' => 'courses_terms', 'action' => 'list', $coursesTerm['CoursesTerm']['id'], 'ext' => 'pdf')); ?></li>
+            </ul>
+        </div>
+        <?php echo $this->Html->link(__('Kurs absagen und neu ansetzen'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-danger')); ?>
     </div>
 </div>
 
@@ -109,7 +118,7 @@
             <input id="CoursesTermId" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
 
             <div class="type bg-light-brown"><?php echo __('Unbestätigte Anmeldungen'); ?></div>
-            <table class="table table-bordered table-striped table-hover">
+            <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
@@ -138,8 +147,8 @@
                 <!-- /ko -->
             </table>
 
-            <div class="type bg-light-purple"><?php echo __('Selbst abgemeldet'); ?></div>
-            <table class="table table-bordered table-striped table-hover">
+            <div class="type bg-light-orange"><?php echo __('Selbst abgemeldet'); ?></div>
+            <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
@@ -170,8 +179,8 @@
                 <!-- /ko -->
             </table>
 
-            <div class="type bg-light-orange"><?php echo __('Wurde abgemeldet'); ?></div>
-            <table class="table table-bordered table-striped table-hover">
+            <div class="type bg-light-red"><?php echo __('Wurde abgemeldet'); ?></div>
+            <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
@@ -202,7 +211,7 @@
 
             <div class="type bg-light-blue"><?php echo __('Bestätigt'); ?></div>
 
-            <table class="table table-bordered table-striped table-hover">
+            <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
@@ -235,7 +244,7 @@
 
             <div class="type bg-light-green"><?php echo __('Abgerechnet'); ?></div>
 
-            <table class="table table-bordered table-striped table-hover">
+            <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>

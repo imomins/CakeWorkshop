@@ -54,7 +54,9 @@ class UsersController extends AppController {
 
             $coursesByCategory = $this->Category->findCoursesGroupedByCategory();
             $occupations       = $this->Occupation->find('list');
-            $this->set(compact('genders', 'departments', 'coursesByCategory', 'occupations'));
+            $title_for_layout = __('Bitte melden Sie sich an');
+
+            $this->set(compact('genders', 'departments', 'coursesByCategory', 'occupations', 'title_for_layout'));
         }
     }
 
@@ -275,7 +277,8 @@ class UsersController extends AppController {
                 'order'      => 'created DESC'
             )
         );
-        $this->set('user', $user);
+        $title_for_layout = __('Benutzerdaten von: %s', $user['User']['name']);
+        $this->set(compact('user', 'title_for_layout'));
     }
 
     /**

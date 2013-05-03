@@ -4,8 +4,8 @@
 
 <div class="row">
     <div class="span12">
-        <?php echo $this->Html->link(__('Anmeldung bearbeiten'), array('action' => 'edit', $booking['Booking']['id']), array('class' => 'btn btn-darkblue')); ?>
-        <?php echo $this->Form->postLink(__('Anmeldung löschen'), array('action' => 'delete', $booking['Booking']['id']), array('class' => 'btn btn-orange'), __('Soll diese Buchung wirklich gelöscht werden')); ?>
+        <?php echo $this->Html->link(__('Anmeldung bearbeiten'), array('action' => 'edit', $booking['Booking']['id']), array('class' => 'btn btn-primary')); ?>
+        <?php echo $this->Form->postLink(__('Anmeldung löschen'), array('action' => 'delete', $booking['Booking']['id']), array('class' => 'btn btn-danger'), __('Soll diese Buchung wirklich gelöscht werden')); ?>
         <br />
         <br />
     </div>

@@ -44,7 +44,7 @@
     <div class="control-group">
         <hr/>
         <div class="controls">
-            <input type="submit" class="btn btn-darkblue btn-medium" value="<?php echo __('Speichern'); ?>"/>
+            <input type="submit" class="btn btn-primary btn-medium" value="<?php echo __('Speichern'); ?>"/>
             <input type="button" class="btn btn-orange btn-medium" value="<?php echo __('Löschen'); ?>"
                    data-id=""
                    data-confirm="<?php echo __('Soll der Kurs wirklich gelöscht werden?'); ?>"

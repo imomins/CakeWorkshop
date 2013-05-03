@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="span12">
-        <?php echo $this->Html->link(__('Daten bearbeiten'), array('action' => 'edit', $user['User']['id']), array('class' => 'btn btn-darkblue')); ?>
+        <?php echo $this->Html->link(__('Daten bearbeiten'), array('action' => 'edit', $user['User']['id']), array('class' => 'btn btn-primary')); ?>
         <?php echo $this->Form->postLink(__('Benutzer löschen'), array('action' => 'delete', $user['User']['id']), array('class' => 'btn btn-orange'), __('Soll dieser Benutzer wirklich gelöscht werden')); ?>
         <br/>
         <br/>

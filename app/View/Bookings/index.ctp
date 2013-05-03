@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h4><?php echo __('Kursverwaltung'); ?></h4>
+    <h3><?php echo __('Kursverwaltung'); ?></h3>
 </div>
 
 <div class="tabbable" ng-app>
@@ -13,7 +13,7 @@
 
         <div class="tab-pane active" id="current" ng-controller="BookingsController">
 
-            <div class="alert alert-info">
+            <div class="alert bg-light-blue">
                 <button data-dismiss="alert" class="close" type="button">×</button>
                 <p>
                     <strong>Hinweis zur Anmeldung bei ausgebuchten Kursen:</strong> Falls Kurse ausgebucht sind, dann melden Sie sich bitte trotzdem an. Oft werden noch Plätze über die Warteliste frei bzw. bei großem Interesse bieten wir auch Wiederholungstermine für einzelne Kurse an (gelb markierte Zeilen).
@@ -102,8 +102,8 @@
                         <hr/>
 
                         <div class="control-group">
-                            <button type="submit" data-bind="disable: working, text: saveCaption" class="btn btn-primary">Speichern</button>
-                            <button type="button" data-bind="click: destroy, disable: working, visible: loaded" class="btn btn-danger">Löschen </button>
+                            <button type="submit" data-bind="disable: working, text: saveCaption" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
+                            <button type="button" data-bind="click: destroy, disable: working, visible: loaded" class="btn btn-danger"><?php echo __('Löschen'); ?></button>
                             <!--<button type="button" data-bind="click: cancel, disable: working" class="btn">Abbrechen</button>-->
                         </div>
                     </fieldset>
@@ -158,9 +158,9 @@
                                     <td class="table-center" data-bind="text: CoursesTerm.max"></td>
                                     <td class="check" data-bind="visible: CoursesTerm.isEditable">
                                         <a data-bind="visible: CoursesTerm.Booking.allowSubscribe, click: $root.select" class="btn btn-primary btn-mini" data-toggle="button">Auswählen</a>
-                                        <a data-bind="visible: CoursesTerm.Booking.allowUnsubscribe, click: $root.unsubscribe" class="btn btn-mini btn-warning">Abmelden</a>
+                                        <a data-bind="visible: CoursesTerm.Booking.allowUnsubscribe, click: $root.unsubscribe" class="btn btn-mini btn-orange">Abmelden</a>
                                         <span data-bind="visible: CoursesTerm.Booking.adminUnsubscribed" class="label label-important">Abgemeldet</span>
-                                        <span data-bind="visible: CoursesTerm.locked" class="label label-important">Gesperrt</span>
+                                        <span data-bind="visible: CoursesTerm.locked" class="label label-important bg-orange">Gesperrt</span>
                                     </td>
                                 </tr>
                             </tbody>

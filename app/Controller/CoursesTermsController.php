@@ -105,19 +105,30 @@ class CoursesTermsController extends AppController {
         }
     }
 
-    public function admin_nameplates($id) {
-        $coursesTerm = $this->CoursesTerm->find(
-            'first',
-            array(
-                'conditions' => array('CoursesTerm.id' => $id),
-                'contain'    => array(
-                    'Booking' => array(
-                        'User' => array('fields' => 'name')
-                    )
-                )
-            )
-        );
-        $this->set(compact('coursesTerm'));
+    public function admin_list($id, $type = 'landscape') {
+        $coursesTerm = $this->CoursesTerm->query("
+            SELECT CoursesTerm.id,Course.name,Term.name FROM courses_terms CoursesTerm
+                LEFT OUTER JOIN courses Course ON (CoursesTerm.course_id = Course.id)
+                LEFT OUTER JOIN terms Term ON (CoursesTerm.term_id = Term.id)
+            WHERE
+                CoursesTerm.id = ?
+        ", array($id));
+        $coursesTerm = $coursesTerm[0];
+
+        $bookings = $this->CoursesTerm->query("
+            SELECT User.title, User.firstname, User.lastname FROM bookings Booking
+                LEFT OUTER JOIN users User ON (Booking.user_id = User.id)
+            WHERE
+                Booking.courses_term_id = ? AND Booking.booking_state_name = 'confirmed'
+            ORDER BY
+                User.lastname ASC
+        ", array($id));
+
+        $this->layout = $type;
+        $this->set(compact('bookings', 'coursesTerm'));
+    }
+
+    public function admin_nameplates() {
     }
 
     public function admin_pdf($id = null, $filename = null) {

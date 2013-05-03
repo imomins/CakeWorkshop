@@ -10,7 +10,7 @@
     <div class="tab-content">
 
         <div class="tab-pane active" id="tab1">
-            <div class="alert bg-blue">
+            <div class="alert bg-light-blue">
                 <p><?php echo __('Email-Änderungen müssen mit einer zugesandten Email an die neue Email-Adresse bestätigt werden.'); ?></p>
             </div>
             <div class="well">
@@ -22,7 +22,7 @@
                 ?>
                 <hr/>
                 <?php
-                echo $this->Form->submit(__('Speichern'), array('class' => 'btn btn-darkblue btn-medium'));
+                echo $this->Form->submit(__('Speichern'), array('class' => 'btn btn-primary btn-medium'));
                 echo $this->Form->end();
                 ?>
             </div>
@@ -43,7 +43,7 @@
                 ?>
                 <hr/>
                 <?php
-                echo $this->Form->submit(__('Speichern'), array('class' => 'btn btn-darkblue btn-medium'));
+                echo $this->Form->submit(__('Speichern'), array('class' => 'btn btn-primary btn-medium'));
                 echo $this->Form->end();
                 ?>
             </div>

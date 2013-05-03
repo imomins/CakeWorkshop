@@ -72,7 +72,7 @@
     </div>
 
     <hr/>
-    <button type="submit" class="btn btn-darkblue"><?php echo __('Speichern'); ?></button>
+    <button type="submit" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
 
     <?php echo $this->Form->end(); ?>
 </div>
