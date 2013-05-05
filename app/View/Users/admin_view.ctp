@@ -2,13 +2,11 @@
     <h3><?php echo __('Daten des Benutzers: ' . h($user['User']['firstname']) . ' ' . h($user['User']['lastname'])); ?></h3>
 </div>
 
-<div class="row">
-    <div class="span12">
-        <?php echo $this->Html->link(__('Daten bearbeiten'), array('action' => 'edit', $user['User']['id']), array('class' => 'btn btn-primary')); ?>
-        <?php echo $this->Form->postLink(__('Benutzer löschen'), array('action' => 'delete', $user['User']['id']), array('class' => 'btn btn-danger'), __('Soll dieser Benutzer wirklich gelöscht werden')); ?>
-        <br/>
-        <br/>
-    </div>
+<div class="row-fluid">
+    <?php echo $this->Html->link(__('Daten bearbeiten'), array('action' => 'edit', $user['User']['id']), array('class' => 'btn btn-primary')); ?>
+    <?php echo $this->Form->postLink(__('Benutzer löschen'), array('action' => 'delete', $user['User']['id']), array('class' => 'btn btn-danger'), __('Soll dieser Benutzer wirklich gelöscht werden')); ?>
+    <br/>
+    <br/>
 </div>
 
 <div class="well">
@@ -92,7 +90,7 @@
 </div>
 
 <?php if (!empty($user['Booking'])): ?>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-hovered table-striped">
         <tr>
             <th><?php echo __('Semester'); ?></th>
             <th><?php echo __('Kurs'); ?></th>

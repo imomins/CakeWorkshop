@@ -2,13 +2,11 @@
     <h3><?php echo __('Anmeldungsdetails'); ?></h3>
 </div>
 
-<div class="row">
-    <div class="span12">
-        <?php echo $this->Html->link(__('Anmeldung bearbeiten'), array('action' => 'edit', $booking['Booking']['id']), array('class' => 'btn btn-primary')); ?>
-        <?php echo $this->Form->postLink(__('Anmeldung löschen'), array('action' => 'delete', $booking['Booking']['id']), array('class' => 'btn btn-danger'), __('Soll diese Buchung wirklich gelöscht werden')); ?>
-        <br />
-        <br />
-    </div>
+<div class="row-fluid">
+    <?php echo $this->Html->link(__('Anmeldung bearbeiten'), array('action' => 'edit', $booking['Booking']['id']), array('class' => 'btn btn-primary')); ?>
+    <?php echo $this->Form->postLink(__('Anmeldung löschen'), array('action' => 'delete', $booking['Booking']['id']), array('class' => 'btn btn-danger'), __('Soll diese Buchung wirklich gelöscht werden')); ?>
+    <br/>
+    <br/>
 </div>
 
 <div class="well dl-big legend-medium">
@@ -26,13 +24,13 @@
             <?php echo $this->Frontend->note($booking['User']['notes']); ?>
             &nbsp;
         </dd>
-        <br />
+        <br/>
 
         <legend><?php echo __('Daten zur Anmeldung'); ?></legend>
 
         <dt><?php echo __('Anwesendheit'); ?></dt>
         <dd>
-            <?php echo ($booking['AttendanceStatus']['display']) === null ? __('(noch nicht eingestellt)'): $booking['AttendanceStatus']['display']; ?>
+            <?php echo ($booking['AttendanceStatus']['display']) === null ? __('(noch nicht eingestellt)') : $booking['AttendanceStatus']['display']; ?>
             &nbsp;
         </dd>
 
@@ -67,7 +65,7 @@
             <?php echo $this->Frontend->note($booking['Booking']['notes']); ?>
             &nbsp;
         </dd>
-        <br />
+        <br/>
 
         <legend><?php echo __('Kursdaten'); ?></legend>
 
@@ -88,7 +86,7 @@
             <?php echo $this->Html->link($booking['Term']['name'], array('controller' => 'terms', 'action' => 'view', $booking['Term']['id'])); ?>
             &nbsp;
         </dd>
-        <br />
+        <br/>
 
         <legend><?php echo __('Rechnungsadresse'); ?></legend>
 
@@ -140,6 +138,6 @@
             &nbsp;
         </dd>
     </dl>
-    <hr />
+    <hr/>
     <?php echo $this->Html->link(__('Rechnungsadresse bearbeiten'), array('controller' => 'invoices', 'action' => 'edit', $booking['Invoice']['id']), array('class' => 'btn')); ?>
 </div>

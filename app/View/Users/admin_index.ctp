@@ -1,8 +1,9 @@
 <div class="page-header">
-    <h4><?php echo __('Benutzer Übersicht'); ?></h4>
+    <h3><?php echo __('Benutzer Übersicht'); ?></h3>
 </div>
 
-<?php echo $this->Form->create('User', array('class' => 'form-search')); ?>
+<?php echo $this->Form->create('User', array('class' => 'form-search well')); ?>
+<label><?php echo __('Filter: '); ?></label>
 <input type="text" name="query" value="<?php echo $query; ?>" class="input-medium search-query span4" placeholder="<?php echo __('Person suchen'); ?>"/>
 <?php echo $this->Form->end(); ?>
 <br/>

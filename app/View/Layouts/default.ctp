@@ -19,6 +19,14 @@
     <?php echo $this->Html->css('main'); ?>
     <?php echo $this->Html->script('vendor/modernizr-2.6.1-respond-1.1.0.min'); ?>
 
+    <!--[if gte IE 9]>
+    <style type="text/css">
+        .gradient {
+            filter: none;
+        }
+    </style>
+    <![endif]-->
+
     <script>
         var CAKEWORKSHOP = {
             controller: '<?php echo $this->request->params['controller']; ?>',
@@ -103,104 +111,95 @@
 </p>
 <![endif]-->
 
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <?php echo $this->Html->link('Uni-Frankfurt Workshops', $brandLink, array('class' => 'brand')); ?>
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <?php if (!$loggedIn) : ?>
-                        <li><?php echo $this->Html->link(__('Startseite'), array('controller' => 'users', 'action' => 'login')); ?></li>
-                    <?php
-                    else:
-                        switch ($group):
-                            case 'attendee':
-                                echo $this->element('nav_attendee');
-                                break;
-                            case 'admin':
-                                echo $this->element('nav_admin');
-                                break;
-                            case 'assistant':
-                                echo $this->element('nav_assistant');
-                                break;
-                        endswitch;
-                    endif; ?>
-                </ul>
-
-                <ul class="nav pull-right">
-                    <?php if ($isAdmin): ?>
-                        <li class="nav-search">
-                            <form class="form-search" method="POST"
-                                  action="<?php echo Router::url('/admin/courses_terms/index'); ?>">
-                                <input type="text" class="span3 input-medium search-query" name="query"
-                                       placeholder="Semester-Kurs suchen"/>
-                            </form>
-                        </li>
-                    <?php endif; ?>
-
-                    <?php if ($loggedIn) : ?>
-                        <li class="divider-vertical"></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                    class="icon-user"></i> <?php echo $username; ?> <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><?php echo $this->Html->link(__('Mein Konto'), '/users/edit'); ?></li>
-                                <li><?php echo $this->Html->link(__('Abmelden'), '/users/logout'); ?></li>
-                                <li class="divider"></li>
-                                <li><?php echo $this->Html->link(__('Kontakt'), array('controller' => 'pages', 'action' => 'contact')); ?></li>
-                            </ul>
-                        </li>
-                    <?php endif; ?>
-
-                    <?php if (!$loggedIn) : ?>
-                        <li><?php echo $this->Html->link(__('Kontakt'), array('controller' => 'pages', 'action' => 'contact')); ?></li>
-                    <?php endif; ?>
-                </ul>
+<div id="content" class="container">
+    <div id="header" class="row-fluid">
+        <div class="row-fluid">
+            <div class="span2 offset1 head-logo">
+                <?php echo $this->Html->image('head_logo.png'); ?>
             </div>
-            <!--/.nav-collapse -->
+            <div class="span2">
+                <?php echo $this->Html->image('sd_logo_weiss.png'); ?>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="content" class="container">
-    <div class="row">
-        <div class="span12">
-            <div class="row">
-                <div class="span12">
-                    <div id="messages">
-                        <?php echo $this->Session->flash(); ?>
-                        <?php echo $this->Session->flash('auth'); ?>
-                    </div>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <?php if (!$loggedIn) : ?>
+                            <li><?php echo $this->Html->link(__('Startseite'), array('controller' => 'users', 'action' => 'login')); ?></li>
+                        <?php
+                        else:
+                            switch ($group):
+                                case 'attendee':
+                                    echo $this->element('nav_attendee');
+                                    break;
+                                case 'admin':
+                                    echo $this->element('nav_admin');
+                                    break;
+                                case 'assistant':
+                                    echo $this->element('nav_assistant');
+                                    break;
+                            endswitch;
+                        endif; ?>
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        <?php if ($isAdmin): ?>
+                            <li class="nav-search">
+                                <form class="form-search" method="POST"
+                                      action="<?php echo Router::url('/admin/courses_terms/index'); ?>">
+                                    <input type="text" class="input-large search-query" name="query"
+                                           placeholder="Semester-Kurs suchen"/>
+                                </form>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($loggedIn) : ?>
+                            <li class="divider-vertical"></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                        class="icon-user"></i> <?php echo $username; ?> <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><?php echo $this->Html->link(__('Mein Konto'), '/users/edit'); ?></li>
+                                    <li><?php echo $this->Html->link(__('Abmelden'), '/users/logout'); ?></li>
+                                    <li class="divider"></li>
+                                    <li><?php echo $this->Html->link(__('Kontakt'), array('controller' => 'pages', 'action' => 'contact')); ?></li>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if (!$loggedIn) : ?>
+                            <li><?php echo $this->Html->link(__('Kontakt'), array('controller' => 'pages', 'action' => 'contact')); ?></li>
+                        <?php endif; ?>
+                    </ul>
                 </div>
+                <!--/.nav-collapse -->
             </div>
+        </div>
+    </div>
 
-            <div class="row">
-                <div class="span12">
+    <div class="row-fluid">
+        <div id="messages" class="row-fluid">
+            <?php echo $this->Session->flash(); ?>
+            <?php echo $this->Session->flash('auth'); ?>
+        </div>
 
-                    <div class="row">
-                        <div class="span12">
-                            <div class="pull-right">
-                                <?php echo $this->Html->image('uni_logo.png', array('id' => 'logo')); ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span12">
-                            <?php echo $this->fetch('content'); ?>
-                        </div>
-                    </div>
-
-                    <div class="hero-unit">
-                        <?php echo $this->element('sql_dump'); ?>
-                    </div>
-                </div>
+        <div style="padding: 0px 30px;">
+            <?php echo $this->fetch('content'); ?>
+            <!--
+            <div class="hero-unit">
+                <?php echo $this->element('sql_dump'); ?>
             </div>
+            -->
         </div>
     </div>
 </div>

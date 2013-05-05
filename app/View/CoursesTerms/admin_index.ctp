@@ -1,8 +1,9 @@
 <div class="page-header">
-    <h4><?php echo __('Semesterkurse'); ?></h4>
+    <h3><?php echo __('Semesterkurse'); ?></h3>
 </div>
 
-<?php echo $this->Form->create('Term', array('class' => 'form-inline')); ?>
+<?php echo $this->Form->create('Term', array('class' => 'form-inline well')); ?>
+<label><?php echo __('Filter: '); ?></label>
 <input type="text" name="query" class="span4 search-query"
        value="<?php echo isset($this->request->data['query']) ? $this->request->data['query'] : ''; ?>"
        placeholder="Kurs suchen">

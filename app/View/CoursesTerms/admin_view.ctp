@@ -1,12 +1,12 @@
-<div class="row">
+<div class="row-fluid">
     <div class="span12">
         <h3 class="page-header"><?php echo __('Semester-Kurs Übersicht'); ?></h3>
     </div>
 </div>
 
-<div class="row">
+<div class="row-fluid">
     <div class="span7">
-        <h5 class="page-header"><?php echo __('Kursdaten'); ?></h5>
+        <h4 class="page-header"><?php echo __('Kursdaten'); ?></h4>
         <dl class="well dl-horizontal">
             <dt><?php echo __('Kurs-Nr.'); ?></dt>
             <dd>
@@ -58,7 +58,7 @@
         </dl>
     </div>
     <div class="span5">
-        <h5 class="page-header"><?php echo __('Angesetzte Kurstage'); ?></h5>
+        <h4 class="page-header"><?php echo __('Angesetzte Kurstage'); ?></h4>
         <table class="table-condensed table table-bordered table-striped table-hover">
             <thead>
             <th><?php echo __('Am'); ?></th>
@@ -92,7 +92,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row-fluid">
     <div class="span12" style="margin-top: -10px;">
         <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-primary')); ?>
         <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small')); ?>
@@ -112,7 +112,7 @@
 
 <hr/>
 
-<div class="row">
+<div class="row-fluid">
     <div class="span12">
         <div id="booking">
             <input id="CoursesTermId" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
