@@ -10,7 +10,7 @@
 <?php endif; ?>
 <br/>
 
-<table style="border: 1px solid black; width:100%; font-size: 17px;">
+<table style="border: 1px solid black; width:100%; font-size: 17px; background: white;">
     <thead style="font-weight: bold; background: #f8f8f8">
     <tr style="padding: 6px 10px;">
         <th style="width: 5%; border: 1px solid black; font-weight: bold; padding: 10px 10px;text-align: left;"><?php echo __('Nr.'); ?></th>
@@ -50,6 +50,8 @@
             margin: 2cm 1.5cm;
             size: landscape
         }
+
+        #header { display: none; }
 
         #controls, .footer, .footerarea, .navbar { display: none; }
 

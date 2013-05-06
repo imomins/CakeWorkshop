@@ -57,6 +57,7 @@ class AppController extends Controller {
         $this->set('isAdmin', $this->isAdmin());
         $this->set('username', $this->Auth->user('name'));
         $this->set('brandLink', $this->brandLink());
+        $this->set('isDebug', Configure::read('debug') > 0);
     }
 
     public function brandLink() {

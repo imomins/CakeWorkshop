@@ -6,8 +6,8 @@
 
 <div class="row-fluid">
     <div class="span7">
-        <h4 class="page-header"><?php echo __('Kursdaten'); ?></h4>
-        <dl class="well dl-horizontal">
+        <h4><?php echo __('Kursdaten'); ?></h4>
+        <dl class="dl-horizontal well">
             <dt><?php echo __('Kurs-Nr.'); ?></dt>
             <dd>
                 <?php echo h($coursesTerm['CoursesTerm']['id']); ?>
@@ -39,7 +39,7 @@
             </dd>
 
             <dt><?php echo __('Angemeldet'); ?></dt>
-            <dd>
+            <dd id="attendeesCount">
                 <?php echo h($coursesTerm['CoursesTerm']['attendees']); ?>
                 &nbsp;
             </dd>
@@ -58,7 +58,7 @@
         </dl>
     </div>
     <div class="span5">
-        <h4 class="page-header"><?php echo __('Angesetzte Kurstage'); ?></h4>
+        <h4><?php echo __('Angesetzte Kurstage'); ?></h4>
         <table class="table-condensed table table-bordered table-striped table-hover">
             <thead>
             <th><?php echo __('Am'); ?></th>
@@ -126,15 +126,15 @@
                 <th><?php echo __('Bearbeiten'); ?></th>
                 <th><?php echo __('Löschen'); ?></th>
                 </thead>
-                <!-- ko ifnot: bookings.unconfirmed.hasChildren -->
+                <!-- ko ifnot: (bookings.unconfirmed().length > 0) -->
                 <tbody>
                 <tr>
                     <td colspan="5">Leer</td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
-                <!-- ko if: bookings.unconfirmed.hasChildren -->
-                <tbody data-bind="foreach: { data: bookings.unconfirmed.data, as: 'unconfirmed' }">
+                <!-- ko if: (bookings.unconfirmed().length > 0) -->
+                <tbody data-bind="foreach: { data: bookings.unconfirmed, as: 'unconfirmed' }">
                 <tr data-bind="attr: { 'data-id' : unconfirmed.Booking.id, 'data-type': 'unconfirmed' }">
                     <td><span data-bind="text: unconfirmed['0'].User_name"></span></td>
                     <td><span data-bind="text: unconfirmed['0'].Booking_created + ' Uhr'"></span></td>
@@ -157,15 +157,15 @@
                 <th><?php echo __('Bearbeiten'); ?></th>
                 <th><?php echo __('Löschen'); ?></th>
                 </thead>
-                <!-- ko ifnot: bookings.self_unsubscribed.hasChildren -->
+                <!-- ko ifnot: (bookings.self_unsubscribed().length > 0) -->
                 <tbody>
                 <tr>
                     <td colspan="6"><?php echo __('Leer'); ?></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
-                <!-- ko if: bookings.unconfirmed.hasChildren -->
-                <tbody data-bind="foreach: { data: bookings.self_unsubscribed.data, as: 'self_unsubscribed' }">
+                <!-- ko if: (bookings.unconfirmed().length > 0) -->
+                <tbody data-bind="foreach: { data: bookings.self_unsubscribed, as: 'self_unsubscribed' }">
                 <tr data-bind="attr: { 'data-id' : self_unsubscribed.Booking.id, 'data-type': 'self_unsubscribed' }">
                     <td><span data-bind="text: self_unsubscribed['0'].User_name"></span></td>
                     <td><span data-bind="text: self_unsubscribed['0'].Booking_created + ' Uhr'"></span></td>
@@ -188,15 +188,15 @@
                 <th><?php echo __('Bearbeiten'); ?></th>
                 <th><?php echo __('Löschen'); ?></th>
                 </thead>
-                <!-- ko ifnot: bookings.admin_unsubscribed.hasChildren -->
+                <!-- ko ifnot: (bookings.admin_unsubscribed().length > 0) -->
                 <tbody>
                 <tr>
                     <td colspan="6"><?php echo __('Leer'); ?></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
-                <!-- ko if: bookings.admin_unsubscribed.hasChildren -->
-                <tbody data-bind="foreach: { data: bookings.admin_unsubscribed.data, as: 'admin_unsubscribed' }">
+                <!-- ko if: (bookings.admin_unsubscribed().length > 0) -->
+                <tbody data-bind="foreach: { data: bookings.admin_unsubscribed, as: 'admin_unsubscribed' }">
                 <tr data-bind="attr: { 'data-id' : admin_unsubscribed.Booking.id, 'data-type': 'admin_unsubscribed' }">
                     <td><span data-bind="text: admin_unsubscribed['0'].User_name"></span></td>
                     <td><span data-bind="text: admin_unsubscribed['0'].Booking_created + ' Uhr'"></span></td>
@@ -220,15 +220,15 @@
                 <th><?php echo __('Bearbeiten'); ?></th>
                 <th><?php echo __('Löschen'); ?></th>
                 </thead>
-                <!-- ko ifnot: bookings.confirmed.hasChildren -->
+                <!-- ko ifnot: (bookings.confirmed().length > 0) -->
                 <tbody>
                 <tr>
                     <td colspan="5"><?php echo __('Leer'); ?></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
-                <!-- ko if: bookings.confirmed.hasChildren -->
-                <tbody data-bind="foreach: { data: bookings.confirmed.data, as: 'confirmed' }">
+                <!-- ko if: (bookings.confirmed().length > 0) -->
+                <tbody data-bind="foreach: { data: bookings.confirmed, as: 'confirmed' }">
                 <tr data-bind="attr: { 'data-id' : confirmed.Booking.id, 'data-type': 'confirmed' }">
                     <td><span data-bind="text: confirmed['0'].User_name"></span></td>
                     <td><span data-bind="text: confirmed['0'].Booking_created + ' Uhr'"></span></td>
@@ -252,15 +252,15 @@
                 <th><?php echo __('Bearbeiten'); ?></th>
                 <th><?php echo __('Löschen'); ?></th>
                 </thead>
-                <!-- ko ifnot: bookings.cleared.hasChildren -->
+                <!-- ko ifnot: (bookings.cleared().length > 0) -->
                 <tbody>
                 <tr>
                     <td colspan="6"><?php echo __('Leer'); ?></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
-                <!-- ko if: bookings.cleared.hasChildren -->
-                <tbody data-bind="foreach: { data: bookings.cleared.data, as: 'cleared' }">
+                <!-- ko if: (bookings.cleared().length > 0) -->
+                <tbody data-bind="foreach: { data: bookings.cleared, as: 'cleared' }">
                 <tr data-bind="attr: { 'data-id' : cleared.Booking.id, 'data-type': 'cleared' }">
                     <td><span data-bind="text: cleared['0'].User_name"></span></td>
                     <td><span data-bind="text: cleared['0'].Booking_created + ' Uhr'"></span></td>
@@ -275,6 +275,5 @@
         </div>
     </div>
 </div>
-
 
 <?php echo $this->Html->script('courses_terms/view'); ?>

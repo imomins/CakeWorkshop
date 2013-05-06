@@ -99,7 +99,7 @@ class UsersController extends AppController {
                 $this->redirect(array('controller' => 'users', 'action' => 'login'));
             }
             else {
-                $this->Session->setFlash($this->User->validationErrors);
+                $this->Session->setFlash(json_encode($this->User->validationErrors), 'flash_error');
                 $this->redirect(array('controller' => 'users', 'action' => 'login'));
             }
         }
@@ -346,13 +346,14 @@ class UsersController extends AppController {
                     $this->sendPasswordResetMail(trim($this->request->data['User']['email']), $hash);
 
                     $this->Session->setFlash(__('Ihnen wurde eine Email zugesandt, bitte überprüfen Sie Ihr Postfach'), 'flash_success');
+                    $this->redirect(array('controller' => 'users', 'action' => 'login'));
                 }
                 else {
-                    throw new InternalErrorException(__('Ein internet Fehler ist aufgetreten'));
+                    throw new InternalErrorException(__('Ein internet Fehler ist aufgetreten'), 'flash_error');
                 }
             }
             else {
-                throw new NotFoundException(__('Keinen Benutzer gefunden'));
+                throw new NotFoundException(__('Keinen Benutzer gefunden'), 'flash_error');
             }
         }
     }
@@ -368,8 +369,6 @@ class UsersController extends AppController {
      * @throws InternalErrorException
      */
     public function password($hash = null) {
-        $this->gotoHomeScreen();
-
         if ($hash === null) {
             throw new MethodNotAllowedException(__('Fehlerhafter Zugriff'));
         }
@@ -455,12 +454,12 @@ class UsersController extends AppController {
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('The user has been saved'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
             }
         }
         else {
@@ -483,15 +482,15 @@ class UsersController extends AppController {
     public function admin_edit($id = null) {
         $this->User->id = $id;
         if (!$this->User->exists()) {
-            throw new NotFoundException(__('Der Benutzer wurde nicht gefunden'));
+            throw new NotFoundException(__('Der Benutzer wurde nicht gefunden'), 'flash_error');
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('Die Daten wurden gespeichert'));
+                $this->Session->setFlash(__('Die Daten wurden gespeichert'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
             }
         }
         else {
@@ -500,8 +499,9 @@ class UsersController extends AppController {
         $genders     = $this->User->Gender->find('list');
         $departments = $this->User->Department->find('list');
         $groups      = $this->User->Group->find('list');
+        $occupations = $this->User->Occupation->find('list');
 
-        $this->set(compact('genders', 'departments', 'groups', 'coursesTerms'));
+        $this->set(compact('genders', 'departments', 'groups', 'coursesTerms', 'occupations'));
     }
 
     /**
@@ -518,13 +518,13 @@ class UsersController extends AppController {
         }
         $this->User->id = $id;
         if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
+            throw new NotFoundException(__('Invalid user'), 'flash_error');
         }
         if ($this->User->delete()) {
             $this->Session->setFlash(__('User deleted'));
             $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash(__('User was not deleted'));
+        $this->Session->setFlash(__('User was not deleted'), 'flash_error');
         $this->redirect(array('action' => 'index'));
     }
 

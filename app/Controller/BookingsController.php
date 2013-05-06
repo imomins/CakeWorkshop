@@ -10,6 +10,13 @@ class BookingsController extends AppController {
 
     public $components = array('RequestHandler');
 
+    public function beforeFilter() {
+        parent::beforeFilter();
+        if ($this->request->is('ajax')) {
+            $this->Auth->allow('index');
+        }
+    }
+
     /**
      * index method
      *
@@ -22,7 +29,7 @@ class BookingsController extends AppController {
             $termId = $termId[0]['terms']['id'];
         }
 
-        $query          = isset($this->request->data['query']) ? $this->request->data['query'] : '';
+        $query = isset($this->request->data['query']) ? $this->request->data['query'] : '';
 
         $this->paginate = array(
             'conditions' => array("CONCAT(firstname, ' ', lastname) LIKE" => '%' . trim($query) . '%'),
@@ -35,13 +42,6 @@ class BookingsController extends AppController {
                 )
             )
         );
-
-//        if ($this->request->is('post')) {
-//            $this->paginate['contain']['CoursesTerm']['Course'] = array(
-//                'fields'     => array('name'),
-//                'conditions' => array('Course.name' => trim($this->request->data['Course']['name']))
-//            );
-//        }
 
         $title_for_layout = __('Neusten Anmeldungen');
         $bookings         = $this->paginate('Booking');
@@ -60,7 +60,7 @@ class BookingsController extends AppController {
     public function admin_view($id = null) {
         $this->Booking->id = $id;
         if (!$this->Booking->exists()) {
-            throw new NotFoundException(__('Invalid courses terms user'));
+            throw new NotFoundException(__('Ungültiger Semester-Kurs'));
         }
 
         $sql = "
@@ -81,13 +81,13 @@ class BookingsController extends AppController {
                 LEFT JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
                 LEFT OUTER JOIN types Type ON (Invoice.type_name = Type.name)
                 LEFT OUTER JOIN attendance_states AttendanceStatus ON (Booking.attendance_state_name = AttendanceStatus.name)
-            WHERE Booking.id = ?
-            LIMIT 1
+            WHERE
+                Booking.id = ?
         ";
 
         $booking = $this->Booking->query($sql, array($id));
 
-        // Limit 1...
+        // One row...
         $booking = $booking[0];
 
         // DATE_FORMAT removes the context, restore...
@@ -179,6 +179,21 @@ class BookingsController extends AppController {
         if (!$this->Booking->saveField('booking_state_name', $booking_state_name)) {
             throw new Exception(__('Fehler beim Speichern: ') . $this->Booking->validationErrors['booking_state_name']);
         }
+        else {
+            // Attendee counter
+            $booking = $this->Booking->find('first', array(
+                'recursive'  => -1,
+                'conditions' => array('Booking.id' => $id),
+                'fields'     => array('Booking.courses_term_id')
+            ));
+
+            if ($booking_state_name !== 'confirmed') {
+                $this->Booking->query('UPDATE courses_terms CoursesTerm SET CoursesTerm.attendees = CoursesTerm.attendees - 1 WHERE CoursesTerm.id = ?', array($booking['Booking']['courses_term_id']));
+            }
+            if ($booking_state_name === 'confirmed') {
+                $this->Booking->query('UPDATE courses_terms CoursesTerm SET CoursesTerm.attendees = CoursesTerm.attendees + 1 WHERE CoursesTerm.id = ?', array($booking['Booking']['courses_term_id']));
+            }
+        }
     }
 
     /**
@@ -190,11 +205,11 @@ class BookingsController extends AppController {
         if ($this->request->is('post')) {
             $this->Booking->create();
             if ($this->Booking->save($this->request->data)) {
-                $this->Session->setFlash(__('The courses terms user has been saved'));
-                $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash(__('Die Anmeldung wurde gespeichert'), 'flash_success');
+                $this->redirect(array('action' => 'view', $this->Booking->getLastInsertID()));
             }
             else {
-                $this->Session->setFlash(__('The courses terms user could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Es ist ein Fehler aufgetreten'), 'flash_error');
             }
         }
 
@@ -202,11 +217,6 @@ class BookingsController extends AppController {
         $booking_state    = $this->Booking->BookingState->find('list', array(
             'fields' => array('name', 'display')
         ));
-
-        //$invoices     = $this->Booking->Invoice->find('list');
-        //$users        = $this->Booking->User->find('list');
-        //$coursesTerms = $this->Booking->CoursesTerm->getCoursesList();
-        //$types        = $this->Booking->Invoice->Type->find('list');
 
         $this->set(compact('attendance_state', 'booking_state'));
     }
@@ -234,11 +244,11 @@ class BookingsController extends AppController {
                 )
             ))
             ) {
-                $this->Session->setFlash(__('Die Buchung wurde gepspeichert'));
+                $this->Session->setFlash(__('Die Anmeldung wurde gepspeichert'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('Es konnte nicht gespeichert werden'));
+                $this->Session->setFlash(__('Es konnte nicht gespeichert werden'), 'flash_error');
             }
         }
         else {
@@ -270,7 +280,7 @@ class BookingsController extends AppController {
         }
         $this->Booking->id = $id;
         if (!$this->Booking->exists()) {
-            throw new NotFoundException(__('Invalid courses terms user'));
+            throw new NotFoundException(__('Ungültige Anmeldung'));
         }
 
         $deleted = $this->Booking->delete();
@@ -283,11 +293,11 @@ class BookingsController extends AppController {
         }
         else {
             if ($deleted) {
-                $this->Session->setFlash(__('Die Buchung wurde gelöscht'));
+                $this->Session->setFlash(__('Die Anmeldung wurde gelöscht'), 'flash_success');
                 $this->redirect('/admin/bookings/index/sort:created/direction:desc');
             }
             else {
-                $this->Session->setFlash(__('Der Kurs konnte nicht gelöscht werden'));
+                $this->Session->setFlash(__('Der Anmeldung konnte nicht gelöscht werden'), 'flash_error');
                 $this->redirect(array('action' => 'index'));
             }
         }
@@ -302,7 +312,7 @@ class BookingsController extends AppController {
     public function index($term_id = null) {
         if ($this->request->is('ajax')) {
             $coursesByCategory = $this->Booking->CoursesTerm->findCoursesTermGroupedByCategoryWithBookingStateName(
-                array('Editable' => true, 'User' => array('id' => $this->getUserId()))
+                array('Editable' => $this->Auth->loggedIn(), 'User' => array('id' => $this->getUserId()))
             );
 
             $this->set(compact('coursesByCategory'));

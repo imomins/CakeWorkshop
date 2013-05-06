@@ -7,6 +7,8 @@
 define(['ko', 'jquery', 'block-ui'], function (ko, $) {
     "use strict";
 
+    $(document).ajaxStop($.unblockUI);
+
     function BookingViewModel() {
         var self = this;
 
@@ -15,6 +17,8 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
         this.working = ko.observable(false);
 
         this.confirm = function (data, event) {
+            $.blockUI({ message: 'Nehme Anmeldung vor...' });
+
             var $selected = $('#course tr.selected');
 
             if ($selected.length === 0) {
@@ -37,6 +41,8 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
         };
 
         this.unsubscribe = function (data, event) {
+            $.blockUI({ message: 'Nehme Abmeldung vor...' });
+
             var id = +$(event.target).closest('tr').data('id');
 
             $.post(CAKEWORKSHOP.webroot + 'bookings/delete.json', {CoursesTerm: { id: id}})
@@ -66,7 +72,6 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
                     if (cats.length > 0) {
                         $('#invoice').find('.btn-group button').first().addClass('active');
                     }
-                    $.unblockUI();
                 })
                 .error(function (response) {
                     alert($.parseJSON(response.responseText).name);

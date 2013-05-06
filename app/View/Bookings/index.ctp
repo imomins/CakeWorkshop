@@ -109,12 +109,11 @@
                     </fieldset>
                 </form>
             </div>
-            <br />
 
             <div id="course">
                 <form id="formBooking" data-bind="submit: confirm">
                     <div data-bind="foreach: { data: categories, as: 'category' }">
-                        <h5 data-bind="text: category.Category.name"></h5>
+                        <h4 data-bind="text: category.Category.name"></h4>
                         <table class="table-courses table table-bordered table-condensed table-striped table-hover">
                             <thead>
                             <tr>
@@ -158,7 +157,7 @@
                                     <td class="table-center" data-bind="text: CoursesTerm.max"></td>
                                     <td class="check" data-bind="visible: CoursesTerm.isEditable">
                                         <a data-bind="visible: CoursesTerm.Booking.allowSubscribe, click: $root.select" class="btn btn-primary btn-mini" data-toggle="button">Auswählen</a>
-                                        <a data-bind="visible: CoursesTerm.Booking.allowUnsubscribe, click: $root.unsubscribe" class="btn btn-mini btn-orange">Abmelden</a>
+                                        <a data-bind="visible: CoursesTerm.Booking.allowUnsubscribe, click: $root.unsubscribe" class="btn btn-mini btn-warning">Abmelden</a>
                                         <span data-bind="visible: CoursesTerm.Booking.adminUnsubscribed" class="label label-important">Abgemeldet</span>
                                         <span data-bind="visible: CoursesTerm.locked" class="label label-important bg-orange">Gesperrt</span>
                                     </td>

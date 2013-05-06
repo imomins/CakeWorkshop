@@ -135,7 +135,7 @@
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <?php if (!$loggedIn) : ?>
-                            <li><?php echo $this->Html->link(__('Startseite'), array('controller' => 'users', 'action' => 'login')); ?></li>
+                            <li data-controller="users"><?php echo $this->Html->link(__('Startseite'), array('controller' => 'users', 'action' => 'login')); ?></li>
                         <?php
                         else:
                             switch ($group):
@@ -166,8 +166,7 @@
                         <?php if ($loggedIn) : ?>
                             <li class="divider-vertical"></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                        class="icon-user"></i> <?php echo $username; ?> <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?php echo $username; ?> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><?php echo $this->Html->link(__('Mein Konto'), '/users/edit'); ?></li>
                                     <li><?php echo $this->Html->link(__('Abmelden'), '/users/logout'); ?></li>
@@ -188,18 +187,19 @@
     </div>
 
     <div class="row-fluid">
-        <div id="messages" class="row-fluid">
-            <?php echo $this->Session->flash(); ?>
-            <?php echo $this->Session->flash('auth'); ?>
-        </div>
+        <div style="padding: 10px 30px;">
+            <div id="messages" class="row-fluid">
+                <?php echo $this->Session->flash(); ?>
+                <?php echo $this->Session->flash('auth'); ?>
+            </div>
 
-        <div style="padding: 0px 30px;">
             <?php echo $this->fetch('content'); ?>
-            <!--
+
+            <?php if ($isDebug): ?>
             <div class="hero-unit">
                 <?php echo $this->element('sql_dump'); ?>
             </div>
-            -->
+            <?php endif; ?>
         </div>
     </div>
 </div>

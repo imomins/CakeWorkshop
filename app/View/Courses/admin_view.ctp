@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h4><?php echo __('Kursdaten'); ?></h4>
+    <h3><?php echo __('Kursdaten'); ?></h3>
 </div>
 
 <div class="well">
@@ -28,7 +28,7 @@
     </dl>
 </div>
 
-    <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $course['Course']['id']), array('class' => 'btn')); ?>
+    <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $course['Course']['id']), array('class' => 'btn btn-primary')); ?>
     <?php echo $this->Html->link(__('Übersicher aller Kurse'), array('action' => 'index'), array('class' => 'btn')); ?>
     <?php echo $this->Html->link(__('Weiteren Kurs anlegen'), array('action' => 'add'), array('class' => 'btn')); ?>
     <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $course['Course']['id']), array('class' => 'btn btn-danger'), __('Are you sure you want to delete # %s?', $course['Course']['id'])); ?>

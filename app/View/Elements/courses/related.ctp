@@ -1,4 +1,4 @@
-<h4><?php echo __('Übersicht angesetzter Schulungen für diesen Kurs'); ?></h4>
+<h3><?php echo __('Übersicht angesetzter Schulungen für diesen Kurs'); ?></h3>
 
 <table class="table table-bordered table-striped table-hover">
     <thead>

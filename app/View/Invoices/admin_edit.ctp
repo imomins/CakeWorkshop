@@ -91,7 +91,7 @@
 </div>
 
 <div class="page-header">
-    <h3><?php echo __('Kurse die unter dieser Adresse gebucht wurden'); ?></h3>
+    <h3><?php echo __('Kurse die unter dieser Adresse, von dieser Person, gebucht wurden'); ?></h3>
 </div>
 
 <table class="table table-bordered table-hovered table-striped">

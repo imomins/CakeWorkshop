@@ -1,4 +1,4 @@
-<li class="dropdown">
+<li class="dropdown" data-controller="bookings">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Buchungen <b class="caret"></b></a>
     <ul class="dropdown-menu">
         <li><?php echo $this->Html->link(__('Übersicht'), '/admin/bookings/index/sort:created/direction:desc'); ?></li>
@@ -6,7 +6,7 @@
     </ul>
 </li>
 
-<li class="dropdown">
+<li class="dropdown" data-controller="courses|courses_terms">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kurse <b class="caret"></b></a>
     <ul class="dropdown-menu">
         <li class="nav-header">Allgemeine-Kurse</li>
@@ -19,7 +19,7 @@
     </ul>
 </li>
 
-<li class="dropdown">
+<li class="dropdown" data-controller="users">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo __('Benutzerverwaltung'); ?> <b class="caret"></b></a>
     <ul class="dropdown-menu">
         <li><?php echo $this->Html->link(__('Übersicht'), '/admin/users'); ?></li>

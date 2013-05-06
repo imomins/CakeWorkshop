@@ -57,19 +57,5 @@ define(['jquery', 'handlebars'], function ($, Handlebars) {
         });
     };
 
-    /**
-     *
-     * @method highlightCurrentNav
-     */
-    exporter.highlightCurrentNav = function () {
-        $('.navbar').find('li').each(function () {
-            var $this = $(this);
-
-            if ($this.data('controller') === CAKEWORKSHOP.controller && $this.data('view') === CAKEWORKSHOP.view) {
-                this.className = 'active';
-            }
-        });
-    };
-
     return exporter;
 });

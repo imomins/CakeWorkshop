@@ -1,7 +1,16 @@
-require(['booking', 'domReady', 'bootstrap-tab'], function (Booking, domReady) {
+require(['ko', 'viewmodel/BookingViewModel', 'jquery', 'bootstrap-tab'], function (ko, BookingViewModel, $) {
     "use strict";
 
-    domReady(function () {
-        Booking.render({ id: 'tableCourses' });
+    var loaded = false;
+
+    $('#tabCourse').click(function (event) {
+        if (loaded) {
+            return;
+        }
+        event.preventDefault();
+        ko.applyBindings(new BookingViewModel(), document.getElementById('course'));
+        $(this).tab('show');
+
+        loaded = true;
     });
 });

@@ -1,26 +1,22 @@
-<div class="page-header">
-    <h3><?php echo __('Anmeldung bearbeiten'); ?></h3>
-</div>
-
 <div class="well">
     <?php echo $this->Form->create('Booking', array('class' => 'form-horizontal')); ?>
     <?php echo $this->Form->input('id'); ?>
 
-    <legend><?php echo __('Anmeldungsdaten'); ?></legend>
-
-    <div class="control-group">
-        <label class="control-label"><?php echo __('Teilnehmer'); ?></label>
-
-        <div class="controls">
-            <?php echo $this->Form->input('user_id', array('disabled' => true, 'class' => 'span5', 'required' => true, 'div' => false, 'label' => false)); ?>
-        </div>
-    </div>
+    <legend><?php echo __('Anmeldung bearbeiten'); ?></legend>
 
     <div class="control-group">
         <label class="control-label"><?php echo __('Belegter Kurs'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->select('courses_term_id', $courses_terms, array('label' => false, 'class' => 'span5')); ?>
+            <?php echo $this->Form->select('courses_term_id', $courses_terms, array('label' => false, 'class' => 'span10')); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Teilnehmer'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('user_id', array('disabled' => true, 'required' => true, 'div' => false, 'label' => false)); ?>
         </div>
     </div>
 

@@ -69,6 +69,7 @@ define(['ko', 'jquery'], function (ko, $) {
             $.getJSON('invoices.json')
                 .success(function (data) {
                     var i;
+
                     for (i = 0; i < data.length; i += 1) {
                         self.invoices.push(data[i].Invoice);
                         self.showInvoiceControls(data.length > 0);

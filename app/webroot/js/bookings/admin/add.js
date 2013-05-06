@@ -1,10 +1,15 @@
-require(['domReady', 'jquery', 'jquery-ui'], function (domReady, $) {
+require(['domReady', 'bookings/admin/ViewModel', 'ko', 'jquery', 'jquery-ui', 'block-ui'], function (domReady, ViewModel, ko, $) {
     "use strict";
 
+    $(document).ajaxStop($.unblockUI);
+
     domReady(function () {
+        // Autocomplete for user and coursesTerm
         $("#user_name").autocomplete({
             minLength: 3,
             source:    function (request, response) {
+                $.blockUI({ message: 'Suche...' });
+
                 $.ajax({
                     url:      CAKEWORKSHOP.webroot + 'admin/users/find',
                     data:     { name: $("#user_name").val().trim() },
@@ -23,12 +28,15 @@ require(['domReady', 'jquery', 'jquery-ui'], function (domReady, $) {
             },
             select:    function (event, ui) {
                 $("#user_id").val(ui.item.id);
+                ko.applyBindings(new ViewModel(ui.item.id), document.getElementById('invoices'));
             }
         });
 
         $("#courses_term_name").autocomplete({
             minLength: 3,
             source:    function (request, response) {
+                $.blockUI({ message: 'Suche...' });
+
                 $.ajax({
                     url:      CAKEWORKSHOP.webroot + 'admin/courses_terms/find',
                     data:     { name: $("#courses_term_name").val().trim() },

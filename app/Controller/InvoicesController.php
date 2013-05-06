@@ -10,13 +10,27 @@ App::uses('Sanitize', 'Utility');
 class InvoicesController extends AppController {
 
     /**
-     * index method
-     *
-     * @return void
+     * @param null $id
+     * @return string
      */
-    public function admin_index() {
-        $this->Invoice->recursive = 0;
-        $this->set('invoices', $this->paginate());
+    public function admin_index($id = null) {
+        // Returns list of users invoices
+        if ($this->request->is('ajax')) {
+            $this->autoRender = false;
+
+            $invoices = $this->Invoice->query("
+                SELECT * FROM  invoices Invoice
+                    LEFT JOIN types Type ON (Invoice.type_name = Type.name)
+                WHERE
+                    Invoice.user_id = ?
+                ", array($id));
+
+            return json_encode($invoices);
+        }
+        else {
+            $this->Invoice->recursive = 0;
+            $this->set('invoices', $this->paginate());
+        }
     }
 
     public function index() {
@@ -69,8 +83,8 @@ class InvoicesController extends AppController {
                 Booking.invoice_id = ?
         ';
 
-        $invoice          = $this->Invoice->query($sql_invoice, array($id));
-        $invoice          = $invoice[0];
+        $invoice = $this->Invoice->query($sql_invoice, array($id));
+        $invoice = $invoice[0];
 
         $related_bookings = $this->Invoice->query($sql_related_bookings, array($id));
 

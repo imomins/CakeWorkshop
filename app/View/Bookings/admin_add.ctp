@@ -1,32 +1,28 @@
-<div class="page-header">
-    <h3><?php echo __('Neue Anmeldung'); ?></h3>
-</div>
-
 <div class="well">
     <?php echo $this->Form->create('Booking', array('class' => 'form form-horizontal')); ?>
 
-    <legend><?php echo __('Daten für die Anmeldung'); ?></legend>
-
-    <div class="control-group">
-        <label class="control-label"><?php echo __('Teilnehmer'); ?></label>
-
-        <div class="controls">
-            <?php echo $this->Form->hidden('user_id', array('id' => 'user_id', 'div' => false, 'label' => false)); ?>
-            <?php echo $this->Form->input('user_name', array('type' => 'text', 'id' => 'user_name', 'div' => false, 'label' => false, 'class' => 'span6')); ?>
-            <span class="help-block">
-                    <?php echo __('Beim Eingeben wird der Name gesucht'); ?>
-            </span>
-        </div>
-    </div>
+    <legend><?php echo __('Neue Anmeldung'); ?></legend>
 
     <div class="control-group">
         <label class="control-label"><?php echo __('Semesterkurs'); ?></label>
 
         <div class="controls">
             <?php echo $this->Form->hidden('courses_term_id', array('required' => true, 'id' => 'courses_term_id', 'div' => false, 'label' => false)); ?>
-            <?php echo $this->Form->input('courses_term_name', array('required' => true, 'type' => 'text', 'id' => 'courses_term_name', 'div' => false, 'label' => false, 'class' => 'span6')); ?>
+            <?php echo $this->Form->input('courses_term_name', array('required' => true, 'type' => 'text', 'id' => 'courses_term_name', 'div' => false, 'label' => false, 'class' => 'span8')); ?>
             <span class="help-block">
                 <?php echo __('Beim Eingeben wird nach Kurs-Titel und Semester gesucht'); ?>
+            </span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><?php echo __('Teilnehmer'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->hidden('user_id', array('id' => 'user_id', 'div' => false, 'label' => false)); ?>
+            <?php echo $this->Form->input('user_name', array('required' => true, 'type' => 'text', 'id' => 'user_name', 'div' => false, 'label' => false, 'class' => 'span6')); ?>
+            <span class="help-block">
+                    <?php echo __('Beim Eingeben wird der Name gesucht'); ?>
             </span>
         </div>
     </div>
@@ -47,11 +43,13 @@
         </div>
     </div>
 
-    <div class="control-group">
-        <label class="control-label"><?php echo __('Rechnungsvorlage'); ?></label>
+    <div id="invoices" class="control-group">
+        <label class="control-label"><?php echo __('Rechnungsadresse'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('invoice_id', array('div' => false, 'label' => false)); ?>
+            <select class="span6" name="data[Booking][invoice_id]" data-bind="value: invoice_id,options: invoices,optionsText: 'name',optionsValue: 'value'"></select>
+            <a style="display: none;" class="btn btn-small btn-primary" data-bind="visible: hasInvoice, click: edit"><?php echo __('Bearbeiten'); ?></a>
+            <a style="display: none;" class="btn btn-small btn" data-bind="visible: allowAdd, click: add"><?php echo __('Anlegen'); ?></a>
         </div>
     </div>
 
@@ -78,4 +76,4 @@
 </div>
 
 <?php echo $this->Html->css('jquery-ui-custom/css/flick/jquery-ui-1.10.2.custom.min'); ?>
-<?php echo $this->Html->script('bookings/add'); ?>
+<?php echo $this->Html->script('bookings/admin/add'); ?>

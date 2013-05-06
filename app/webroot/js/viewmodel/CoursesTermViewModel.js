@@ -1,16 +1,18 @@
 define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler, $, blockui) {
     "use strict";
 
+    $(document).ajaxStop($.unblockUI);
+
     function CoursesTermViewModel(id) {
         var self = this;
         this.id = id;
 
         this.bookings = {
-            unconfirmed:        { data: ko.observableArray(), hasChildren: ko.observable(false) },
-            self_unsubscribed:  { data: ko.observableArray(), hasChildren: ko.observable(false) },
-            admin_unsubscribed: { data: ko.observableArray(), hasChildren: ko.observable(false) },
-            confirmed:          { data: ko.observableArray(), hasChildren: ko.observable(false) },
-            cleared:            { data: ko.observableArray(), hasChildren: ko.observable(false) }
+            unconfirmed:        ko.observableArray(),
+            self_unsubscribed:  ko.observableArray(),
+            admin_unsubscribed: ko.observableArray(),
+            confirmed:          ko.observableArray(),
+            cleared:            ko.observableArray()
         };
 
         function getElement(event) {
@@ -44,16 +46,24 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
          * @param status
          */
         function changeStatus(event, status) {
+            $.blockUI({ message: 'Speichere...' });
+
             var trData = getData(event);
+            var id = getId(event);
 
             $.post(CAKEWORKSHOP.webroot + 'admin/bookings/status/' + status + '/' + trData.id)
-                .success(function () {
-                    // Old status position
-                    var item = self.bookings[trData.type].data.remove(function (item) {
+                .success(function (response) {
+                    // Old status position, returns an Array with one element
+                    var item = self.bookings[trData.type].remove(function (item) {
                         return parseInt(item.Booking.id, 10) === id;
                     });
+                    item = item[0];
+
+                    // New Status
+                    item.BookingState.name = status;
+
                     // Target status position
-                    self.bookings[status].data.push(item);
+                    self.bookings[status].push(item);
 
                     console.log('Status der Buchung mit Id "' + trData.id + '" gesetzt auf "' + status + '"');
                 })
@@ -84,7 +94,7 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
             if (confirm('Soll die Buchung komplett gelöscht werden?')) {
                 $.post(CAKEWORKSHOP.webroot + 'admin/bookings/delete/' + trData.id)
                     .success(function (response) {
-                        self.bookings[trData.type].data.remove(function (item) {
+                        self.bookings[trData.type].remove(function (item) {
                             return parseInt(item.Booking.id, 10) === trData.id;
                         });
                         console.log('Buchung gelöscht, Id: ' + trData.id);
@@ -92,15 +102,6 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
                     .error(function (response) {
                         errorHandler.showAjaxError(response);
                     });
-            }
-        };
-
-        this.removeAll = function () {
-            var name;
-
-            for (name in self.bookings) {
-                self.bookings[name].data.removeAll();
-                self.bookings[name].hasChildren(false);
             }
         };
 
@@ -112,13 +113,8 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
                     var i,
                         key;
 
-                    self.removeAll();
                     for (i = 0; i < data.length; i += 1) {
-                        self.bookings[data[i].BookingState.name].data.push(data[i]);
-                    }
-                    // For views to toggle empty areas
-                    for (key in self.bookings) {
-                        self.bookings[key].hasChildren(self.bookings[key].data().length > 0);
+                        self.bookings[data[i].BookingState.name].push(data[i]);
                     }
 
                     $.unblockUI();

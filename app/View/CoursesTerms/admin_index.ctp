@@ -34,7 +34,7 @@
         -->
         <th><?php echo $this->Paginator->sort('attendees', __('Teilnehmer')); ?></th>
         <th><?php echo $this->Paginator->sort('max', __('Maximal')); ?></th>
-        <th class="actions" style="min-width: 180px;"><?php echo __('Optionen'); ?></th>
+        <th style="min-width: 180px;"><?php echo __('Optionen'); ?></th>
     </tr>
     <?php
     foreach ($coursesTerms as $coursesTerm): ?>

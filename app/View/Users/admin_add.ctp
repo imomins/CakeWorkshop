@@ -2,8 +2,7 @@
     <h3><?php echo __('Neuen Teilnehmer/Benutzer anlegen'); ?></h3>
 </div>
 
-<div
-    class="alert bg-light-blue"><?php echo __('Die Benutzer müssen die "Passwort vergessen" Funktion verwenden, um ein Passwort zu erhalten'); ?></div>
+<div class="alert bg-light-blue"><?php echo __('Die Benutzer müssen die "Passwort vergessen" Funktion verwenden, um ein Passwort zu erhalten'); ?></div>
 
 <div class="well">
     <?php echo $this->Form->create('User', array('class' => 'form-horizontal')); ?>
