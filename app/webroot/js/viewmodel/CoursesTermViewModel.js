@@ -108,10 +108,12 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
         this.fetch = (function () {
             $.blockUI({ message: 'Lade, bitte warten...' });
 
-            $.getJSON(CAKEWORKSHOP.webroot + 'admin/courses_terms/view/' + self.id)
+            $.getJSON(CAKEWORKSHOP.webroot + 'admin/courses_terms/view/' + self.id + '.json')
                 .success(function (data) {
                     var i,
                         key;
+
+                    data = data.bookings;
 
                     for (i = 0; i < data.length; i += 1) {
                         self.bookings[data[i].BookingState.name].push(data[i]);
