@@ -24,7 +24,7 @@
 
             <div id="invoice">
                 <form class="form-inline" data-bind="visible: showInvoiceControls">
-                    <label>Bitte wählen Sie einer Ihrer bestehende Rechnungsvorlagen oder erstellen Sie eine neue:</label><br />
+                    <label>Bitte wählen Sie einer Ihrer bestehende Rechnungsadresse oder erstellen Sie eine neue:</label><br />
                     <div class="btn-group" data-toggle="buttons-radio" data-bind="click: load, foreach: invoices">
                         <button data-bind="attr: { 'data-id': id }, text: name + '-' + ($index() + 1)" type="button" class="btn btn-small"></button>
                     </div>
@@ -33,7 +33,7 @@
 
                 <form class="well form-horizontal" data-bind="visible: show, submit: save">
                     <fieldset>
-                        <legend>Rechnungsdaten</legend>
+                        <legend><?php echo __('Rechnungsadresse'); ?></legend>
 
                         <input id="invoice_id" type="hidden" data-bind="value: invoice_id" value=""/>
 
