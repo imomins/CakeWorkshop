@@ -44,7 +44,7 @@ class AppController extends Controller {
                     )
                 )
             ),
-            'authorize'    => 'controller'
+            'authorize'    => 'Controller'
         ),
     );
 
