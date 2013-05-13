@@ -1,4 +1,5 @@
 .idea
+/resources/*.bak
 /app/Config
 /app/tmp
 /lib/Cake/Console/Templates/skel/tmp/
