@@ -54,7 +54,7 @@ class UsersController extends AppController {
 
             $coursesByCategory = $this->Category->findCoursesGroupedByCategory();
             $occupations       = $this->Occupation->find('list');
-            $title_for_layout  = __('Bitte melden Sie sich an');
+            $title_for_layout  = __('Workshop Anmeldung');
 
             $this->set(compact('genders', 'departments', 'coursesByCategory', 'occupations', 'title_for_layout'));
         }

@@ -7,7 +7,7 @@ require(['domReady', 'jquery', 'bootstrap-collapse', 'bootstrap-dropdown'], func
             var form =
                 '<form action="' + $this.data('url') + '" method="POST">' +
                     '<input type="hidden" name="id" value="' + $this.data('id') + '">' +
-                '</form>';
+                    '</form>';
 
             $(form)
                 .appendTo($(document.body))

@@ -10,14 +10,14 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title><?php echo $title_for_layout; ?></title>
+    <title>Studiumdigitale - <?php echo $title_for_layout; ?></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
     <?php echo $this->Html->css('bootstrap.min'); ?>
     <?php echo $this->Html->css('bootstrap-responsive.min'); ?>
     <?php echo $this->Html->css('main'); ?>
-    <?php echo $this->Html->script('vendor/modernizr-2.6.1-respond-1.1.0.min'); ?>
+    <?php echo $this->Html->script('vendor/modernizr.custom'); ?>
 
     <!--[if gte IE 9]>
     <style type="text/css">
@@ -35,72 +35,7 @@
         };
     </script>
     <?php echo $this->Html->script('vendor/require.js', array('data-main' => Router::url('/', true) . 'js/main')); ?>
-    <script>
-        requirejs.config({
-            "paths": {
-                "bootstrap":            "vendor/bootstrap.min",
-                "bootstrap-tab":        "vendor/bootstrap/bootstrap-tab",
-                "bootstrap-tooltip":    "vendor/bootstrap/bootstrap-tooltip",
-                "bootstrap-dropdown":   "vendor/bootstrap/bootstrap-dropdown",
-                "bootstrap-button":     "vendor/bootstrap/bootstrap-button",
-                "bootstrap-alert":      "vendor/bootstrap/bootstrap-alert",
-                "bootstrap-transition": "vendor/bootstrap/bootstrap-transition",
-                "bootstrap-affix":      "vendor/bootstrap/bootstrap-affix",
-                "bootstrap-collapse":   "vendor/bootstrap/bootstrap-collapse",
-                "bootstrap-modal":      "vendor/bootstrap/bootstrap-modal",
-                "handlebars":           "vendor/handlebars",
-                "jquery":               "vendor/jquery-1.9.1.min",
-                "ko":                   "vendor/knockout-2.2.1",
-                "datepicker":           "vendor/jquery-ui-custom/js/jquery-ui-1.10.2.custom.min",
-                "jquery-ui":            "vendor/jquery-ui-custom/js/jquery-ui-1.10.2.custom.min",
-                "block-ui":             "vendor/jquery.blockUI"
-            },
-            "shim":  {
-                "handlebars":           {
-                    "exports": "Handlebars"
-                },
-                "datepicker":           {
-                    "deps": ["jquery", "vendor/jquery-ui-custom/js/jquery.ui.datepicker-de"]
-                },
-                "bootstrap":            {
-                    "deps": ["jquery"]
-                },
-                "jquery-ui":            {
-                    "deps": ["jquery"]
-                },
-                "block-ui":             {
-                    "deps": ["jquery"]
-                },
-                "bootstrap-tooltip":    {
-                    "deps": ["jquery"]
-                },
-                "bootstrap-tab":        {
-                    "deps": ["jquery"]
-                },
-                "bootstrap-affix":      {
-                    "deps": ["jquery"]
-                },
-                "bootstrap-button":     {
-                    "deps": ["jquery"]
-                },
-                "bootstrap-alert":      {
-                    "deps": ["jquery"]
-                },
-                "bootstrap-dropdown":   {
-                    "deps": ["jquery", "bootstrap-transition"]
-                },
-                "bootstrap-collapse":   {
-                    "deps": ["jquery", "bootstrap-transition"]
-                },
-                "bootstrap-modal":      {
-                    "deps": ["jquery", "bootstrap-transition"]
-                },
-                "bootstrap-transition": {
-                    "deps": ["jquery"]
-                }
-            }
-        });
-    </script>
+    <?php echo $this->Html->script('require-config'); ?>
 </head>
 
 <body>
@@ -114,10 +49,10 @@
 <div id="content" class="container">
     <div id="header" class="row-fluid">
         <div class="row-fluid">
-            <div class="span2 offset1 head-logo">
+            <div class="span2 left offset1 head-logo">
                 <?php echo $this->Html->image('head_logo.png'); ?>
             </div>
-            <div class="span2">
+            <div class="right span2">
                 <?php echo $this->Html->image('sd_logo_weiss.png'); ?>
             </div>
         </div>
@@ -166,7 +101,8 @@
                         <?php if ($loggedIn) : ?>
                             <li class="divider-vertical"></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <?php echo $username; ?> <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                        class="icon-user icon-white"></i> <?php echo $username; ?> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><?php echo $this->Html->link(__('Mein Konto'), '/users/edit'); ?></li>
                                     <li><?php echo $this->Html->link(__('Abmelden'), '/users/logout'); ?></li>
@@ -196,9 +132,9 @@
             <?php echo $this->fetch('content'); ?>
 
             <?php if ($isDebug): ?>
-            <div class="hero-unit">
-                <?php echo $this->element('sql_dump'); ?>
-            </div>
+                <div class="hero-unit">
+                    <?php echo $this->element('sql_dump'); ?>
+                </div>
             <?php endif; ?>
         </div>
     </div>

@@ -1,4 +1,17 @@
 //----------------------------------------------------------------------
+// Media Queries
+//----------------------------------------------------------------------
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    .mobile-header();
+}
+
+@media (max-width: 767px) {
+    .mobile-header();
+}
+
+//----------------------------------------------------------------------
 // Functions
 //----------------------------------------------------------------------
 
@@ -11,6 +24,15 @@
     background: ~"-ms-linear-gradient(top, #@{start} 0%, #@{stop} 100%)";
     background: ~"linear-gradient(to bottom, #@{start} 0%, #@{stop} 100%)";
     filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr='#00@{start}', endColorstr='#00@{stop}', GradientType=0 )";
+}
+
+.mobile-header () {
+    #header .head-logo {
+        line-height: 80px;
+        padding-left: 25px;
+    }
+    #header .head-logo img { border: none; }
+    #header .right { display: none; }
 }
 
 //----------------------------------------------------------------------
@@ -335,14 +357,15 @@ label.error {
 }
 
 #header {
-    height: 103px;
+    height: 105px;
     padding: 15px 0 0;
     background: #005eaa;
     .gradient('005eaa', '337ebb');
 
-    .head-logo {
+    .head-logo img {
         border-right: 1px solid white;
         line-height: 90px;
+        padding-right: 30px;
     }
 }
 
