@@ -1,17 +1,17 @@
 require([
     'domReady',
     'ko',
-    'viewmodel/InvoiceViewModel',
+    'viewmodel/AddressViewModel',
     'viewmodel/BookingViewModel',
     'bootstrap-tab',
     'bootstrap-modal',
     'bootstrap-button',
     'bootstrap-alert'
-], function (domReady, ko, InvoiceViewModel, BookingViewModel) {
+], function (domReady, ko, AddressViewModel, BookingViewModel) {
     "use strict";
 
     domReady(function () {
-        ko.applyBindings(new InvoiceViewModel(), document.getElementById('invoice'));
+        ko.applyBindings(new AddressViewModel(), document.getElementById('address'));
         ko.applyBindings(new BookingViewModel(), document.getElementById('course'));
     });
 });

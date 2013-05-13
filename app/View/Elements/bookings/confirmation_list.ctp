@@ -1,6 +1,6 @@
 <div class="pull-left">
     <h3>Unterschriftenliste zum Workshop</h3>
-    <h3>Kurs-Nr.: <?php echo $coursesTerm['CoursesTerm']['id']; ?>, <?php echo $coursesTerm['Course']['name']; ?>, <?php echo $coursesTerm['Term']['name']; ?></h3>
+    <h3>Kurs-Nr.: <?php echo $course['CoursesTerm']['id']; ?>, <?php echo $course['Course']['name']; ?>, <?php echo $course['Term']['name']; ?></h3>
 </div>
 
 <?php if (isset($logo) && $logo): ?>

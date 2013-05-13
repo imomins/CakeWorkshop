@@ -43,12 +43,12 @@
         </div>
     </div>
 
-    <div id="invoices" class="control-group">
+    <div id="addresses" class="control-group">
         <label class="control-label"><?php echo __('Rechnungsadresse'); ?></label>
 
         <div class="controls">
-            <select class="span6" name="data[Booking][invoice_id]" data-bind="value: invoice_id,options: invoices,optionsText: 'name',optionsValue: 'value'"></select>
-            <a style="display: none;" class="btn btn-small btn-primary" data-bind="visible: hasInvoice, click: edit"><?php echo __('Bearbeiten'); ?></a>
+            <select class="span6" name="data[Booking][address_id]" data-bind="value: address_id,options: addresses,optionsText: 'name',optionsValue: 'value'"></select>
+            <a style="display: none;" class="btn btn-small btn-primary" data-bind="visible: hasAddress, click: edit"><?php echo __('Bearbeiten'); ?></a>
             <a style="display: none;" class="btn btn-small btn" data-bind="visible: allowAdd, click: add"><?php echo __('Anlegen'); ?></a>
         </div>
     </div>

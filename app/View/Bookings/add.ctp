@@ -4,7 +4,7 @@
 		<legend><?php echo __('Add Booking'); ?></legend>
 	<?php
 		echo $this->Form->input('user_id');
-		echo $this->Form->input('invoice_id');
+		echo $this->Form->input('address_id');
 		echo $this->Form->input('commitment');
 		echo $this->Form->input('completed');
 		echo $this->Form->input('certificate');

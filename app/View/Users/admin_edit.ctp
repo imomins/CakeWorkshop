@@ -1,14 +1,14 @@
 <div class="well">
     <?php echo $this->Form->create('User', array('class' => 'form form-horizontal')); ?>
     <fieldset>
-        <legend><?php echo __('Benutzerdaten bearbeiten'); ?></legend>
+        <legend><?php echo __('Benutzerdaten von: %s', $this->request->data['User']['name']); ?></legend>
         <?php echo $this->Form->input('id'); ?>
 
         <div class="control-group">
             <label class="control-label"><?php echo __('Anrede'); ?></label>
 
             <div class="controls">
-                <?php echo $this->Form->input('gender_id', array('label' => false, 'div' => false, 'class' => 'span5')); ?>
+                <?php echo $this->Form->input('gender_id', array('label' => false, 'div' => false, 'class' => 'span2')); ?>
             </div>
         </div>
 
@@ -16,7 +16,7 @@
             <label class="control-label"><?php echo __('Titel'); ?></label>
 
             <div class="controls">
-                <?php echo $this->Form->input('title', array('label' => false, 'div' => false, 'class' => 'span5')); ?>
+                <?php echo $this->Form->input('title', array('label' => false, 'div' => false, 'class' => 'span2')); ?>
             </div>
         </div>
 
@@ -64,7 +64,7 @@
             <label class="control-label"><?php echo __('Hrz-Id'); ?></label>
 
             <div class="controls">
-                <?php echo $this->Form->input('hrz', array('label' => false, 'div' => false, 'class' => 'span5')); ?>
+                <?php echo $this->Form->input('hrz', array('label' => false, 'div' => false, 'class' => 'span3')); ?>
             </div>
         </div>
 
@@ -72,7 +72,7 @@
             <label class="control-label"><?php echo __('Tel.'); ?></label>
 
             <div class="controls">
-                <?php echo $this->Form->input('phone', array('label' => false, 'div' => false, 'class' => 'span5')); ?>
+                <?php echo $this->Form->input('phone', array('label' => false, 'div' => false, 'class' => 'span3')); ?>
             </div>
         </div>
 
@@ -80,7 +80,7 @@
             <label class="control-label"><?php echo __('Benutzergruppe'); ?></label>
 
             <div class="controls">
-                <?php echo $this->Form->input('group_id', array('label' => false, 'div' => false, 'class' => 'span5')); ?>
+                <?php echo $this->Form->input('group_id', array('label' => false, 'div' => false, 'class' => 'span3')); ?>
             </div>
         </div>
 
@@ -88,7 +88,7 @@
             <label class="control-label"><?php echo __('Konto aktiviert?'); ?></label>
 
             <div class="controls">
-                <?php echo $this->Form->input('active', array('type' => 'checkbox', 'label' => false, 'div' => false, 'class' => 'span5')); ?>
+                <?php echo $this->Form->input('active', array('type' => 'checkbox', 'label' => false, 'div' => false, 'class' => 'span1')); ?>
             </div>
         </div>
 
@@ -101,7 +101,7 @@
         </div>
     </fieldset>
 
-    <hr />
+    <hr/>
     <button type="submit" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
     <?php echo $this->Form->end(); ?>
 </div>

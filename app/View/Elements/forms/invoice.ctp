@@ -1,6 +1,6 @@
 <div class="well">
-    <?php echo $this->Form->create('Invoice', array('id' => 'formInvoice', 'action' => 'add', 'class' => 'form-horizontal form-invoice')); ?>
-    <p class="lead"><?php echo __('Rechnungsdaten'); ?></p>
+    <?php echo $this->Form->create('Address', array('id' => 'formInvoice', 'action' => 'add', 'class' => 'form-horizontal form-invoice')); ?>
+    <p class="lead"><?php echo __('Rechnungsadresse'); ?></p>
     <hr/>
 
     <div class="control-group">

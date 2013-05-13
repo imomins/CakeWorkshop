@@ -38,6 +38,14 @@
     </div>
 
     <div class="control-group">
+        <label class="control-label"><?php echo __('Email'); ?></label>
+
+        <div class="controls">
+            <?php echo $this->Form->input('email', array('required' => true, 'class' => 'span11', 'label' => false)); ?>
+        </div>
+    </div>
+
+    <div class="control-group">
         <label class="control-label"><?php echo __('Passwort'); ?></label>
 
         <div class="controls">
@@ -50,14 +58,6 @@
 
         <div class="controls">
             <?php echo $this->Form->input('password_confirm', array('required' => true, 'type' => 'password', 'class' => 'span11', 'label' => false)); ?>
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label"><?php echo __('Email'); ?></label>
-
-        <div class="controls">
-            <?php echo $this->Form->input('email', array('required' => true, 'class' => 'span11', 'label' => false)); ?>
         </div>
     </div>
 

@@ -64,15 +64,15 @@
         </div>
     </div>
 
-    <legend><?php echo __('Rechnungsdaten'); ?></legend>
+    <legend><?php echo __('Rechnungsadresse'); ?></legend>
 
-    <?php echo $this->Form->hidden('invoice_id', array('empty' => false, 'div' => false, 'label' => false, 'required' => true, 'class' => 'span3')); ?>
+    <?php echo $this->Form->hidden('address_id', array('empty' => false, 'div' => false, 'label' => false, 'required' => true, 'class' => 'span3')); ?>
 
     <div class="control-group">
         <label class="control-label"><?php echo __('Rechnung an'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->select('Invoice.type_name', $types, array('disabled' => true, 'empty' => false, 'div' => false, 'label' => false, 'required' => true, 'class' => 'span3')); ?>
+            <?php echo $this->Form->select('Address.type_name', $types, array('disabled' => true, 'empty' => false, 'div' => false, 'label' => false, 'required' => true, 'class' => 'span3')); ?>
         </div>
     </div>
 
@@ -80,7 +80,7 @@
         <label class="control-label"><?php echo __('Institution'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('Invoice.institution', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
+            <?php echo $this->Form->input('Address.institution', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
         </div>
     </div>
 
@@ -88,7 +88,7 @@
         <label class="control-label"><?php echo __('Einrichtung'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('Invoice.department', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
+            <?php echo $this->Form->input('Address.department', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
         </div>
     </div>
 
@@ -96,7 +96,7 @@
         <label class="control-label"><?php echo __('Hauspostfach'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('Invoice.postbox', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
+            <?php echo $this->Form->input('Address.postbox', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
         </div>
     </div>
 
@@ -104,7 +104,7 @@
         <label class="control-label"><?php echo __('Zu Händen von'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('Invoice.to_person', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
+            <?php echo $this->Form->input('Address.to_person', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
         </div>
     </div>
 
@@ -112,7 +112,7 @@
         <label class="control-label"><?php echo __('Straße'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('Invoice.street', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
+            <?php echo $this->Form->input('Address.street', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
         </div>
     </div>
 
@@ -120,7 +120,7 @@
         <label class="control-label"><?php echo __('PLZ'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('Invoice.zip', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
+            <?php echo $this->Form->input('Address.zip', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
         </div>
     </div>
 
@@ -128,7 +128,7 @@
         <label class="control-label"><?php echo __('Ort'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('Invoice.location', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
+            <?php echo $this->Form->input('Address.location', array('disabled' => true, 'div' => false, 'label' => false, 'class' => 'span5')); ?>
         </div>
     </div>
 
@@ -137,8 +137,8 @@
 
         <div class="controls">
             <a
-                href="<?php echo Router::url('/admin/invoices/edit/') . $this->request->data['Booking']['invoice_id']; ?>"
-                class="btn"><?php echo __('Rechnungsdaten berabeiten'); ?></a>
+                href="<?php echo Router::url('/admin/addresses/edit/') . $this->request->data['Booking']['address_id']; ?>"
+                class="btn"><?php echo __('Rechnungsadresse berabeiten'); ?></a>
         </div>
     </div>
 

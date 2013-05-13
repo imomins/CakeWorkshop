@@ -12,10 +12,8 @@ App::uses('AppModel', 'Model');
  */
 class User extends AppModel {
 
-    var $actsAs = array('Containable');
-
     public $virtualFields = array(
-        'name' => "CONCAT(User.firstname, ' ', User.lastname)"
+        'name' => "CONCAT(IFNULL(User.title , ''), IF (IFNULL(User.title , '') != '', ' ', ''),  User.firstname, ' ', User.lastname)"
     );
 
     public $displayField = 'name';
@@ -306,8 +304,8 @@ class User extends AppModel {
             'finderQuery'  => '',
             'counterQuery' => ''
         ),
-        'Invoice' => array(
-            'className'    => 'Invoice',
+        'Address' => array(
+            'className'    => 'Address',
             'foreignKey'   => 'user_id',
             'dependent'    => true,
             'conditions'   => '',

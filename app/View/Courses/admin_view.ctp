@@ -51,13 +51,13 @@
     <?php if (empty($course)): ?>
         <?php echo __('Keine Semesterkurse angesetzt'); ?>
     <?php else: ?>
-        <?php foreach ($course['children'] as $coursesTerm): ?>
+        <?php foreach ($course['children'] as $course): ?>
             <tr>
-                <td><?php echo $coursesTerm['CoursesTerm']['id']; ?></td>
-                <td><?php echo $coursesTerm['Term']['name']; ?></td>
-                <td><?php echo $coursesTerm['Schedule']['display']; ?></td>
-                <td><?php echo $this->Html->link(__('Anzeigen'), array('controller' => 'courses_terms', 'action' => 'view', $coursesTerm['CoursesTerm']['id'])); ?></td>
-                <td><?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id'])); ?></td>
+                <td><?php echo $course['CoursesTerm']['id']; ?></td>
+                <td><?php echo $course['Term']['name']; ?></td>
+                <td><?php echo $course['Schedule']['display']; ?></td>
+                <td><?php echo $this->Html->link(__('Anzeigen'), array('controller' => 'courses_terms', 'action' => 'view', $course['CoursesTerm']['id'])); ?></td>
+                <td><?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $course['CoursesTerm']['id'])); ?></td>
             </tr>
         <?php endforeach; ?>
     <?php endif; ?>

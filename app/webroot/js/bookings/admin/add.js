@@ -28,7 +28,7 @@ require(['domReady', 'bookings/admin/ViewModel', 'ko', 'jquery', 'jquery-ui', 'b
             },
             select:    function (event, ui) {
                 $("#user_id").val(ui.item.id);
-                ko.applyBindings(new ViewModel(ui.item.id), document.getElementById('invoices'));
+                ko.applyBindings(new ViewModel(ui.item.id), document.getElementById('addresses'));
             }
         });
 

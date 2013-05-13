@@ -293,7 +293,7 @@ class UsersController extends AppController {
                 'order'      => 'created DESC'
             )
         );
-        $title_for_layout = __('Benutzerdaten von: %s', $user['User']['name']);
+        $title_for_layout = $user['User']['name'];
         $this->set(compact('user', 'title_for_layout'));
     }
 
@@ -434,8 +434,29 @@ class UsersController extends AppController {
 
     public function account() {
         if ($this->request->is('post')) {
-            $this->User->id = $this->getUserId();
-            $this->redirect('/users/edit');
+
+            if ($this->request->data['User']['password'] !== $this->request->data['User']['password_confirm']) {
+                throw new Exception(__('Die Passwörter sind nicht identisch'));
+            }
+
+            $this->User->unbindModel(array(
+                'belongsTo' => array('Group', 'Gender', 'Occupation', 'Department')
+            ));
+
+            if ($this->User->updateAll(
+                array(
+                    'email'    => "'" . trim($this->request->data['User']['email']) . "'",
+                    'password' => "'" . AuthComponent::password($this->request->data['User']['password']) . "'"
+                ),
+                array('User.id =' => $this->getUserId())
+            )
+            ) {
+                $this->Session->setFlash(__('Ihr Konto wurde aktualisiert'), 'flash_success');
+                $this->redirect('/users/edit');
+            }
+            else {
+                throw new Exception(__('Fehler beim speicher'));
+            }
         }
         else {
             throw new MethodNotAllowedException();
@@ -496,12 +517,13 @@ class UsersController extends AppController {
         else {
             $this->request->data = $this->User->read(null, $id);
         }
-        $genders     = $this->User->Gender->find('list');
-        $departments = $this->User->Department->find('list');
-        $groups      = $this->User->Group->find('list');
-        $occupations = $this->User->Occupation->find('list');
+        $genders          = $this->User->Gender->find('list');
+        $departments      = $this->User->Department->find('list');
+        $groups           = $this->User->Group->find('list');
+        $occupations      = $this->User->Occupation->find('list');
+        $title_for_layout = $this->request->data['User']['name'];
 
-        $this->set(compact('genders', 'departments', 'groups', 'coursesTerms', 'occupations'));
+        $this->set(compact('genders', 'departments', 'groups', 'coursesTerms', 'occupations', 'title_for_layout'));
     }
 
     /**

@@ -18,7 +18,7 @@
                 echo $this->Form->create('User', array('controller' => 'users', 'action' => 'account'));
                 echo $this->Form->input('email', array('required' => true, 'class' => 'span4', 'label' => __('Email')));
                 echo $this->Form->input('password', array('required' => true, 'class' => 'span4', 'value' => '', 'label' => __('Passwort')));
-                echo $this->Form->input('password_confirm', array('required' => true, 'type' => 'password', 'class' => 'span4', 'label' => __('Passwort bestätigen')));
+                echo $this->Form->input('password_confirm', array('value' => '', 'required' => true, 'type' => 'password', 'class' => 'span4', 'label' => __('Passwort bestätigen')));
                 ?>
                 <hr/>
                 <?php

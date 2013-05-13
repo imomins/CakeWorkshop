@@ -3,7 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * Type Model
  *
- * @property Invoice $Invoice
+ * @property Address $Address
  */
 class Type extends AppModel {
 
@@ -22,8 +22,8 @@ class Type extends AppModel {
      * @var array
      */
     public $hasMany = array(
-        'Invoice' => array(
-            'className'    => 'Invoice',
+        'Address' => array(
+            'className'    => 'Address',
             'foreignKey'   => 'type_name',
             'dependent'    => false,
             'conditions'   => '',

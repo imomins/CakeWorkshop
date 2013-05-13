@@ -12,8 +12,6 @@
 
             <div class="row-fluid">
                 <div class="alert bg-light-blue">
-                    <button data-dismiss="alert" class="close" type="button">×</button>
-
                     <?php echo __('Bitte registrieren Sie sich oder melden Sie sich an, um Kurse zu belegen. Eine aktuelle Übersicht der Kurse können Sie auch ohne anmeldung einsehen.'); ?>
                     <br/>
                     <?php echo __('Falls Sie schon mal teilgenommen haben und ihre E-Mail angegeben hatten, dann klicken Sie <b><a href="%s">hier</a></b>, um ein Passwort zu erhalten.', Router::url('/users/reset')); ?>
@@ -29,8 +27,6 @@
 
         <div class="tab-pane" id="courses">
             <div class="alert bg-light-blue">
-                <button data-dismiss="alert" class="close" type="button">×</button>
-
                 <p><strong>Hinweis zur Anmeldung bei ausgebuchten Workshops</strong></p>
                 <br/>
 
@@ -71,11 +67,11 @@
                             <td data-bind="text: CoursesTerm.Term.name"></td>
                             <!-- days -->
                             <td colspan="3" style="min-width: 230px;">
-                                <span data-bind="if: CoursesTerm.noDays">Noch kein Termin festgelegt</span>
+                                <span data-bind="if: (CoursesTerm.days.length === 0)">Noch kein Termin festgelegt</span>
 
                                 <table class="table-embedded">
-                                    <tbody>
-                                    <tr data-bind="foreach: { data: CoursesTerm.days, as: 'day' }">
+                                    <tbody data-bind="foreach: { data: CoursesTerm.days, as: 'day' }">
+                                    <tr>
                                         <td data-bind="text: day.start_date"></td>
                                         <td data-bind="text: day.start_time + ' Uhr'"></td>
                                         <td data-bind="text: day.end_time + ' Uhr'"></td>

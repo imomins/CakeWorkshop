@@ -17,7 +17,7 @@
         <label class="control-label"><?php echo __('Von'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('start', array('label' => false, 'class' => 'span3')); ?>
+            <?php echo $this->Form->input('start', array('id' => 'start', 'required' => true, 'type' => 'text', 'dateFormat' => 'DMY', 'label' => false)); ?>
         </div>
     </div>
 
@@ -25,7 +25,7 @@
         <label class="control-label"><?php echo __('Bis'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->input('end', array('label' => false, 'class' => 'span3')); ?>
+            <?php echo $this->Form->input('end', array('id' => 'end', 'required' => true, 'type' => 'text', 'dateFormat' => 'DMY', 'label' => false)); ?>
         </div>
     </div>
 
@@ -47,4 +47,5 @@
     </div>
 </div>
 
-
+<?php echo $this->Html->css('jquery-ui-custom/css/flick/jquery-ui-1.10.2.custom.min'); ?>
+<?php echo $this->Html->script('terms/admin/edit'); ?>

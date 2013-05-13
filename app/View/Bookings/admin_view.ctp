@@ -90,54 +90,54 @@
 
         <legend><?php echo __('Rechnungsadresse'); ?></legend>
 
-        <?php if (!empty($booking['Invoice']['institution'])): ?>
+        <?php if (!empty($booking['Address']['institution'])): ?>
             <dt><?php echo __('Einrichtung'); ?></dt>
             <dd>
-                <?php echo h($booking['Invoice']['institution']); ?>
+                <?php echo h($booking['Address']['institution']); ?>
                 &nbsp;
             </dd>
         <?php endif; ?>
 
-        <?php if (!empty($booking['Invoice']['department'])): ?>
+        <?php if (!empty($booking['Address']['department'])): ?>
             <dt><?php echo __('Fachbereich'); ?></dt>
             <dd>
-                <?php echo h($booking['Invoice']['department']); ?>
+                <?php echo h($booking['Address']['department']); ?>
                 &nbsp;
             </dd>
         <?php endif; ?>
 
-        <?php if (!empty($booking['Invoice']['postbox'])): ?>
+        <?php if (!empty($booking['Address']['postbox'])): ?>
             <dt><?php echo __('Postfach'); ?></dt>
             <dd>
-                <?php echo h($booking['Invoice']['postbox']); ?>
+                <?php echo h($booking['Address']['postbox']); ?>
                 &nbsp;
             </dd>
         <?php endif; ?>
 
-        <?php if (!empty($booking['Invoice']['to_person'])): ?>
+        <?php if (!empty($booking['Address']['to_person'])): ?>
             <dt><?php echo __('Zu Händen von'); ?></dt>
             <dd>
-                <?php echo h($booking['Invoice']['to_person']); ?>
+                <?php echo h($booking['Address']['to_person']); ?>
                 &nbsp;
             </dd>
         <?php endif; ?>
 
         <dt><?php echo __('Straße'); ?></dt>
         <dd>
-            <?php echo h($booking['Invoice']['street']); ?>
+            <?php echo h($booking['Address']['street']); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('PLZ'); ?></dt>
         <dd>
-            <?php echo h($booking['Invoice']['zip']); ?>
+            <?php echo h($booking['Address']['zip']); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Ort'); ?></dt>
         <dd>
-            <?php echo h($booking['Invoice']['location']); ?>
+            <?php echo h($booking['Address']['location']); ?>
             &nbsp;
         </dd>
     </dl>
     <hr/>
-    <?php echo $this->Html->link(__('Rechnungsadresse bearbeiten'), array('controller' => 'invoices', 'action' => 'edit', $booking['Invoice']['id']), array('class' => 'btn')); ?>
+    <?php echo $this->Html->link(__('Rechnungsadresse bearbeiten'), array('controller' => 'addresses', 'action' => 'edit', $booking['Address']['id']), array('class' => 'btn')); ?>
 </div>

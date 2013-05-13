@@ -62,7 +62,7 @@ class AddressesController extends AppController {
      * @return void
      */
     public function admin_view($id) {
-        $sql_invoice = '
+        $sql = '
             SELECT User.id,User.firstname,User.lastname,Type.display,Address.* FROM addresses Address
                 LEFT JOIN users User ON (Address.user_id = User.id)
                 LEFT JOIN types Type ON (Address.type_name = Type.name)
@@ -83,16 +83,16 @@ class AddressesController extends AppController {
                 Booking.address_id = ?
         ';
 
-        $invoice = $this->Invoice->query($sql_invoice, array($id));
-        $invoice = $invoice[0];
+        $address = $this->Address->query($sql, array($id));
+        $address = $address[0];
 
         $related_bookings = $this->Address->query($sql_related_bookings, array($id));
 
-        if (empty($invoice)) {
+        if (empty($address)) {
             throw new NotFoundException(__('Ungültige Rechnung'));
 
         }
-        $this->set(compact('invoice', 'related_bookings'));
+        $this->set(compact('address', 'related_bookings'));
     }
 
     public function view($id) {
@@ -123,11 +123,11 @@ class AddressesController extends AppController {
         if ($this->request->is('post')) {
             $this->Address->create();
             if ($this->Address->save($this->request->data)) {
-                $this->Session->setFlash(__('The Address has been saved'));
+                $this->Session->setFlash(__('Die Adresse wurde gespeichert'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The Address could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Es ist ein Fehler aufgetreten'), 'flash_error');
             }
         }
         $types = $this->Address->Type->find('list');
@@ -143,7 +143,7 @@ class AddressesController extends AppController {
 
         $this->Address->create();
         if ($this->Address->save(array(
-            'Invoice' => array(
+            'Address' => array(
                 'user_id'     => $this->getUserId(),
                 'type_name'   => $this->request->data['type_name'],
                 'institution' => $this->request->data['institution'],
@@ -177,11 +177,11 @@ class AddressesController extends AppController {
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Address->save($this->request->data)) {
-                $this->Session->setFlash(__('The Address has been saved'));
+                $this->Session->setFlash(__('Die Adresse wurde gespeichert'), 'flash_success');
                 $this->redirect(array('action' => 'index'));
             }
             else {
-                $this->Session->setFlash(__('The Address could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Es ist ein Fehler aufgetreten'), 'flash_error');
             }
         }
         else {

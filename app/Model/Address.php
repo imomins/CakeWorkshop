@@ -1,7 +1,7 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Invoice Model
+ * Address Model
  *
  * @property User $User
  * @property Type $Type
@@ -10,7 +10,7 @@ App::uses('AppModel', 'Model');
 class Address extends AppModel {
 
     public $virtualFields = array(
-        'name' => '"Rechnungsvorlage"'
+        'name' => '"Adresse"'
     );
 
     /**
@@ -93,7 +93,7 @@ class Address extends AppModel {
     public $hasMany = array(
         'Booking' => array(
             'className'    => 'Booking',
-            'foreignKey'   => 'invoice_id',
+            'foreignKey'   => 'address_id',
             'dependent'    => false,
             'conditions'   => '',
             'fields'       => '',

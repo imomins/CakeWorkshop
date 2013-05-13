@@ -4,67 +4,67 @@ define(['ko', 'jquery'], function (ko, $) {
     function ViewModel(user_id) {
         var self = this;
 
-        this.invoices = ko.observableArray([]);
-        this.invoice_id = ko.observable('');
-        this.hasInvoice = ko.observable(false);
+        this.addresses = ko.observableArray([]);
+        this.address_id = ko.observable('');
+        this.hasAddress = ko.observable(false);
         this.allowAdd = ko.observable(true);
 
         this.selectedItem = function () {
             var self = this;
-            return ko.utils.arrayFirst(self.invoices(), function (item) {
-                return self.invoice_id() === item.value;
+            return ko.utils.arrayFirst(self.addresses(), function (item) {
+                return self.address_id() === item.value;
             });
         }.bind(this);
 
         this.add = function () {
-            window.location = CAKEWORKSHOP.webroot + 'admin/invoices/add/' + user_id;
+            window.location = CAKEWORKSHOP.webroot + 'admin/addresses/add/' + user_id;
         };
 
         this.edit = function () {
-            window.location = CAKEWORKSHOP.webroot + 'admin/invoices/edit/' + self.selectedItem().value;
+            window.location = CAKEWORKSHOP.webroot + 'admin/addresses/edit/' + self.selectedItem().value;
         };
 
-        function Invoice(invoice) {
-            var name = invoice.Type.display,
+        function Address(address) {
+            var name = address.Type.display,
                 key;
 
             // Build the label for the select box
-            if (invoice.Invoice.type_name === 'private') {
-                for (key in invoice.Invoice) {
+            if (address.Address.type_name === 'private') {
+                for (key in address.Address) {
                     if ($.inArray(key, ['street', 'location', 'zip', 'id']) === -1) {
-                        delete invoice.Invoice[key];
+                        delete address.Address[key];
                     }
                 }
-            } else if (invoice.Invoice.type_name === 'business') {
-                for (key in invoice.Invoice) {
+            } else if (address.Address.type_name === 'business') {
+                for (key in address.Address) {
                     if ($.inArray(key, ['id', 'institution', 'department', 'street', 'postbox', 'to_person', 'location', 'zip']) === -1) {
-                        delete invoice.Invoice[key];
+                        delete address.Address[key];
                     }
                 }
             }
 
-            for (key in invoice.Invoice) {
-                if ($.trim(invoice.Invoice[key]) !== '') {
-                    name += ', ' + invoice.Invoice[key];
+            for (key in address.Address) {
+                if ($.trim(address.Address[key]) !== '') {
+                    name += ', ' + address.Address[key];
                 }
             }
 
             this.name = name;
-            this.value = invoice.Invoice.id;
+            this.value = address.Address.id;
         }
 
-        $.getJSON(CAKEWORKSHOP.webroot + 'admin/invoices/index/' + user_id)
-            .success(function (invoices) {
+        $.getJSON(CAKEWORKSHOP.webroot + 'admin/addresses/index/' + user_id)
+            .success(function (addresses) {
                 var i;
 
-                self.invoices.removeAll();
+                self.addresses.removeAll();
 
-                for (i = 0; i < invoices.length; i += 1) {
-                    var invoice = invoices[i];
+                for (i = 0; i < addresses.length; i += 1) {
+                    var address = addresses[i];
 
-                    self.invoices.push(new Invoice(invoice));
+                    self.addresses.push(new Address(address));
                 }
-                self.hasInvoice(invoices.length > 0);
+                self.hasAddress(addresses.length > 0);
             });
     }
 

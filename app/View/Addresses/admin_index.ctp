@@ -14,22 +14,22 @@
         <th><?php echo $this->Paginator->sort('location', __('Ort')); ?></th>
         <th class="actions"><?php echo __('Actions'); ?></th>
     </tr>
-    <?php foreach ($invoices as $invoice): ?>
+    <?php foreach ($addresses as $address): ?>
         <tr>
             <td>
-                <?php echo $this->Html->link($invoice['User']['name'], array('controller' => 'users', 'action' => 'view', $invoice['User']['id'])); ?>
+                <?php echo $this->Html->link($address['User']['name'], array('controller' => 'users', 'action' => 'view', $address['User']['id'])); ?>
             </td>
-            <td><?php echo h($invoice['Invoice']['institution']); ?>&nbsp;</td>
-            <td><?php echo h($invoice['Invoice']['department']); ?>&nbsp;</td>
-            <td><?php echo h($invoice['Invoice']['postbox']); ?>&nbsp;</td>
-            <td><?php echo h($invoice['Invoice']['to_person']); ?>&nbsp;</td>
-            <td><?php echo h($invoice['Invoice']['street']); ?>&nbsp;</td>
-            <td><?php echo h($invoice['Invoice']['zip']); ?>&nbsp;</td>
-            <td><?php echo h($invoice['Invoice']['location']); ?>&nbsp;</td>
+            <td><?php echo h($address['Address']['institution']); ?>&nbsp;</td>
+            <td><?php echo h($address['Address']['department']); ?>&nbsp;</td>
+            <td><?php echo h($address['Address']['postbox']); ?>&nbsp;</td>
+            <td><?php echo h($address['Address']['to_person']); ?>&nbsp;</td>
+            <td><?php echo h($address['Address']['street']); ?>&nbsp;</td>
+            <td><?php echo h($address['Address']['zip']); ?>&nbsp;</td>
+            <td><?php echo h($address['Address']['location']); ?>&nbsp;</td>
             <td class="actions">
-                <?php echo $this->Html->link(__('View'), array('action' => 'view', $invoice['Invoice']['id'])); ?>
-                <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $invoice['Invoice']['id'])); ?>
-                <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $invoice['Invoice']['id']), null, __('Are you sure you want to delete # %s?', $invoice['Invoice']['id'])); ?>
+                <?php echo $this->Html->link(__('View'), array('action' => 'view', $address['Address']['id'])); ?>
+                <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $address['Address']['id'])); ?>
+                <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $address['Address']['id']), null, __('Are you sure you want to delete # %s?', $address['Address']['id'])); ?>
             </td>
         </tr>
     <?php endforeach; ?>

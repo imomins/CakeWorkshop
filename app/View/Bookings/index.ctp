@@ -22,20 +22,20 @@
                 </p>
             </div>
 
-            <div id="invoice">
-                <form class="form-inline" data-bind="visible: showInvoiceControls">
+            <div id="address">
+                <form class="form-inline" data-bind="visible: showAddressControls">
                     <label>Bitte wählen Sie einer Ihrer bestehende Rechnungsadresse oder erstellen Sie eine neue:</label><br />
-                    <div class="btn-group" data-toggle="buttons-radio" data-bind="click: load, foreach: invoices">
+                    <div class="btn-group" data-toggle="buttons-radio" data-bind="click: load, foreach: addresses">
                         <button data-bind="attr: { 'data-id': id }, text: name + '-' + ($index() + 1)" type="button" class="btn btn-small"></button>
                     </div>
-                    <button type="button" class="btn btn-small" data-bind="click: add, disable: working">Neue Rechnungsvorlage anlegen</button>
+                    <button type="button" class="btn btn-small" data-bind="click: add, disable: working">Neue Rechnungsadresse anlegen</button>
                 </form>
 
                 <form class="well form-horizontal" data-bind="visible: show, submit: save">
                     <fieldset>
                         <legend><?php echo __('Rechnungsadresse'); ?></legend>
 
-                        <input id="invoice_id" type="hidden" data-bind="value: invoice_id" value=""/>
+                        <input id="address_id" type="hidden" data-bind="value: address_id" value=""/>
 
                         <div class="control-group">
                             <label class="control-label">Rechnung An</label>
@@ -146,11 +146,17 @@
                                     <td data-bind="text: CoursesTerm.Term.name"></td>
                                     <!-- days -->
                                     <td colspan="3" style="min-width: 230px;">
-                                        <span data-bind="if: CoursesTerm.noDays">Noch kein Termin festgelegt</span>
-                                        <div data-bind="foreach: { data: CoursesTerm.days, as: 'day' }">
-                                            <span data-bind="text: day.start_date + ', ' + day.start_time + ' Uhr, ' + day.end_time + ' Uhr'"></span>
-                                            <br/>
-                                        </div>
+                                        <span data-bind="if: (CoursesTerm.days.length === 0)">Noch kein Termin festgelegt</span>
+
+                                        <table class="table-embedded">
+                                            <tbody data-bind="foreach: { data: CoursesTerm.days, as: 'day' }">
+                                            <tr>
+                                                <td data-bind="text: day.start_date"></td>
+                                                <td data-bind="text: day.start_time + ' Uhr'"></td>
+                                                <td data-bind="text: day.end_time + ' Uhr'"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </td>
                                     <!-- end days -->
                                     <td class="table-center" data-bind="text: CoursesTerm.attendees"></td>
@@ -208,7 +214,7 @@
             </div>
         </div>
 
-        <div class="tab-pane" id="invoices">
+        <div class="tab-pane" id="addresses">
         </div>
 
     </div>

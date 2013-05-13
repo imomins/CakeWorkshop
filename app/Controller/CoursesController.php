@@ -15,6 +15,9 @@ class CoursesController extends AppController {
     public function admin_index() {
         $this->Course->recursive = 0;
         $this->set('courses', $this->paginate());
+
+        $title_for_layout = __('Kursübersicht');
+        $this->set(compact('title_for_layout'));
     }
 
     /**
@@ -40,12 +43,14 @@ class CoursesController extends AppController {
         ', array($id));
 
         $course['children'] = $result;
-        // The data are repetitions, copy to root for main course data
+        // The data are repetitions, copy to root to main course data
         $course['Term']     = $course['children'][0]['Term'];
         $course['Course']   = $course['children'][0]['Course'];
         $course['Category'] = $course['children'][0]['Category'];
 
-        $this->set(compact('course'));
+        $title_for_layout = $course['Course']['name'];
+
+        $this->set(compact('course', 'title_for_layout'));
     }
 
     /**
@@ -66,7 +71,9 @@ class CoursesController extends AppController {
         }
         $categories = $this->Course->Category->find('list');
         $terms      = $this->Course->Term->find('list');
-        $this->set(compact('categories', 'terms'));
+        $title_for_layout = __('Kurs anlegen');
+
+        $this->set(compact('categories', 'terms', 'title_for_layout'));
     }
 
     /**

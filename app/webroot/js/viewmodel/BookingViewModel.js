@@ -60,15 +60,15 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
             $.getJSON(CAKEWORKSHOP.webroot + 'bookings/index.json')
                 .success(function (data) {
                     self.categories.removeAll();
-                    var cats = data.coursesByCategory,
+                    var categories = data.coursesByCategory,
                         i;
 
-                    for (i = 0; i < cats.length; i += 1) {
-                        self.categories.push(cats[i]);
+                    for (i = 0; i < categories.length; i += 1) {
+                        self.categories.push(categories[i]);
                     }
                     // Highlight first button
-                    if (cats.length > 0) {
-                        $('#invoice').find('.btn-group button').first().addClass('active');
+                    if (categories.length > 0) {
+                        $('#address').find('.btn-group button').first().addClass('active');
                     }
                 })
                 .error(function (response) {
@@ -78,9 +78,9 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
 
         this.save = function () {
             var originalCaption = this.saveBooking(),
-                invoiceId = +$('#invoice_id').val();
+                addressId = +$('#address_id').val();
 
-            if (isNaN(invoiceId)) {
+            if (isNaN(addressId)) {
                 alert('Keine gültige Rechnung ausgewählt');
                 return;
             }
@@ -96,7 +96,7 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
                 ids.push(parseInt($(this).data('id'), 10));
             });
 
-            $.post(CAKEWORKSHOP.webroot + 'bookings/add.json', {CoursesTerm: ids, Invoice: {id: invoiceId}})
+            $.post(CAKEWORKSHOP.webroot + 'bookings/add.json', {CoursesTerm: ids, Address: {id: addressId}})
                 .success(function (response) {
                     // Update data
                     self.fetch();

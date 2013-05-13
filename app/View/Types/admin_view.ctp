@@ -26,7 +26,7 @@
 </div>
 <div class="related">
 	<h3><?php echo __('Related Invoices'); ?></h3>
-	<?php if (!empty($type['Invoice'])): ?>
+	<?php if (!empty($type['Address'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php echo __('Id'); ?></th>
@@ -42,21 +42,21 @@
 	</tr>
 	<?php
 		$i = 0;
-		foreach ($type['Invoice'] as $invoice): ?>
+		foreach ($type['Address'] as $address): ?>
 		<tr>
-			<td><?php echo $invoice['id']; ?></td>
-			<td><?php echo $invoice['type_id']; ?></td>
-			<td><?php echo $invoice['institution']; ?></td>
-			<td><?php echo $invoice['department']; ?></td>
-			<td><?php echo $invoice['postbox']; ?></td>
-			<td><?php echo $invoice['to_person']; ?></td>
-			<td><?php echo $invoice['street']; ?></td>
-			<td><?php echo $invoice['zip']; ?></td>
-			<td><?php echo $invoice['location']; ?></td>
+			<td><?php echo $address['id']; ?></td>
+			<td><?php echo $address['type_id']; ?></td>
+			<td><?php echo $address['institution']; ?></td>
+			<td><?php echo $address['department']; ?></td>
+			<td><?php echo $address['postbox']; ?></td>
+			<td><?php echo $address['to_person']; ?></td>
+			<td><?php echo $address['street']; ?></td>
+			<td><?php echo $address['zip']; ?></td>
+			<td><?php echo $address['location']; ?></td>
 			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'invoices', 'action' => 'view', $invoice['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'invoices', 'action' => 'edit', $invoice['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'invoices', 'action' => 'delete', $invoice['id']), null, __('Are you sure you want to delete # %s?', $invoice['id'])); ?>
+				<?php echo $this->Html->link(__('View'), array('controller' => 'invoices', 'action' => 'view', $address['id'])); ?>
+				<?php echo $this->Html->link(__('Edit'), array('controller' => 'invoices', 'action' => 'edit', $address['id'])); ?>
+				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'invoices', 'action' => 'delete', $address['id']), null, __('Are you sure you want to delete # %s?', $address['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>

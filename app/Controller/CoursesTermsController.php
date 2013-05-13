@@ -63,7 +63,10 @@ class CoursesTermsController extends AppController {
         $terms = $this->CoursesTerm->Term->find('list', array(
             'order' => 'Term.id DESC'
         ));
-        $this->set('terms', $terms);
+
+        $title_for_layout = __('Semester-Kurse');
+
+        $this->set(compact('terms', 'title_for_layout'));
         $this->set('coursesTerms', $this->paginate());
     }
 

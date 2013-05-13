@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h3><?php echo __('Daten des Benutzers: ' . h($user['User']['firstname']) . ' ' . h($user['User']['lastname'])); ?></h3>
+    <h3><?php echo __('Daten des Benutzers: %s', $user['User']['name']); ?></h3>
 </div>
 
 <div class="row-fluid">

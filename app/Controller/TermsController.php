@@ -13,6 +13,7 @@ class TermsController extends AppController {
      * @return void
      */
     public function admin_index() {
+        $this->set('title_for_layout', __('Semester-Übersicht'));
         $this->set('terms', $this->paginate());
     }
 
@@ -26,17 +27,35 @@ class TermsController extends AppController {
     public function admin_view($id = null) {
         $this->Term->id = $id;
         if (!$this->Term->exists()) {
-            throw new NotFoundException(__('Invalid term'));
+            throw new NotFoundException(__('Unbekanntes Semester'));
         }
 
         $terms = $this->Term->find('all', array(
-            'recursive'  => 2,
+            'recursive'  => -1,
             'conditions' => array('Term.id' => $id),
-            'fields'     => array('Term.name', 'CoursesTerm.max')
+            'fields'     => array('CoursesTerm.id', 'Term.*', 'Course.name'),
+            'joins'      => array(
+                array(
+                    'table'      => 'courses_terms',
+                    'alias'      => 'CoursesTerm',
+                    'type'       => 'LEFT',
+                    'conditions' => array(
+                        'Term.id = CoursesTerm.term_id',
+                    )
+                ),
+                array(
+                    'table'      => 'courses',
+                    'alias'      => 'Course',
+                    'type'       => 'LEFT',
+                    'conditions' => array(
+                        'CoursesTerm.course_id = Course.id',
+                    )
+                )
+            )
         ));
-        debug($terms);
 
-        $this->set('term', $this->Term->read(null, $id));
+        $title_for_layout = $terms[0]['Term']['name'];
+        $this->set(compact('terms', 'title_for_layout'));
     }
 
     /**
@@ -54,6 +73,9 @@ class TermsController extends AppController {
             else {
                 $this->Session->setFlash(__('Speichern fehlgeschlagen'), 'flash_error');
             }
+        }
+        else {
+            $this->set('title_for_layout', __('Semester Anlegen'));
         }
     }
 

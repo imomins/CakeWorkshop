@@ -1,9 +1,6 @@
-<div class="page-header">
-    <h4><?php echo __('Semester bearbeiten'); ?></h4>
-</div>
-
 <div class="well ">
     <?php echo $this->Form->create('Term'); ?>
+    <legend><?php echo __('Semester Anlegen'); ?></legend>
 
     <div class="control-group">
         <label class="control-label"><?php echo __('Semester-Bezeichnung'); ?></label>

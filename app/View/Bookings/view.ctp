@@ -11,9 +11,9 @@
 			<?php echo $this->Html->link($booking['User']['name'], array('controller' => 'users', 'action' => 'view', $booking['User']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Invoice'); ?></dt>
+		<dt><?php echo __('Address'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($booking['Invoice']['name'], array('controller' => 'invoices', 'action' => 'view', $booking['Invoice']['id'])); ?>
+			<?php echo $this->Html->link($booking['Address']['name'], array('controller' => 'invoices', 'action' => 'view', $booking['Address']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Commitment'); ?></dt>

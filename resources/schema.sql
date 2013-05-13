@@ -138,8 +138,8 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`users` (
   INDEX `fk_attendees_departments_idx` (`department_id` ASC) ,
   UNIQUE INDEX `idx_unique_email` (`email` ASC) ,
   INDEX `idx_hash` (`hash` ASC) ,
-  INDEX `fk_users_groups1_idx` (`group_name` ASC) ,
-  INDEX `fk_users_occupations1_idx` (`occupation_id` ASC) ,
+  INDEX `fk_users_groups_idx` (`group_name` ASC) ,
+  INDEX `fk_users_occupations_idx` (`occupation_id` ASC) ,
   CONSTRAINT `fk_users_genders1`
     FOREIGN KEY (`gender_id` )
     REFERENCES `cake_workshop`.`genders` (`id` )
@@ -158,51 +158,6 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`users` (
   CONSTRAINT `fk_users_occupations1`
     FOREIGN KEY (`occupation_id` )
     REFERENCES `cake_workshop`.`occupations` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `cake_workshop`.`types`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `cake_workshop`.`types` ;
-
-CREATE  TABLE IF NOT EXISTS `cake_workshop`.`types` (
-  `name` VARCHAR(45) NOT NULL ,
-  `display` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`name`) ,
-  UNIQUE INDEX `display_UNIQUE` (`display` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `cake_workshop`.`invoices`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `cake_workshop`.`invoices` ;
-
-CREATE  TABLE IF NOT EXISTS `cake_workshop`.`invoices` (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `user_id` BIGINT UNSIGNED NOT NULL ,
-  `type_name` VARCHAR(45) NOT NULL ,
-  `institution` VARCHAR(100) NULL ,
-  `department` VARCHAR(100) NULL ,
-  `postbox` VARCHAR(100) NULL ,
-  `to_person` VARCHAR(100) NULL ,
-  `street` VARCHAR(100) NOT NULL ,
-  `zip` VARCHAR(10) NOT NULL ,
-  `location` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_invoices_users_idx` (`user_id` ASC) ,
-  INDEX `fk_invoices_types_idx` (`type_name` ASC) ,
-  CONSTRAINT `fk_invoices_users1`
-    FOREIGN KEY (`user_id` )
-    REFERENCES `cake_workshop`.`users` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_invoices_types1`
-    FOREIGN KEY (`type_name` )
-    REFERENCES `cake_workshop`.`types` (`name` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -285,6 +240,51 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `cake_workshop`.`types`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `cake_workshop`.`types` ;
+
+CREATE  TABLE IF NOT EXISTS `cake_workshop`.`types` (
+  `name` VARCHAR(45) NOT NULL ,
+  `display` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`name`) ,
+  UNIQUE INDEX `display_UNIQUE` (`display` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cake_workshop`.`addresses`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `cake_workshop`.`addresses` ;
+
+CREATE  TABLE IF NOT EXISTS `cake_workshop`.`addresses` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `user_id` BIGINT UNSIGNED NOT NULL ,
+  `type_name` VARCHAR(45) NOT NULL ,
+  `institution` VARCHAR(100) NULL ,
+  `department` VARCHAR(100) NULL ,
+  `postbox` VARCHAR(100) NULL ,
+  `to_person` VARCHAR(100) NULL ,
+  `street` VARCHAR(100) NOT NULL ,
+  `zip` VARCHAR(10) NOT NULL ,
+  `location` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_addresses_types_idx` (`type_name` ASC) ,
+  INDEX `fk_addresses_users_idx` (`user_id` ASC) ,
+  CONSTRAINT `fk_addresses_types`
+    FOREIGN KEY (`type_name` )
+    REFERENCES `cake_workshop`.`types` (`name` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_addresses_users`
+    FOREIGN KEY (`user_id` )
+    REFERENCES `cake_workshop`.`users` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `cake_workshop`.`bookings`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `cake_workshop`.`bookings` ;
@@ -292,8 +292,8 @@ DROP TABLE IF EXISTS `cake_workshop`.`bookings` ;
 CREATE  TABLE IF NOT EXISTS `cake_workshop`.`bookings` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `user_id` BIGINT UNSIGNED NOT NULL ,
+  `address_id` BIGINT UNSIGNED NOT NULL ,
   `courses_term_id` BIGINT UNSIGNED NOT NULL ,
-  `invoice_id` BIGINT UNSIGNED NOT NULL ,
   `booking_state_name` VARCHAR(45) NOT NULL ,
   `attendance_state_name` VARCHAR(45) NULL ,
   `notes` TEXT NULL ,
@@ -304,18 +304,13 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`bookings` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_bookings_users_idx` (`user_id` ASC) ,
   UNIQUE INDEX `idx_unique_booking` (`user_id` ASC, `courses_term_id` ASC) ,
-  INDEX `fk_bookings_invoices_idx` (`invoice_id` ASC) ,
   INDEX `fk_bookings_courses_term_idx` (`courses_term_id` ASC) ,
   INDEX `fk_bookings_statuses1_idx` (`booking_state_name` ASC) ,
   INDEX `fk_bookings_attendance_states1_idx` (`attendance_state_name` ASC) ,
+  INDEX `fk_bookings_addresses1_idx` (`address_id` ASC) ,
   CONSTRAINT `fk_bookings_users`
     FOREIGN KEY (`user_id` )
     REFERENCES `cake_workshop`.`users` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_bookings_invoices1`
-    FOREIGN KEY (`invoice_id` )
-    REFERENCES `cake_workshop`.`invoices` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_bookings_courses_terms1`
@@ -331,6 +326,11 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`bookings` (
   CONSTRAINT `fk_bookings_attendance_states1`
     FOREIGN KEY (`attendance_state_name` )
     REFERENCES `cake_workshop`.`attendance_states` (`name` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_bookings_addresses1`
+    FOREIGN KEY (`address_id` )
+    REFERENCES `cake_workshop`.`addresses` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -449,16 +449,6 @@ INSERT INTO `cake_workshop`.`occupations` (`id`, `name`) VALUES (5, 'Sonstige');
 COMMIT;
 
 -- -----------------------------------------------------
--- Data for table `cake_workshop`.`types`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `cake_workshop`;
-INSERT INTO `cake_workshop`.`types` (`name`, `display`) VALUES ('private', 'Privat');
-INSERT INTO `cake_workshop`.`types` (`name`, `display`) VALUES ('business', 'Geschäftlich');
-
-COMMIT;
-
--- -----------------------------------------------------
 -- Data for table `cake_workshop`.`schedules`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -493,5 +483,15 @@ INSERT INTO `cake_workshop`.`attendance_states` (`name`, `display`) VALUES ('ill
 INSERT INTO `cake_workshop`.`attendance_states` (`name`, `display`) VALUES ('self_cancelled', 'Selbst abgesagt');
 INSERT INTO `cake_workshop`.`attendance_states` (`name`, `display`) VALUES ('goodwill_self_cancelled', 'Selbst abgesagt (Kulanz)');
 INSERT INTO `cake_workshop`.`attendance_states` (`name`, `display`) VALUES ('not_present', 'Nicht Teilgenommen');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `cake_workshop`.`types`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `cake_workshop`;
+INSERT INTO `cake_workshop`.`types` (`name`, `display`) VALUES ('private', 'Privat');
+INSERT INTO `cake_workshop`.`types` (`name`, `display`) VALUES ('business', 'Geschäftlich');
 
 COMMIT;

@@ -92,14 +92,20 @@ EOD;
                     'confirmedClass' => ($row[0]['booking_state_name'] === 'confirmed') ? 'success' : '',
                     'errorClass'     => ($row['courses_terms']['attendees'] > $row['courses_terms']['max']) ? 'warning' : '',
                     'booking_state'  => ($row[0]['booking_state_name'] !== null) ? $row[0]['booking_state_name'] : '',
-                    'days'           => array(
+                    'days'           => array()
+                );
+
+                // LEFT OUTER JOIN on days, don't take not yet set days
+                if ($row[0]['start_date'] !== null) {
+                    array_push(
+                        $categories[$row['categories']['id']]['Category']['CoursesTerm'][$row['courses_terms']['id']]['days'],
                         array(
                             'start_date' => $row[0]['start_date'],
                             'start_time' => $row[0]['start_time'],
                             'end_time'   => $row[0]['end_time']
                         )
-                    )
-                );
+                    );
+                }
             }
             // Add new days
             else {

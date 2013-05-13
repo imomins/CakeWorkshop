@@ -29,7 +29,10 @@ class CategoriesController extends AppController {
         if (!$this->Category->exists()) {
             throw new NotFoundException(__('Ungültige Kategorie'), 'flash_error');
         }
-        $this->set('category', $this->Category->read(null, $id));
+        $category = $this->Category->read(null, $id);
+        $title_for_layout = $category['Category']['name'];
+
+        $this->set(compact('category', 'title_for_layout'));
     }
 
     /**
@@ -47,6 +50,10 @@ class CategoriesController extends AppController {
             else {
                 $this->Session->setFlash(__('Kategorie konnte nicht gespeichert werden'), 'flash_error');
             }
+        }
+        else {
+            $title_for_layout = __('Kategorie anlegen');
+            $this->set(compact('title_for_layout'));
         }
     }
 
@@ -73,6 +80,8 @@ class CategoriesController extends AppController {
         }
         else {
             $this->request->data = $this->Category->read(null, $id);
+            $title_for_layout = $this->request->data['Category']['name'];
+            $this->set(compact('title_for_layout'));
         }
     }
 

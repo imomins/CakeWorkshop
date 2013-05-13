@@ -10,49 +10,49 @@
         <dl class="dl-horizontal well">
             <dt><?php echo __('Kurs-Nr.'); ?></dt>
             <dd>
-                <?php echo h($coursesTerm['CoursesTerm']['id']); ?>
+                <?php echo h($course['CoursesTerm']['id']); ?>
                 &nbsp;
             </dd>
 
             <dt><?php echo __('Kurs'); ?></dt>
             <dd>
-                <?php echo $this->Html->link($coursesTerm['Course']['name'], array('controller' => 'courses', 'action' => 'view', $coursesTerm['Course']['id'])); ?>
+                <?php echo $this->Html->link($course['Course']['name'], array('controller' => 'courses', 'action' => 'view', $course['Course']['id'])); ?>
                 &nbsp;
             </dd>
 
             <dt><?php echo __('Status'); ?></dt>
             <dd>
-                <?php echo $coursesTerm['Schedule']['display']; ?>
+                <?php echo $course['Schedule']['display']; ?>
                 &nbsp;
             </dd>
 
             <dt><?php echo __('Semester'); ?></dt>
             <dd>
-                <?php echo $this->Html->link($coursesTerm['Term']['name'], array('controller' => 'terms', 'action' => 'view', $coursesTerm['Term']['id'])); ?>
+                <?php echo $this->Html->link($course['Term']['name'], array('controller' => 'terms', 'action' => 'view', $course['Term']['id'])); ?>
                 &nbsp;
             </dd>
 
             <dt><?php echo __('Ort'); ?></dt>
             <dd>
-                <?php echo h($coursesTerm['CoursesTerm']['location']); ?>
+                <?php echo h($course['CoursesTerm']['location']); ?>
                 &nbsp;
             </dd>
 
             <dt><?php echo __('Angemeldet'); ?></dt>
             <dd id="attendeesCount">
-                <?php echo h($coursesTerm['CoursesTerm']['attendees']); ?>
+                <?php echo h($course['CoursesTerm']['attendees']); ?>
                 &nbsp;
             </dd>
 
             <dt><?php echo __('Maximal'); ?></dt>
             <dd>
-                <?php echo h($coursesTerm['CoursesTerm']['max']); ?>
+                <?php echo h($course['CoursesTerm']['max']); ?>
                 &nbsp;
             </dd>
 
             <dt><?php echo __('Anmelden sperren?'); ?></dt>
             <dd>
-                <?php echo $this->Frontend->YesNo($coursesTerm['CoursesTerm']['locked']); ?>
+                <?php echo $this->Frontend->YesNo($course['CoursesTerm']['locked']); ?>
                 &nbsp;
             </dd>
         </dl>
@@ -67,12 +67,12 @@
             <th style="min-width:50px;"><strong>Löschen</strong></th>
             </thead>
             <tbody>
-            <?php if (empty($coursesTerm['Day'])): ?>
+            <?php if (empty($course['Day'])): ?>
                 <tr>
                     <td colspan="4"><?php echo __('Keine Tage bisher angesetzt'); ?></td>
                 </tr>
             <?php else: ?>
-                <?php foreach ($coursesTerm['Day'] as $day): ?>
+                <?php foreach ($course['Day'] as $day): ?>
                     <tr>
                         <td><?php echo date('d.m.Y', strtotime($day['start_date'])); ?></td>
                         <td><?php echo date('H:i', strtotime($day['start_time'])); ?> Uhr</td>
@@ -88,25 +88,25 @@
             <?php endif; ?>
             </tbody>
         </table>
-        <?php echo $this->Html->link(__('Neuer Tag'), array('controller' => 'days', 'action' => 'add', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-primary btn-small btn-primary', 'style' => 'margin:0;margin-top:-10px;')); ?>
+        <?php echo $this->Html->link(__('Neuer Tag'), array('controller' => 'days', 'action' => 'add', $course['CoursesTerm']['id']), array('class' => 'btn btn-primary btn-small btn-primary', 'style' => 'margin:0;margin-top:-10px;')); ?>
     </div>
 </div>
 
 <div class="row-fluid">
     <div class="span12" style="margin-top: -10px;">
-        <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-primary')); ?>
-        <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small')); ?>
+        <?php echo $this->Html->link(__('Kursdaten bearbeiten'), array('controller' => 'courses_terms', 'action' => 'edit', $course['CoursesTerm']['id']), array('class' => 'btn btn-small btn-primary')); ?>
+        <?php echo $this->Html->link(__('Namensschilder Drucken'), array('controller' => 'courses_terms', 'action' => 'nameplates', $course['CoursesTerm']['id']), array('class' => 'btn btn-small')); ?>
         <div class="btn-group">
             <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
                 <?php echo __('Unterschriftenliste generieren'); ?>
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><?php echo $this->Html->link(__('HTML'), array('controller' => 'courses_terms', 'action' => 'list', $coursesTerm['CoursesTerm']['id'], 'default')); ?></li>
-                <li><?php echo $this->Html->link(__('PDF'), array('controller' => 'courses_terms', 'action' => 'list', $coursesTerm['CoursesTerm']['id'], 'ext' => 'pdf')); ?></li>
+                <li><?php echo $this->Html->link(__('HTML'), array('controller' => 'courses_terms', 'action' => 'list', $course['CoursesTerm']['id'], 'default')); ?></li>
+                <li><?php echo $this->Html->link(__('PDF'), array('controller' => 'courses_terms', 'action' => 'list', $course['CoursesTerm']['id'], 'ext' => 'pdf')); ?></li>
             </ul>
         </div>
-        <?php echo $this->Html->link(__('Kurs absagen und neu ansetzen'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-danger')); ?>
+        <?php echo $this->Html->link(__('Kurs absagen und neu ansetzen'), array('controller' => 'courses_terms', 'action' => 'nameplates', $course['CoursesTerm']['id']), array('class' => 'btn btn-small btn-danger')); ?>
     </div>
 </div>
 
@@ -115,7 +115,7 @@
 <div class="row-fluid">
     <div class="span12">
         <div id="booking">
-            <input id="CoursesTermId" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
+            <input id="CoursesTermId" value="<?php echo $course['CoursesTerm']['id']; ?>" type="hidden"/>
 
             <div class="type flat-ui-sun-flower"><?php echo __('Unbestätigte Anmeldungen'); ?></div>
             <table class="table-condensed table table-bordered table-striped table-hover">

@@ -5,14 +5,17 @@
 <table class="table table-bordered table-striped">
     <tr>
         <th><?php echo $this->Paginator->sort('name'); ?></th>
-        <th class="actions"><?php echo __('Optionen'); ?></th>
+        <th><?php echo __('Bearbeiten'); ?></th>
+        <th><?php echo __('Löschen'); ?></th>
     </tr>
     <?php
     foreach ($categories as $category): ?>
         <tr>
             <td><?php echo $this->Html->link($category['Category']['name'], array('action' => 'view', $category['Category']['id'])); ?></td>
-            <td class="actions">
+            <td>
                 <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $category['Category']['id'])); ?>
+            </td>
+            <td>
                 <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $category['Category']['id']), null, __('Are you sure you want to delete # %s?', $category['Category']['id'])); ?>
             </td>
         </tr>

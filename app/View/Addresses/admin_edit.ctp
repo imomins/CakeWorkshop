@@ -4,7 +4,7 @@
 </div>
 
 <div class="well">
-    <?php echo $this->Form->create('Invoice', array('class' => 'form-horizontal')); ?>
+    <?php echo $this->Form->create('Address', array('class' => 'form-horizontal')); ?>
     <?php echo $this->Form->input('id'); ?>
 
     <legend><?php echo __('Anmeldungsdaten'); ?></legend>
@@ -84,7 +84,7 @@
     <hr/>
     <button type="submit" class="btn btn-primary"><?php echo __('Speichern'); ?></button>
     <button type="button" class="btn btn-danger confirm"
-            data-url="<?php echo Router::url('/admin/invoices/delete/') . $this->request->data['Invoice']['id']; ?>"
+            data-url="<?php echo Router::url('/admin/addresses/delete/') . $this->request->data['Address']['id']; ?>"
             data-confirm="<?php echo __('Rechnungsadresse löschen?'); ?>"><?php echo __('Löschen'); ?></button>
 
     <?php echo $this->Form->end(); ?>

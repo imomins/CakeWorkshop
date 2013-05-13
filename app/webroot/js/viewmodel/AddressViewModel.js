@@ -1,14 +1,14 @@
 define(['ko', 'jquery'], function (ko, $) {
     "use strict";
 
-    function InvoiceViewModel() {
+    function AddressViewModel() {
         var self = this;
 
         this.working = ko.observable(false);
         this.saveCaption = ko.observable('Speichern');
 
-        // List of existing invoices
-        this.invoices = ko.observableArray([]);
+        // List of existing addresses
+        this.addresses = ko.observableArray([]);
 
         // Form
         this.to_person = ko.observable();
@@ -27,7 +27,7 @@ define(['ko', 'jquery'], function (ko, $) {
         this.loaded = ko.observable(false);
         this.business = ko.observable(true);
         this.private = ko.observable(true);
-        this.showInvoiceControls = ko.observable(false);
+        this.showAddressControls = ko.observable(false);
 
         /**
          * Form specific methods.
@@ -55,7 +55,7 @@ define(['ko', 'jquery'], function (ko, $) {
 
         this.fetch = function () {
             // Load form data
-            $.getJSON('invoices/types.json')
+            $.getJSON('addresses/types.json')
                 .success(function (data) {
                     var i;
                     for (i = 0; i < data.length; i += 1) {
@@ -66,17 +66,17 @@ define(['ko', 'jquery'], function (ko, $) {
                     alert($.parseJSON(response.responseText).name);
                 });
 
-            $.getJSON('invoices.json')
+            $.getJSON('addresses.json')
                 .success(function (data) {
                     var i;
 
                     for (i = 0; i < data.length; i += 1) {
-                        self.invoices.push(data[i].Invoice);
-                        self.showInvoiceControls(data.length > 0);
+                        self.addresses.push(data[i].Address);
+                        self.showAddressControls(data.length > 0);
                     }
-                    // Just load the first invoice as default if is exists
+                    // Just load the first address as default if is exists
                     if (data.length > 0) {
-                        self.load(undefined, undefined, data[0].Invoice.id);
+                        self.load(undefined, undefined, data[0].Address.id);
                     }
                 })
                 .error(function (response) {
@@ -91,7 +91,7 @@ define(['ko', 'jquery'], function (ko, $) {
         };
 
         /**
-         * Loads an invoice.
+         * Loads an address.
          * @param data
          * @param event
          * @param address_id
@@ -100,17 +100,17 @@ define(['ko', 'jquery'], function (ko, $) {
             self.working(true);
             var id = address_id || $(event.target).data('id');
 
-            $.getJSON('invoices/view/' + id)
+            $.getJSON('addresses/view/' + id)
                 .success(function (response) {
-                    self.address_id(response.Invoice.id);
-                    self.institution(response.Invoice.institution);
-                    self.department(response.Invoice.department);
-                    self.postbox(response.Invoice.postbox);
-                    self.to_person(response.Invoice.to_person);
-                    self.zip(response.Invoice.zip);
-                    self.street(response.Invoice.street);
-                    self.location(response.Invoice.location);
-                    self.type_name(response.Invoice.type_name);
+                    self.address_id(response.Address.id);
+                    self.institution(response.Address.institution);
+                    self.department(response.Address.department);
+                    self.postbox(response.Address.postbox);
+                    self.to_person(response.Address.to_person);
+                    self.zip(response.Address.zip);
+                    self.street(response.Address.street);
+                    self.location(response.Address.location);
+                    self.type_name(response.Address.type_name);
 
                     self.loaded(true);
                     self.show(true);
@@ -133,7 +133,7 @@ define(['ko', 'jquery'], function (ko, $) {
             this.working(true);
             this.saveCaption('Speichere, bitte warten...');
 
-            var url = 'invoices/add.json';
+            var url = 'addresses/add.json';
             var postData = {
                 type_name:   self.type_name(),
                 institution: self.institution() || '',
@@ -147,26 +147,26 @@ define(['ko', 'jquery'], function (ko, $) {
 
             // Update if already loaded
             if (this.loaded()) {
-                url = 'invoices/edit.json';
+                url = 'addresses/edit.json';
                 postData.address_id = self.address_id();
             }
 
             $.post(url, postData)
                 .success(function (data) {
-                    var invoice = $.parseJSON(data).Invoice;
+                    var address = $.parseJSON(data).Address;
 
                     // If it's new
                     if (!self.loaded()) {
-                        self.invoices.push(invoice);
+                        self.addresses.push(address);
                         self.loaded(true);
-                        self.address_id(invoice.id);
+                        self.address_id(address.id);
                     }
                     self.saveCaption('Gespeichert');
                     setTimeout(function () {
                         self.saveCaption('Speichern');
                         self.working(false);
                     }, 2000);
-                    self.showInvoiceControls(true);
+                    self.showAddressControls(true);
                 })
                 .error(function (response) {
                     alert($.parseJSON(response.responseText).name);
@@ -175,16 +175,16 @@ define(['ko', 'jquery'], function (ko, $) {
 
         this.destroy = function () {
             self.working(true);
-            $.post('invoices/delete.json', { id: self.address_id() })
+            $.post('addresses/delete.json', { id: self.address_id() })
                 .success(function (data) {
-                    self.invoices.remove(function (invoice) {
-                        return invoice.id === self.address_id();
+                    self.addresses.remove(function (address) {
+                        return address.id === self.address_id();
                     });
                     self.show(false);
                     self.working(false);
                 })
                 .error(function (response) {
-                    // A constraint prevents deleting associated invoices, we catch that
+                    // A constraint prevents deleting associated addresses, we catch that
                     var error = $.parseJSON(response.responseText).name;
 
                     if (error.indexOf('Integrity constraint') !== -1) {
@@ -209,5 +209,5 @@ define(['ko', 'jquery'], function (ko, $) {
         this.fetch();
     }
 
-    return InvoiceViewModel;
+    return AddressViewModel;
 });

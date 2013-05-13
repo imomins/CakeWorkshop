@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h4><?php echo __('Kategorie Bearbeiten'); ?></h4>
+    <h3><?php echo __('Kategorie Bearbeiten'); ?></h3>
 </div>
 
 <div class="well">
@@ -9,7 +9,7 @@
             <label class="control-label"><?php echo __('Name der Kategorie'); ?></label>
 
             <div class="controls">
-                <?php echo $this->Form->input('name', array('required' => true, 'label' => false, 'class' => 'span3')); ?>
+                <?php echo $this->Form->input('name', array('required' => true, 'label' => false, 'class' => 'span6')); ?>
             </div>
         </div>
         <div class="control-group">

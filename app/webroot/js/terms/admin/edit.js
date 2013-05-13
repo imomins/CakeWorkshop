@@ -1,6 +1,11 @@
-/**
- * Author: Saman Sedighi Rad
- * Email: sasedigh@gmail.com
- * Date: 13.05.13
- * Time: 23:44
- */
+require(['domReady', 'jquery', 'datepicker'], function (domReady, $) {
+    'use strict';
+
+    domReady(function () {
+        $('#start,#end').each(function () {
+            $(this)
+                .datepicker()
+                .datepicker('option', 'dateFormat', 'yy-mm-dd');
+        });
+    });
+});

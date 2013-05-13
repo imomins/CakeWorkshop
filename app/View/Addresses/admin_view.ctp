@@ -6,70 +6,70 @@
     <dl class="dl-horizontal">
         <dt><?php echo __('An'); ?></dt>
         <dd>
-            <?php echo h($invoice['Type']['display']); ?>
+            <?php echo h($address['Type']['display']); ?>
             &nbsp;
         </dd>
 
         <dt><?php echo __('Teilnehmer'); ?></dt>
         <dd>
-            <?php echo $this->Html->link($invoice['User']['firstname'] . ' ' . $invoice['User']['lastname'], array('controller' => 'users', 'action' => 'view', $invoice['User']['id'])); ?>
+            <?php echo $this->Html->link($address['User']['firstname'] . ' ' . $address['User']['lastname'], array('controller' => 'users', 'action' => 'view', $address['User']['id'])); ?>
             &nbsp;
         </dd>
 
-        <?php if (!empty($invoice['Invoice']['institution'])): ?>
+        <?php if (!empty($address['Address']['institution'])): ?>
             <dt><?php echo __('Einrichtung'); ?></dt>
             <dd>
-                <?php echo h($invoice['Invoice']['institution']); ?>
+                <?php echo h($address['Address']['institution']); ?>
                 &nbsp;
             </dd>
         <?php endif; ?>
 
-        <?php if (!empty($invoice['Invoice']['department'])): ?>
+        <?php if (!empty($address['Address']['department'])): ?>
             <dt><?php echo __('Fachbereich'); ?></dt>
             <dd>
-                <?php echo h($invoice['Invoice']['department']); ?>
+                <?php echo h($address['Address']['department']); ?>
                 &nbsp;
             </dd>
         <?php endif; ?>
 
-        <?php if (!empty($invoice['Invoice']['postbox'])): ?>
+        <?php if (!empty($address['Address']['postbox'])): ?>
             <dt><?php echo __('Postfach'); ?></dt>
             <dd>
-                <?php echo h($invoice['Invoice']['postbox']); ?>
+                <?php echo h($address['Address']['postbox']); ?>
                 &nbsp;
             </dd>
         <?php endif; ?>
 
-        <?php if (!empty($invoice['Invoice']['to_person'])): ?>
+        <?php if (!empty($address['Address']['to_person'])): ?>
             <dt><?php echo __('Zu Händen von'); ?></dt>
             <dd>
-                <?php echo h($invoice['Invoice']['to_person']); ?>
+                <?php echo h($address['Address']['to_person']); ?>
                 &nbsp;
             </dd>
         <?php endif; ?>
 
         <dt><?php echo __('Straße'); ?></dt>
         <dd>
-            <?php echo h($invoice['Invoice']['street']); ?>
+            <?php echo h($address['Address']['street']); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('PLZ'); ?></dt>
         <dd>
-            <?php echo h($invoice['Invoice']['zip']); ?>
+            <?php echo h($address['Address']['zip']); ?>
             &nbsp;
         </dd>
         <dt><?php echo __('Ort'); ?></dt>
         <dd>
-            <?php echo h($invoice['Invoice']['location']); ?>
+            <?php echo h($address['Address']['location']); ?>
             &nbsp;
         </dd>
     </dl>
 </div>
 
 <div class="btn-group">
-    <?php echo $this->Html->link(__('Rechnungsadresse bearbeiten'), array('action' => 'edit', $invoice['Invoice']['id']), array('class' => 'btn btn-primary')); ?>
+    <?php echo $this->Html->link(__('Rechnungsadresse bearbeiten'), array('action' => 'edit', $address['Address']['id']), array('class' => 'btn btn-primary')); ?>
     <?php echo $this->Html->link(__('Neue Rechnungsadresse anlegen'), array('action' => 'add'), array('class' => 'btn')); ?>
-    <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $invoice['Invoice']['id']), array('class' => 'btn btn-danger'), __('Are you sure you want to delete # %s?', $invoice['Invoice']['id'])); ?>
+    <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $address['Address']['id']), array('class' => 'btn btn-danger'), __('Are you sure you want to delete # %s?', $address['Address']['id'])); ?>
 </div>
 
 <br/>

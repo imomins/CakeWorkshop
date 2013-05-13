@@ -290,7 +290,7 @@ BEGIN
 	DECLARE insert_invoice_count BIGINT;
 	DECLARE insert_type_id BIGINT;
 	DECLARE insert_type_name VARCHAR(45);
-	DECLARE insert_invoice_id BIGINT;
+	DECLARE insert_address_id BIGINT;
 	
 	DECLARE fetch_institution VARCHAR(250);
 	DECLARE fetch_abteilung VARCHAR(128);
@@ -461,10 +461,10 @@ BEGIN
 			VALUES
 				(insert_type_name,insert_benutzer_id,CONCAT('Standard-Rechnung-',insert_invoice_count),fetch_institution,fetch_abteilung,fetch_postfach,fetch_zu_haenden,fetch_strasse,fetch_plz,fetch_ort);
 			
-			SET insert_invoice_id = LAST_INSERT_ID();
+			SET insert_address_id = LAST_INSERT_ID();
 		ELSE
 			# Rechnung existiert
-			SELECT invoices.id INTO insert_invoice_id FROM invoices WHERE invoices.user_id = insert_benutzer_id AND (STRCMP(LCASE(fetch_strasse), LCASE(invoices.street))) LIMIT 1;
+			SELECT invoices.id INTO insert_address_id FROM invoices WHERE invoices.user_id = insert_benutzer_id AND (STRCMP(LCASE(fetch_strasse), LCASE(invoices.street))) LIMIT 1;
 		END IF;
 		
 		# =============================
@@ -561,7 +561,7 @@ BEGIN
 						INSERT IGNORE INTO bookings
 							(
 								user_id,courses_term_id,
-								invoice_id,
+								address_id,
 								booking_state_name,
 								attendance_state_name,
 								certificate,
@@ -574,7 +574,7 @@ BEGIN
 							(
 								insert_benutzer_id,
 								fetch_courses_term_id,
-								insert_invoice_id,
+								insert_address_id,
 								booking_state_name,
 								attendance_state_name,
 								fetch_zertifikat,

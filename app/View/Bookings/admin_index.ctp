@@ -14,7 +14,7 @@
         <th><?php echo $this->Paginator->sort('courses_term_id', __('Semester-Kurs')); ?></th>
         <th style="min-width:110px;"><?php echo $this->Paginator->sort('term_id', __('Semester')); ?></th>
         <th style="min-width:150px;"><?php echo $this->Paginator->sort('created', __('Gebucht am')); ?></th>
-        <th colspan="3" style="min-width: 200px;" class="actions"><?php echo __('Optionen'); ?></th>
+        <th colspan="3" style="min-width: 200px;" class="actions"><?php echo __('Optionen zur Anmeldung'); ?></th>
     </tr>
     </thead>
     <tbody>

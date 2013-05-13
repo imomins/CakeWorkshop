@@ -11,16 +11,16 @@
         <th><?php echo __('Löschen'); ?></th>
     </tr>
     <?php
-    foreach ($terms as $term): ?>
+    foreach ($terms as $terms): ?>
         <tr>
-            <td><?php echo $this->Html->link($term['Term']['name'], array('action' => 'view', $term['Term']['id'])); ?></td>
-            <td><?php echo h($term['Term']['start']); ?></td>
-            <td><?php echo h($term['Term']['end']); ?></td>
+            <td><?php echo $this->Html->link($terms['Term']['name'], array('action' => 'view', $terms['Term']['id'])); ?></td>
+            <td><?php echo h($terms['Term']['start']); ?></td>
+            <td><?php echo h($terms['Term']['end']); ?></td>
             <td>
-                <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $term['Term']['id'])); ?>
+                <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $terms['Term']['id'])); ?>
             </td>
             <td>
-                <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $term['Term']['id']), null, __('Are you sure you want to delete # %s?', $term['Term']['id'])); ?>
+                <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $terms['Term']['id']), null, __('Are you sure you want to delete # %s?', $terms['Term']['id'])); ?>
             </td>
         </tr>
     <?php endforeach; ?>
