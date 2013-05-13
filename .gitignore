@@ -1,5 +1,7 @@
 .idea
 /resources/*.bak
+/resources/veranstaltungen/*
+/resources/export.sql
 /app/Config
 /app/tmp
 /lib/Cake/Console/Templates/skel/tmp/
