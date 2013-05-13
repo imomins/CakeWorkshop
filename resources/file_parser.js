@@ -110,7 +110,7 @@ Importer.prototype.parser = function(data, callback) {
 						this.sql += SQLCompiler.insert.course(category_id, course.name, course.code);
 
 						var term_id = SQLCompiler.select.term_id(term);
-						var course_id = SQLCompiler.select.course_id(course.name);
+						var course_id = SQLCompiler.select.course_id(course.code);
 						
 						this.sql += SQLCompiler.insert.courses_terms(term_id, course_id, course.max);
 						
@@ -119,7 +119,7 @@ Importer.prototype.parser = function(data, callback) {
 						var days = course.date.split('+');
 						for (var k = 0; k < days.length; k++) {
 							var day = {
-								start_date: this.getDate(course.date),
+								start_date: this.getDate(days[k]),
 								start_time: this.getTime(course.hours).start_time,
 								end_time:   this.getTime(course.hours).end_time,
 							}
@@ -169,8 +169,8 @@ var SQLCompiler = {
 		category: function (name) {
 			return "INSERT IGNORE INTO categories (name) VALUES ('"+name+"');\n";
 		},
-		course: function (category_id, name) {
-			return "INSERT IGNORE INTO courses (category_id, name) VALUES ("+ category_id +", '"+name+"');\n"
+		course: function (category_id, name, code) {
+			return "INSERT IGNORE INTO courses (category_id, name, code) VALUES ("+ category_id +", '"+name+"', '"+code+"');\n"
 		},
 		day: function (courses_term_id, start_date, start_time, end_time) {
 			return "INSERT IGNORE INTO days (courses_term_id, start_date, start_time, end_time) VALUES ("+ courses_term_id +", '"+start_date+"', '"+start_time+"', '"+end_time+"');\n";
@@ -186,8 +186,8 @@ var SQLCompiler = {
 		category_id: function (name) {
 			return "(SELECT id FROM categories WHERE name = '" + name + "')";
 		},
-		course_id: function (name) {
-			return "(SELECT id FROM courses WHERE name = '"+ name + "')";
+		course_id: function (code) {
+			return "(SELECT id FROM courses WHERE code = '"+ code + "')";
 		},
 		courses_term_id: function (term_id, course_id) {
 			return "(SELECT id FROM courses_terms WHERE term_id = " + term_id + " AND course_id = "+ course_id +")";
