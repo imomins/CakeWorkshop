@@ -7,7 +7,7 @@ App::uses('AppModel', 'Model');
  * @property Type $Type
  * @property Booking $Booking
  */
-class Invoice extends AppModel {
+class Address extends AppModel {
 
     public $virtualFields = array(
         'name' => '"Rechnungsvorlage"'

@@ -12,7 +12,7 @@ define(['ko', 'jquery'], function (ko, $) {
 
         // Form
         this.to_person = ko.observable();
-        this.invoice_id = ko.observable();
+        this.address_id = ko.observable();
         this.street = ko.observable();
         this.postbox = ko.observable();
         this.institution = ko.observable();
@@ -94,15 +94,15 @@ define(['ko', 'jquery'], function (ko, $) {
          * Loads an invoice.
          * @param data
          * @param event
-         * @param invoice_id
+         * @param address_id
          */
-        this.load = function (data, event, invoice_id) {
+        this.load = function (data, event, address_id) {
             self.working(true);
-            var id = invoice_id || $(event.target).data('id');
+            var id = address_id || $(event.target).data('id');
 
             $.getJSON('invoices/view/' + id)
                 .success(function (response) {
-                    self.invoice_id(response.Invoice.id);
+                    self.address_id(response.Invoice.id);
                     self.institution(response.Invoice.institution);
                     self.department(response.Invoice.department);
                     self.postbox(response.Invoice.postbox);
@@ -148,7 +148,7 @@ define(['ko', 'jquery'], function (ko, $) {
             // Update if already loaded
             if (this.loaded()) {
                 url = 'invoices/edit.json';
-                postData.invoice_id = self.invoice_id();
+                postData.address_id = self.address_id();
             }
 
             $.post(url, postData)
@@ -159,7 +159,7 @@ define(['ko', 'jquery'], function (ko, $) {
                     if (!self.loaded()) {
                         self.invoices.push(invoice);
                         self.loaded(true);
-                        self.invoice_id(invoice.id);
+                        self.address_id(invoice.id);
                     }
                     self.saveCaption('Gespeichert');
                     setTimeout(function () {
@@ -175,10 +175,10 @@ define(['ko', 'jquery'], function (ko, $) {
 
         this.destroy = function () {
             self.working(true);
-            $.post('invoices/delete.json', { id: self.invoice_id() })
+            $.post('invoices/delete.json', { id: self.address_id() })
                 .success(function (data) {
                     self.invoices.remove(function (invoice) {
-                        return invoice.id === self.invoice_id();
+                        return invoice.id === self.address_id();
                     });
                     self.show(false);
                     self.working(false);
