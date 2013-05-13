@@ -12,6 +12,8 @@ class BookingsController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
+
+        // Used on login page
         if ($this->request->is('ajax')) {
             $this->Auth->allow('index');
         }
@@ -65,7 +67,7 @@ class BookingsController extends AppController {
 
         $sql = "
             SELECT Booking.id,Booking.notes,Booking.certificate,DATE_FORMAT(Booking.unsubscribed_at, '%d.%m.%Y, %H:%i') Booking_unsubscribed_at,DATE_FORMAT(Booking.created, '%d.%m.%Y, %H:%i') Booking_created,
-                   Invoice.*,CoursesTerm.id,
+                   Address.*,CoursesTerm.id,
                    Type.display,
                    BookingState.*,
                    User.id,User.firstname,User.lastname, User.notes,
@@ -77,9 +79,9 @@ class BookingsController extends AppController {
                 LEFT JOIN courses_terms CoursesTerm ON (Booking.courses_term_id = CoursesTerm.id)
                 LEFT JOIN courses Course ON (CoursesTerm.course_id = Course.id)
                 LEFT JOIN terms Term ON (CoursesTerm.term_id = Term.id)
-                LEFT JOIN invoices Invoice ON (Booking.invoice_id = Invoice.id)
+                LEFT JOIN addresses Address ON (Booking.address_id = Address.id)
                 LEFT JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
-                LEFT OUTER JOIN types Type ON (Invoice.type_name = Type.name)
+                LEFT OUTER JOIN types Type ON (Address.type_name = Type.name)
                 LEFT OUTER JOIN attendance_states AttendanceStatus ON (Booking.attendance_state_name = AttendanceStatus.name)
             WHERE
                 Booking.id = ?
@@ -120,7 +122,7 @@ class BookingsController extends AppController {
             $data = array(
                 'Booking.user_id'            => intval($this->getUserId()),
                 'Booking.courses_term_id'    => $id,
-                'Booking.invoice_id'         => $this->request->data['Invoice']['id'],
+                'Booking.address_id'         => $this->request->data['Address']['id'],
                 'Booking.booking_state_name' => "'unconfirmed'",
                 'Booking.certificate'        => false,
                 'Booking.unsubscribed_at'    => null
@@ -145,13 +147,16 @@ class BookingsController extends AppController {
                 // No condition, we assume that if the user can choose a course then it's not locked
                 //                $this->Booking->create();
                 //     $status = $this->Booking->save($data);
-                $sql = "INSERT INTO bookings (user_id,courses_term_id,invoice_id,booking_state_name) VALUES (?,?,?,'unconfirmed')";
-                $this->Booking->query($sql, array($this->getUserId(), $id, $this->request->data['Invoice']['id']));
+                $sql = "INSERT INTO bookings (user_id,courses_term_id,address_id,booking_state_name) VALUES (?,?,?,'unconfirmed')";
+                $this->Booking->query($sql, array($this->getUserId(), $id, $this->request->data['Address']['id']));
                 $status = true;
             }
 
             if (!$status) {
                 throw new Exception(__('Es ist ein Fehler aufgetreten: ') . json_encode($this->Booking->validationErrors));
+            }
+            else {
+                $this->Booking->query('UPDATE courses_terms CoursesTerm SET CoursesTerm.attendees = CoursesTerm.attendees + 1 WHERE CoursesTerm.id = ?', array($id));
             }
         }
 
@@ -204,6 +209,11 @@ class BookingsController extends AppController {
     public function admin_add() {
         if ($this->request->is('post')) {
             $this->Booking->create();
+
+            if ($this->request->data['Booking']['attendance_state_name'] === '') {
+                $this->request->data['Booking']['attendance_state_name'] = null;
+            }
+
             if ($this->Booking->save($this->request->data)) {
                 $this->Session->setFlash(__('Die Anmeldung wurde gespeichert'), 'flash_success');
                 $this->redirect(array('action' => 'view', $this->Booking->getLastInsertID()));
@@ -258,7 +268,7 @@ class BookingsController extends AppController {
             $users            = $this->Booking->User->find('list');
             $courses_terms    = $this->Booking->CoursesTerm->getCoursesList();
             $attendance_state = $this->Booking->AttendanceState->find('list');
-            $types            = $this->Booking->Invoice->Type->find('list');
+            $types            = $this->Booking->Address->Type->find('list');
 
             $booking_state = $this->Booking->BookingState->find('list', array(
                 'fields' => array('name', 'display')
@@ -305,7 +315,7 @@ class BookingsController extends AppController {
 
     /**
      * The forms are built via ajax, only
-     * the invoice type if static in the form.
+     * the Address type if static in the form.
      *
      * @param null $term_id
      */
@@ -340,6 +350,7 @@ class BookingsController extends AppController {
             "UPDATE bookings SET booking_state_name='self_unsubscribed', unsubscribed_at=CURRENT_TIMESTAMP() WHERE user_id = ? AND courses_term_id = ?",
             array($this->getUserId(), $this->request->data['CoursesTerm']['id'])
         );
+        $this->Booking->query('UPDATE courses_terms CoursesTerm SET CoursesTerm.attendees = CoursesTerm.attendees - 1 WHERE CoursesTerm.id = ?', array($this->request->data['CoursesTerm']['id']));
         $message = array('message' => __('Sie wurden von dem Kurs abgemeldet, Sie können sich auch wieder selbst anmelden'));
         return json_encode($message);
     }
