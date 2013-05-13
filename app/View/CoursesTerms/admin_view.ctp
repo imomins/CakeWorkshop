@@ -117,7 +117,7 @@
         <div id="booking">
             <input id="CoursesTermId" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
 
-            <div class="type bg-light-brown"><?php echo __('Unbestätigte Anmeldungen'); ?></div>
+            <div class="type flat-ui-sun-flower"><?php echo __('Unbestätigte Anmeldungen'); ?></div>
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
@@ -147,7 +147,7 @@
                 <!-- /ko -->
             </table>
 
-            <div class="type bg-light-orange"><?php echo __('Selbst abgemeldet'); ?></div>
+            <div class="type flat-ui-carrot"><?php echo __('Selbst abgemeldet'); ?></div>
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
@@ -179,7 +179,7 @@
                 <!-- /ko -->
             </table>
 
-            <div class="type bg-light-red"><?php echo __('Wurde abgemeldet'); ?></div>
+            <div class="type flat-ui-alizarin"><?php echo __('Wurde abgemeldet'); ?></div>
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th><?php echo __('Name'); ?></th>
@@ -209,7 +209,7 @@
                 <!-- /ko -->
             </table>
 
-            <div class="type bg-light-blue"><?php echo __('Bestätigt'); ?></div>
+            <div class="type flat-ui-peter-river"><?php echo __('Bestätigt'); ?></div>
 
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
@@ -242,7 +242,7 @@
                 <!-- /ko -->
             </table>
 
-            <div class="type bg-light-green"><?php echo __('Abgerechnet'); ?></div>
+            <div class="type flat-ui-green-see"><?php echo __('Abgerechnet'); ?></div>
 
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>

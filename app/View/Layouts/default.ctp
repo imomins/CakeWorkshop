@@ -123,7 +123,7 @@
         </div>
     </div>
 
-    <div class="navbar">
+    <div id="navigation" class="navbar navbar-inverse">
         <div class="navbar-inner">
             <div class="container">
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -166,7 +166,7 @@
                         <?php if ($loggedIn) : ?>
                             <li class="divider-vertical"></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?php echo $username; ?> <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <?php echo $username; ?> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><?php echo $this->Html->link(__('Mein Konto'), '/users/edit'); ?></li>
                                     <li><?php echo $this->Html->link(__('Abmelden'), '/users/logout'); ?></li>

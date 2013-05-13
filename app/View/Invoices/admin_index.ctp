@@ -2,7 +2,7 @@
     <h3><?php echo __('Rechnungsadressen'); ?></h3>
 </div>
 
-<table class="table table-bordered table-striped table-condensed table-hovered">
+<table class="table table-bordered table-striped table-condensed table-hover">
     <tr>
         <th><?php echo $this->Paginator->sort('user_id', __('Teilnehmer')); ?></th>
         <th><?php echo $this->Paginator->sort('institution', __('Einrichtung')); ?></th>
@@ -14,8 +14,7 @@
         <th><?php echo $this->Paginator->sort('location', __('Ort')); ?></th>
         <th class="actions"><?php echo __('Actions'); ?></th>
     </tr>
-    <?php
-    foreach ($invoices as $invoice): ?>
+    <?php foreach ($invoices as $invoice): ?>
         <tr>
             <td>
                 <?php echo $this->Html->link($invoice['User']['name'], array('controller' => 'users', 'action' => 'view', $invoice['User']['id'])); ?>

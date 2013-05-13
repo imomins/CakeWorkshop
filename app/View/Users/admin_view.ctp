@@ -13,7 +13,7 @@
     <dl class="dl-horizontal">
         <dt><?php echo __('Anrede'); ?></dt>
         <dd>
-            <?php echo $this->Html->link($user['Gender']['name'], array('controller' => 'genders', 'action' => 'view', $user['Gender']['id'])); ?>
+            <?php echo h($user['Gender']['name']); ?>
             &nbsp;
         </dd>
 
@@ -90,7 +90,7 @@
 </div>
 
 <?php if (!empty($user['Booking'])): ?>
-    <table class="table table-bordered table-hovered table-striped">
+    <table class="table table-bordered table-hover table-striped">
         <tr>
             <th><?php echo __('Semester'); ?></th>
             <th><?php echo __('Kurs'); ?></th>

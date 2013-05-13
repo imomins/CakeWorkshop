@@ -3,12 +3,11 @@
 </div>
 
 <?php echo $this->Form->create('User', array('class' => 'form-search well')); ?>
-<label><?php echo __('Filter: '); ?></label>
 <input type="text" name="query" value="<?php echo $query; ?>" class="input-medium search-query span4" placeholder="<?php echo __('Person suchen'); ?>"/>
 <?php echo $this->Form->end(); ?>
 <br/>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered table-hover table-condensed">
     <tr>
         <th><?php echo $this->Paginator->sort('title', __('Titel')); ?></th>
         <th><?php echo $this->Paginator->sort('firstname', __('Vorname')); ?></th>

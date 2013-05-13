@@ -3,13 +3,12 @@
 </div>
 
 <?php echo $this->Form->create('Term', array('class' => 'form-inline well')); ?>
-<label><?php echo __('Filter: '); ?></label>
 <input type="text" name="query" class="span4 search-query"
        value="<?php echo isset($this->request->data['query']) ? $this->request->data['query'] : ''; ?>"
        placeholder="Kurs suchen">
 <?php echo $this->Form->input('term_id',
     array(
-        'empty'    => '',
+        'empty'    => __('Semester Filtern'),
         'label'    => false,
         'class'    => 'span3',
         'value'    => $this->request->data['term_id'],
@@ -34,7 +33,7 @@
         -->
         <th><?php echo $this->Paginator->sort('attendees', __('Teilnehmer')); ?></th>
         <th><?php echo $this->Paginator->sort('max', __('Maximal')); ?></th>
-        <th style="min-width: 180px;"><?php echo __('Optionen'); ?></th>
+        <th colspan="3" style="min-width: 180px;"><?php echo __('Optionen'); ?></th>
     </tr>
     <?php
     foreach ($coursesTerms as $coursesTerm): ?>
@@ -50,11 +49,15 @@
                 <?php endforeach; ?>
             </td>
             end days -->
-            <td><?php echo h($coursesTerm['CoursesTerm']['attendees']); ?>&nbsp;</td>
-            <td><?php echo h($coursesTerm['CoursesTerm']['max']); ?>&nbsp;</td>
-            <td class="actions">
+            <td class="center"><?php echo h($coursesTerm['CoursesTerm']['attendees']); ?>&nbsp;</td>
+            <td class="center"><?php echo h($coursesTerm['CoursesTerm']['max']); ?>&nbsp;</td>
+            <td>
                 <?php echo $this->Html->link(__('Details'), array('action' => 'view', $coursesTerm['CoursesTerm']['id'])); ?>
+            </td>
+            <td>
                 <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $coursesTerm['CoursesTerm']['id'])); ?>
+            </td>
+            <td>
                 <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $coursesTerm['CoursesTerm']['id']), null, __('Soll der Kurs gelöscht werden?')); ?>
             </td>
         </tr>

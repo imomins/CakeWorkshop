@@ -94,7 +94,7 @@
     <h3><?php echo __('Kurse die unter dieser Adresse, von dieser Person, gebucht wurden'); ?></h3>
 </div>
 
-<table class="table table-bordered table-hovered table-striped">
+<table class="table table-bordered table-hover table-striped">
     <thead>
         <th><?php echo __('Kurs'); ?></th>
         <th><?php echo __('Kategorie'); ?></th>

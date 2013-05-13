@@ -7,7 +7,7 @@
         <th style="width: 50%;"><?php echo $this->Paginator->sort('name'); ?></th>
         <th><?php echo $this->Paginator->sort('code', __('Kürzel')); ?></th>
         <th><?php echo $this->Paginator->sort('category_id', __('Kategorie')); ?></th>
-        <th class="actions"><?php echo __('Optionen'); ?></th>
+        <th colspan="2"><?php echo __('Optionen'); ?></th>
     </tr>
     <?php
     foreach ($courses as $course): ?>
@@ -21,8 +21,10 @@
             <td>
                 <?php echo $this->Html->link($course['Category']['name'], array('action' => 'view', $course['Course']['id'])); ?>
             </td>
-            <td class="actions">
+            <td>
                 <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $course['Course']['id'])); ?>
+            </td>
+            <td>
                 <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $course['Course']['id']), null, __('Are you sure you want to delete # %s?', $course['Course']['id'])); ?>
             </td>
         </tr>

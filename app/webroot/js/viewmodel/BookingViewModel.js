@@ -17,8 +17,6 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
         this.working = ko.observable(false);
 
         this.confirm = function (data, event) {
-            $.blockUI({ message: 'Nehme Anmeldung vor...' });
-
             var $selected = $('#course tr.selected');
 
             if ($selected.length === 0) {
@@ -87,6 +85,7 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
                 return;
             }
 
+            $.blockUI({ message: 'Nehme Anmeldung vor...' });
             this.saveBooking('Speichere, bitte warten...');
 
             // Search all selected course ids

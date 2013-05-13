@@ -185,7 +185,6 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`invoices` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `user_id` BIGINT UNSIGNED NOT NULL ,
   `type_name` VARCHAR(45) NOT NULL ,
-  `name` VARCHAR(45) NOT NULL ,
   `institution` VARCHAR(100) NULL ,
   `department` VARCHAR(100) NULL ,
   `postbox` VARCHAR(100) NULL ,
@@ -194,9 +193,8 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`invoices` (
   `zip` VARCHAR(10) NOT NULL ,
   `location` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `idx_unique_name` (`name` ASC, `user_id` ASC) ,
-  INDEX `fk_invoices_users1_idx` (`user_id` ASC) ,
-  INDEX `fk_invoices_types1_idx` (`type_name` ASC) ,
+  INDEX `fk_invoices_users_idx` (`user_id` ASC) ,
+  INDEX `fk_invoices_types_idx` (`type_name` ASC) ,
   CONSTRAINT `fk_invoices_users1`
     FOREIGN KEY (`user_id` )
     REFERENCES `cake_workshop`.`users` (`id` )
@@ -233,8 +231,10 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`courses_terms` (
   `term_id` BIGINT UNSIGNED NOT NULL ,
   `course_id` BIGINT UNSIGNED NOT NULL ,
   `schedule_name` VARCHAR(45) NOT NULL ,
-  `attendees` INT NOT NULL ,
-  `max` INT NOT NULL ,
+  `attendees` INT UNSIGNED NOT NULL ,
+  `max` INT UNSIGNED NOT NULL ,
+  `location` VARCHAR(1000) NULL ,
+  `locked` TINYINT(1) NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_courses_terms_terms1_idx` (`term_id` ASC) ,
   INDEX `fk_courses_terms_courses1_idx` (`course_id` ASC) ,
@@ -298,6 +298,7 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`bookings` (
   `attendance_state_name` VARCHAR(45) NULL ,
   `notes` TEXT NULL ,
   `certificate` TINYINT(1) NOT NULL DEFAULT 0 ,
+  `unsubscribed_at` DATETIME NULL ,
   `created` DATETIME NOT NULL ,
   `updated` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
@@ -354,6 +355,19 @@ CREATE  TABLE IF NOT EXISTS `cake_workshop`.`days` (
     REFERENCES `cake_workshop`.`courses_terms` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cake_workshop`.`messages`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `cake_workshop`.`messages` ;
+
+CREATE  TABLE IF NOT EXISTS `cake_workshop`.`messages` (
+  `name` VARCHAR(100) NOT NULL ,
+  `title` VARCHAR(100) NOT NULL ,
+  `message` TEXT NOT NULL ,
+  PRIMARY KEY (`name`) )
 ENGINE = InnoDB;
 
 USE `cake_workshop` ;
@@ -465,6 +479,7 @@ INSERT INTO `cake_workshop`.`booking_states` (`name`, `display`) VALUES ('confir
 INSERT INTO `cake_workshop`.`booking_states` (`name`, `display`) VALUES ('self_unsubscribed', 'Selbst abgemeldet');
 INSERT INTO `cake_workshop`.`booking_states` (`name`, `display`) VALUES ('admin_unsubscribed', 'Wurde abgemeldet');
 INSERT INTO `cake_workshop`.`booking_states` (`name`, `display`) VALUES ('unconfirmed', 'Unbestätigt');
+INSERT INTO `cake_workshop`.`booking_states` (`name`, `display`) VALUES ('cleared', 'Abgerechnet');
 
 COMMIT;
 

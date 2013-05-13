@@ -1,12 +1,8 @@
 <?php echo $this->Html->css('vendor/jquery-ui-timepicker-addon'); ?>
 <?php echo $this->Html->script('vendor/jquery-ui-timepicker-addon'); ?>
 
-<div class="page-header">
-    <h4><?php echo __('Semester-Kurs Daten bearbeiten'); ?></h4>
-</div>
-
 <div class="well">
-    <legend><?php echo __('Kursdaten'); ?></legend>
+    <legend><?php echo __('Semester-Kurs Daten bearbeiten'); ?></legend>
 
     <?php echo $this->Form->create('CoursesTerm', array('class' => 'form-horizontal')); ?>
     <?php echo $this->Form->input('id'); ?>
