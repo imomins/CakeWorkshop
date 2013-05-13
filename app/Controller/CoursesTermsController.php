@@ -82,8 +82,10 @@ class CoursesTermsController extends AppController {
         if (!$this->CoursesTerm->exists()) {
             throw new NotFoundException(__('Invalid courses term'));
         }
-        // Request
-        $bookings = $this->CoursesTerm->query("
+
+        if ($this->request->is('ajax')) {
+            // Request
+            $bookings = $this->CoursesTerm->query("
                 SELECT User.id, CONCAT(User.firstname, ' ', User.lastname) User_name, User.email, Booking.id,DATE_FORMAT(Booking.created, '%d.%m.%Y, %H:%i') Booking_created,DATE_FORMAT(Booking.unsubscribed_at, '%d.%m.%Y, %H:%i') Booking_unsubscribed_at,BookingState.name,BookingState.display FROM bookings Booking
                     LEFT OUTER JOIN users User ON (Booking.user_id = User.id)
                     LEFT OUTER JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
@@ -91,19 +93,20 @@ class CoursesTermsController extends AppController {
                     ORDER BY FIELD(BookingState.display,'unconfirmed','self_unsubscribed','admin_unsubscribed','confirmed'), User_name ASC
                 ", array($id));
 
-        $this->set('bookings', $bookings);
-        $this->set('_serialize', array('bookings'));
+            $this->set('bookings', $bookings);
+            $this->set('_serialize', array('bookings'));
+            return;
+        }
 
         // Don't need all for main data, rest is loaded via json
         $this->CoursesTerm->unbindModel(array(
             'hasMany'             => array('Booking'),
             'hasAndBelongsToMany' => array('User')
         ));
-        $coursesTerm = $this->CoursesTerm->read(null, $id);
+        $coursesTerm      = $this->CoursesTerm->read(null, $id);
+        $title_for_layout = __('Übersicht - Kurs-Nr.: %s', $coursesTerm['CoursesTerm']['id']);
 
-        $this->set('title_for_layout', 'Übersicht - Kurs-Nr.: ' . $coursesTerm['CoursesTerm']['id']);
-        $this->set('coursesTerm', $coursesTerm);
-
+        $this->set(compact('coursesTerm', 'title_for_layout'));
     }
 
     public function admin_list($id, $type = 'landscape') {

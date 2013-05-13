@@ -24,12 +24,12 @@
         <th><?php echo __('Löschen'); ?></th>
         </thead>
         <tbody>
-        <?php foreach ($category['Course'] as $course): ?>
+        <?php foreach ($category['Course'] as $coursesTerm): ?>
             <tr>
-                <td><?php echo $this->Html->link($course['name'], array('controller' => 'courses', 'action' => 'view', $course['id'])); ?></td>
-                <td><?php echo $course['code']; ?></td>
-                <td><?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'courses', 'action' => 'edit', $course['id'])); ?></td>
-                <td><?php echo $this->Form->postLink(__('Löschen'), array('controller' => 'courses', 'action' => 'delete', $course['id']), null, __('Are you sure you want to delete # %s?', $course['id'])); ?></td>
+                <td><?php echo $this->Html->link($coursesTerm['name'], array('controller' => 'courses', 'action' => 'view', $coursesTerm['id'])); ?></td>
+                <td><?php echo $coursesTerm['code']; ?></td>
+                <td><?php echo $this->Html->link(__('Bearbeiten'), array('controller' => 'courses', 'action' => 'edit', $coursesTerm['id'])); ?></td>
+                <td><?php echo $this->Form->postLink(__('Löschen'), array('controller' => 'courses', 'action' => 'delete', $coursesTerm['id']), null, __('Are you sure you want to delete # %s?', $coursesTerm['id'])); ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
