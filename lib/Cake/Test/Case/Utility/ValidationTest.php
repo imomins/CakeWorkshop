@@ -175,6 +175,7 @@ class ValidationTest extends CakeTestCase {
 
 		$this->assertFalse(Validation::alphaNumeric('12 234'));
 		$this->assertFalse(Validation::alphaNumeric('dfd 234'));
+		$this->assertFalse(Validation::alphaNumeric("0\n"));
 		$this->assertFalse(Validation::alphaNumeric("\n"));
 		$this->assertFalse(Validation::alphaNumeric("\t"));
 		$this->assertFalse(Validation::alphaNumeric("\r"));
@@ -1855,6 +1856,7 @@ class ValidationTest extends CakeTestCase {
 		$this->assertFalse(Validation::url('http://_jabber._tcp.g_mail.com'));
 		$this->assertFalse(Validation::url('http://en.(wikipedia).org/'));
 		$this->assertFalse(Validation::url('http://www.domain.com/fakeenco%ode'));
+		$this->assertFalse(Validation::url('--.example.com'));
 		$this->assertFalse(Validation::url('www.cakephp.org', true));
 
 		$this->assertTrue(Validation::url('http://example.com/~userdir/subdir/index.html'));
@@ -1957,29 +1959,37 @@ class ValidationTest extends CakeTestCase {
  * @return void
  */
 	public function testMoney() {
+		$this->assertTrue(Validation::money('100'));
+		$this->assertTrue(Validation::money('100.11'));
+		$this->assertTrue(Validation::money('100.112'));
+		$this->assertTrue(Validation::money('100.1'));
+		$this->assertTrue(Validation::money('100.111,1'));
+		$this->assertTrue(Validation::money('100.111,11'));
+		$this->assertFalse(Validation::money('100.111,111'));
+
 		$this->assertTrue(Validation::money('$100'));
 		$this->assertTrue(Validation::money('$100.11'));
 		$this->assertTrue(Validation::money('$100.112'));
-		$this->assertFalse(Validation::money('$100.1'));
+		$this->assertTrue(Validation::money('$100.1'));
 		$this->assertFalse(Validation::money('$100.1111'));
 		$this->assertFalse(Validation::money('text'));
 
 		$this->assertTrue(Validation::money('100', 'right'));
 		$this->assertTrue(Validation::money('100.11$', 'right'));
 		$this->assertTrue(Validation::money('100.112$', 'right'));
-		$this->assertFalse(Validation::money('100.1$', 'right'));
+		$this->assertTrue(Validation::money('100.1$', 'right'));
 		$this->assertFalse(Validation::money('100.1111$', 'right'));
 
 		$this->assertTrue(Validation::money('€100'));
 		$this->assertTrue(Validation::money('€100.11'));
 		$this->assertTrue(Validation::money('€100.112'));
-		$this->assertFalse(Validation::money('€100.1'));
+		$this->assertTrue(Validation::money('€100.1'));
 		$this->assertFalse(Validation::money('€100.1111'));
 
 		$this->assertTrue(Validation::money('100', 'right'));
 		$this->assertTrue(Validation::money('100.11€', 'right'));
 		$this->assertTrue(Validation::money('100.112€', 'right'));
-		$this->assertFalse(Validation::money('100.1€', 'right'));
+		$this->assertTrue(Validation::money('100.1€', 'right'));
 		$this->assertFalse(Validation::money('100.1111€', 'right'));
 	}
 
@@ -2125,6 +2135,10 @@ class ValidationTest extends CakeTestCase {
 		$this->assertFalse(Validation::postal('BAA 0ABC', null, 'ca'));
 		$this->assertFalse(Validation::postal('B2A AABC', null, 'ca'));
 		$this->assertFalse(Validation::postal('B2A 2AB', null, 'ca'));
+		$this->assertFalse(Validation::postal('K1A 1D1', null, 'ca'));
+		$this->assertFalse(Validation::postal('K1O 1Q1', null, 'ca'));
+		$this->assertFalse(Validation::postal('A1A 1U1', null, 'ca'));
+		$this->assertFalse(Validation::postal('A1F 1B1', null, 'ca'));
 		$this->assertTrue(Validation::postal('X0A 0A2', null, 'ca'));
 		$this->assertTrue(Validation::postal('G4V 4C3', null, 'ca'));
 
