@@ -1,9 +1,9 @@
 <?php
 /**
- * InvoiceFixture
+ * AddressFixture
  *
  */
-class InvoiceFixture extends CakeTestFixture {
+class AddressFixture extends CakeTestFixture {
 
 /**
  * Fields
@@ -23,8 +23,8 @@ class InvoiceFixture extends CakeTestFixture {
 		'location' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'fk_invoices_users_idx' => array('column' => 'user_id', 'unique' => 0),
-			'fk_invoices_types_idx' => array('column' => 'type_name', 'unique' => 0)
+			'fk_addresses_types_idx' => array('column' => 'type_name', 'unique' => 0),
+			'fk_addresses_users_idx' => array('column' => 'user_id', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);

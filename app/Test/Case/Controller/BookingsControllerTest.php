@@ -1,11 +1,11 @@
 <?php
-App::uses('TermsController', 'Controller');
+App::uses('BookingsController', 'Controller');
 
 /**
- * TermsController Test Case
+ * BookingsController Test Case
  *
  */
-class TermsControllerTest extends ControllerTestCase {
+class BookingsControllerTest extends ControllerTestCase {
 
 /**
  * Fixtures
@@ -13,15 +13,20 @@ class TermsControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.term',
+		'app.booking',
+		'app.user',
+		'app.gender',
+		'app.department',
+		'app.occupation',
+		'app.group',
+		'app.address',
+		'app.type',
 		'app.courses_term',
+		'app.term',
 		'app.course',
 		'app.category',
 		'app.schedule',
 		'app.day',
-		'app.booking',
-		'app.address',
-		'app.type',
 		'app.booking_state',
 		'app.attendance_state'
 	);
@@ -40,6 +45,22 @@ class TermsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testAdminView() {
+	}
+
+/**
+ * testAdd method
+ *
+ * @return void
+ */
+	public function testAdd() {
+	}
+
+/**
+ * testAdminStatus method
+ *
+ * @return void
+ */
+	public function testAdminStatus() {
 	}
 
 /**
@@ -64,6 +85,22 @@ class TermsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testAdminDelete() {
+	}
+
+/**
+ * testIndex method
+ *
+ * @return void
+ */
+	public function testIndex() {
+	}
+
+/**
+ * testDelete method
+ *
+ * @return void
+ */
+	public function testDelete() {
 	}
 
 }

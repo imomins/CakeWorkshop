@@ -15,10 +15,55 @@ class CategoriesControllerTest extends ControllerTestCase {
 	public $fixtures = array(
 		'app.category',
 		'app.course',
-		'app.term',
 		'app.courses_term',
-		'app.terms_user',
-		'app.courses_terms_user'
+		'app.term',
+		'app.schedule',
+		'app.day',
+		'app.booking',
+		'app.address',
+		'app.type',
+		'app.booking_state',
+		'app.attendance_state'
 	);
+
+/**
+ * testAdminIndex method
+ *
+ * @return void
+ */
+	public function testAdminIndex() {
+	}
+
+/**
+ * testAdminView method
+ *
+ * @return void
+ */
+	public function testAdminView() {
+	}
+
+/**
+ * testAdminAdd method
+ *
+ * @return void
+ */
+	public function testAdminAdd() {
+	}
+
+/**
+ * testAdminEdit method
+ *
+ * @return void
+ */
+	public function testAdminEdit() {
+	}
+
+/**
+ * testAdminDelete method
+ *
+ * @return void
+ */
+	public function testAdminDelete() {
+	}
 
 }

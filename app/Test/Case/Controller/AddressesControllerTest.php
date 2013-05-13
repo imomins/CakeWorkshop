@@ -1,11 +1,11 @@
 <?php
-App::uses('GroupsController', 'Controller');
+App::uses('AddressesController', 'Controller');
 
 /**
- * GroupsController Test Case
+ * AddressesController Test Case
  *
  */
-class GroupsControllerTest extends ControllerTestCase {
+class AddressesControllerTest extends ControllerTestCase {
 
 /**
  * Fixtures
@@ -13,14 +13,14 @@ class GroupsControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.group',
+		'app.address',
+		'app.type',
 		'app.user',
 		'app.gender',
 		'app.department',
 		'app.occupation',
+		'app.group',
 		'app.booking',
-		'app.address',
-		'app.type',
 		'app.courses_term',
 		'app.term',
 		'app.course',
@@ -40,11 +40,35 @@ class GroupsControllerTest extends ControllerTestCase {
 	}
 
 /**
+ * testIndex method
+ *
+ * @return void
+ */
+	public function testIndex() {
+	}
+
+/**
+ * testTypes method
+ *
+ * @return void
+ */
+	public function testTypes() {
+	}
+
+/**
  * testAdminView method
  *
  * @return void
  */
 	public function testAdminView() {
+	}
+
+/**
+ * testView method
+ *
+ * @return void
+ */
+	public function testView() {
 	}
 
 /**
@@ -56,6 +80,14 @@ class GroupsControllerTest extends ControllerTestCase {
 	}
 
 /**
+ * testAdd method
+ *
+ * @return void
+ */
+	public function testAdd() {
+	}
+
+/**
  * testAdminEdit method
  *
  * @return void
@@ -64,11 +96,27 @@ class GroupsControllerTest extends ControllerTestCase {
 	}
 
 /**
+ * testEdit method
+ *
+ * @return void
+ */
+	public function testEdit() {
+	}
+
+/**
  * testAdminDelete method
  *
  * @return void
  */
 	public function testAdminDelete() {
+	}
+
+/**
+ * testDelete method
+ *
+ * @return void
+ */
+	public function testDelete() {
 	}
 
 }

@@ -1,11 +1,11 @@
 <?php
-App::uses('Invoice', 'Model');
+App::uses('Address', 'Model');
 
 /**
- * Invoice Test Case
+ * Address Test Case
  *
  */
-class InvoiceTest extends CakeTestCase {
+class AddressTest extends CakeTestCase {
 
 /**
  * Fixtures
@@ -13,18 +13,22 @@ class InvoiceTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.invoice',
+		'app.address',
 		'app.type',
-		'app.booking',
 		'app.user',
 		'app.gender',
 		'app.department',
 		'app.occupation',
 		'app.group',
+		'app.booking',
 		'app.courses_term',
 		'app.term',
 		'app.course',
-		'app.category'
+		'app.category',
+		'app.schedule',
+		'app.day',
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**
@@ -34,7 +38,7 @@ class InvoiceTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Invoice = ClassRegistry::init('Invoice');
+		$this->Address = ClassRegistry::init('Address');
 	}
 
 /**
@@ -43,7 +47,7 @@ class InvoiceTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->Invoice);
+		unset($this->Address);
 
 		parent::tearDown();
 	}

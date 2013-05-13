@@ -14,18 +14,21 @@ class OccupationTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.occupation',
-		'app.booking',
 		'app.user',
 		'app.gender',
 		'app.department',
 		'app.group',
-		'app.invoice',
+		'app.booking',
+		'app.address',
 		'app.type',
 		'app.courses_term',
 		'app.term',
 		'app.course',
 		'app.category',
-		'app.day'
+		'app.schedule',
+		'app.day',
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**

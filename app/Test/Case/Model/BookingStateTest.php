@@ -13,7 +13,22 @@ class BookingStateTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.booking_state'
+		'app.booking_state',
+		'app.booking',
+		'app.user',
+		'app.gender',
+		'app.department',
+		'app.occupation',
+		'app.group',
+		'app.address',
+		'app.type',
+		'app.courses_term',
+		'app.term',
+		'app.course',
+		'app.category',
+		'app.schedule',
+		'app.day',
+		'app.attendance_state'
 	);
 
 /**

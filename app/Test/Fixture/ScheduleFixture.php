@@ -30,6 +30,42 @@ class ScheduleFixture extends CakeTestFixture {
 			'name' => 'Lorem ipsum dolor sit amet',
 			'display' => 'Lorem ipsum dolor sit amet'
 		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
 	);
 
 }

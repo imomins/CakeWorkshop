@@ -14,47 +14,61 @@ class DepartmentsControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'app.department',
-		'app.user'
+		'app.user',
+		'app.gender',
+		'app.occupation',
+		'app.group',
+		'app.booking',
+		'app.address',
+		'app.type',
+		'app.courses_term',
+		'app.term',
+		'app.course',
+		'app.category',
+		'app.schedule',
+		'app.day',
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**
- * testIndex method
+ * testAdminIndex method
  *
  * @return void
  */
-	public function testIndex() {
+	public function testAdminIndex() {
 	}
 
 /**
- * testView method
+ * testAdminView method
  *
  * @return void
  */
-	public function testView() {
+	public function testAdminView() {
 	}
 
 /**
- * testAdd method
+ * testAdminAdd method
  *
  * @return void
  */
-	public function testAdd() {
+	public function testAdminAdd() {
 	}
 
 /**
- * testEdit method
+ * testAdminEdit method
  *
  * @return void
  */
-	public function testEdit() {
+	public function testAdminEdit() {
 	}
 
 /**
- * testDelete method
+ * testAdminDelete method
  *
  * @return void
  */
-	public function testDelete() {
+	public function testAdminDelete() {
 	}
 
 }

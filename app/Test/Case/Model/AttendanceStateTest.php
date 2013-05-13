@@ -18,14 +18,17 @@ class AttendanceStateTest extends CakeTestCase {
 		'app.user',
 		'app.gender',
 		'app.department',
+		'app.occupation',
 		'app.group',
-		'app.invoice',
+		'app.address',
 		'app.type',
 		'app.courses_term',
 		'app.term',
 		'app.course',
 		'app.category',
-		'app.day'
+		'app.schedule',
+		'app.day',
+		'app.booking_state'
 	);
 
 /**

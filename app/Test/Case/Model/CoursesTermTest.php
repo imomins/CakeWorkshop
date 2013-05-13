@@ -14,10 +14,16 @@ class CoursesTermTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.courses_term',
-		'app.terms',
-		'app.courses',
-		'app.user',
-		'app.courses_terms_user'
+		'app.term',
+		'app.course',
+		'app.category',
+		'app.schedule',
+		'app.day',
+		'app.booking',
+		'app.address',
+		'app.type',
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**
@@ -39,6 +45,30 @@ class CoursesTermTest extends CakeTestCase {
 		unset($this->CoursesTerm);
 
 		parent::tearDown();
+	}
+
+/**
+ * testGetCoursesList method
+ *
+ * @return void
+ */
+	public function testGetCoursesList() {
+	}
+
+/**
+ * testFindCoursesTermGroupedByCategoryWithBookingStateName method
+ *
+ * @return void
+ */
+	public function testFindCoursesTermGroupedByCategoryWithBookingStateName() {
+	}
+
+/**
+ * testFindGroupedByCategory method
+ *
+ * @return void
+ */
+	public function testFindGroupedByCategory() {
 	}
 
 }

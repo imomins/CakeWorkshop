@@ -18,14 +18,12 @@ class DayTest extends CakeTestCase {
 		'app.term',
 		'app.course',
 		'app.category',
-		'app.user',
-		'app.gender',
-		'app.department',
-		'app.occupation',
-		'app.group',
-		'app.invoice',
+		'app.schedule',
+		'app.booking',
+		'app.address',
 		'app.type',
-		'app.booking'
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**

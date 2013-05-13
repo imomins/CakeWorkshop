@@ -11,12 +11,13 @@ class TermFixture extends CakeTestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'id' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'unique', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'start' => array('type' => 'date', 'null' => false, 'default' => null),
 		'end' => array('type' => 'date', 'null' => false, 'default' => null),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'idx_unique_term' => array('column' => 'name', 'unique' => 1)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
@@ -28,10 +29,64 @@ class TermFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
+			'id' => '',
 			'name' => 'Lorem ipsum dolor sit amet',
-			'start' => '2012-09-13',
-			'end' => '2012-09-13'
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
+		),
+		array(
+			'id' => '',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'start' => '2013-05-13',
+			'end' => '2013-05-13'
 		),
 	);
 

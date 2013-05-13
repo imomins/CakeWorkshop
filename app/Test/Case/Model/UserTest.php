@@ -14,15 +14,21 @@ class UserTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.user',
-		'app.title',
 		'app.gender',
 		'app.department',
 		'app.occupation',
 		'app.group',
+		'app.booking',
+		'app.address',
+		'app.type',
 		'app.courses_term',
-		'app.terms',
-		'app.courses',
-		'app.courses_terms_user'
+		'app.term',
+		'app.course',
+		'app.category',
+		'app.schedule',
+		'app.day',
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**
@@ -44,6 +50,46 @@ class UserTest extends CakeTestCase {
 		unset($this->User);
 
 		parent::tearDown();
+	}
+
+/**
+ * testSearch method
+ *
+ * @return void
+ */
+	public function testSearch() {
+	}
+
+/**
+ * testFindUserIdByEmail method
+ *
+ * @return void
+ */
+	public function testFindUserIdByEmail() {
+	}
+
+/**
+ * testFindUserIdByHash method
+ *
+ * @return void
+ */
+	public function testFindUserIdByHash() {
+	}
+
+/**
+ * testActivate method
+ *
+ * @return void
+ */
+	public function testActivate() {
+	}
+
+/**
+ * testPassCompare method
+ *
+ * @return void
+ */
+	public function testPassCompare() {
 	}
 
 }

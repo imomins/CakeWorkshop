@@ -11,10 +11,11 @@ class TypeFixture extends CakeTestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'primary', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'display' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'unique', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'name', 'unique' => 1),
+			'display_UNIQUE' => array('column' => 'display', 'unique' => 1)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
@@ -26,8 +27,44 @@ class TypeFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'name' => 'Lorem ipsum dolor sit amet'
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
+		),
+		array(
+			'name' => 'Lorem ipsum dolor sit amet',
+			'display' => 'Lorem ipsum dolor sit amet'
 		),
 	);
 

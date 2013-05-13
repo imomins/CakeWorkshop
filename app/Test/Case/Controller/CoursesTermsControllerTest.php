@@ -14,55 +14,96 @@ class CoursesTermsControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'app.courses_term',
-		'app.terms',
-		'app.courses',
-		'app.user',
-		'app.title',
-		'app.gender',
-		'app.department',
-		'app.occupation',
-		'app.group',
-		'app.courses_terms_user'
+		'app.term',
+		'app.course',
+		'app.category',
+		'app.schedule',
+		'app.day',
+		'app.booking',
+		'app.address',
+		'app.type',
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**
- * testIndex method
+ * testGet method
  *
  * @return void
  */
-	public function testIndex() {
+	public function testGet() {
 	}
 
 /**
- * testView method
+ * testAdminIndex method
  *
  * @return void
  */
-	public function testView() {
+	public function testAdminIndex() {
 	}
 
 /**
- * testAdd method
+ * testAdminView method
  *
  * @return void
  */
-	public function testAdd() {
+	public function testAdminView() {
 	}
 
 /**
- * testEdit method
+ * testAdminList method
  *
  * @return void
  */
-	public function testEdit() {
+	public function testAdminList() {
 	}
 
 /**
- * testDelete method
+ * testAdminNameplates method
  *
  * @return void
  */
-	public function testDelete() {
+	public function testAdminNameplates() {
+	}
+
+/**
+ * testAdminPdf method
+ *
+ * @return void
+ */
+	public function testAdminPdf() {
+	}
+
+/**
+ * testAdminAdd method
+ *
+ * @return void
+ */
+	public function testAdminAdd() {
+	}
+
+/**
+ * testAdminEdit method
+ *
+ * @return void
+ */
+	public function testAdminEdit() {
+	}
+
+/**
+ * testAdminDelete method
+ *
+ * @return void
+ */
+	public function testAdminDelete() {
+	}
+
+/**
+ * testAdminFind method
+ *
+ * @return void
+ */
+	public function testAdminFind() {
 	}
 
 }

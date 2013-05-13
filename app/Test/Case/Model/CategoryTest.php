@@ -15,10 +15,15 @@ class CategoryTest extends CakeTestCase {
 	public $fixtures = array(
 		'app.category',
 		'app.course',
-		'app.term',
 		'app.courses_term',
-		'app.terms_user',
-		'app.courses_terms_user'
+		'app.term',
+		'app.schedule',
+		'app.day',
+		'app.booking',
+		'app.address',
+		'app.type',
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**
@@ -40,6 +45,14 @@ class CategoryTest extends CakeTestCase {
 		unset($this->Category);
 
 		parent::tearDown();
+	}
+
+/**
+ * testFindCoursesGroupedByCategory method
+ *
+ * @return void
+ */
+	public function testFindCoursesGroupedByCategory() {
 	}
 
 }

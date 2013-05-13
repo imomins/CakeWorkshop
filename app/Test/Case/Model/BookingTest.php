@@ -1,11 +1,11 @@
 <?php
-App::uses('Type', 'Model');
+App::uses('Booking', 'Model');
 
 /**
- * Type Test Case
+ * Booking Test Case
  *
  */
-class TypeTest extends CakeTestCase {
+class BookingTest extends CakeTestCase {
 
 /**
  * Fixtures
@@ -13,14 +13,14 @@ class TypeTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.type',
-		'app.address',
+		'app.booking',
 		'app.user',
 		'app.gender',
 		'app.department',
 		'app.occupation',
 		'app.group',
-		'app.booking',
+		'app.address',
+		'app.type',
 		'app.courses_term',
 		'app.term',
 		'app.course',
@@ -38,7 +38,7 @@ class TypeTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Type = ClassRegistry::init('Type');
+		$this->Booking = ClassRegistry::init('Booking');
 	}
 
 /**
@@ -47,9 +47,17 @@ class TypeTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->Type);
+		unset($this->Booking);
 
 		parent::tearDown();
+	}
+
+/**
+ * testFindBookingsByIds method
+ *
+ * @return void
+ */
+	public function testFindBookingsByIds() {
 	}
 
 }

@@ -14,12 +14,16 @@ class TermTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.term',
+		'app.courses_term',
 		'app.course',
 		'app.category',
-		'app.courses_term',
-		'app.terms_user',
-		'app.courses_terms_user',
-		'app.s_terms_user'
+		'app.schedule',
+		'app.day',
+		'app.booking',
+		'app.address',
+		'app.type',
+		'app.booking_state',
+		'app.attendance_state'
 	);
 
 /**
