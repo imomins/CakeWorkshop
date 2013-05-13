@@ -1,5 +1,4 @@
 .idea
-/resources/*.bak
 /resources/veranstaltungen/*
 /resources/export.sql
 /app/Config
@@ -11,3 +10,4 @@
 /dist
 .DS_Store
 /tags
+/resources/*.bak
