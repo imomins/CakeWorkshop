@@ -5,6 +5,9 @@ App::uses('CakeEmail', 'Network/Email');
  * Users Controller
  *
  * @property User $User
+ * @property Setting $Setting
+ * @property Category $Category
+ * @property Occupation $Occupation
  */
 class UsersController extends AppController {
 
@@ -49,14 +52,14 @@ class UsersController extends AppController {
             $this->loadModel('Category');
             $this->loadModel('Term');
             $this->loadModel('Occupation');
-
-            $termId = $this->Term->find('first', array('order' => array('id' => 'DESC')));
+            $this->loadModel('Setting');
 
             $coursesByCategory = $this->Category->findCoursesGroupedByCategory();
             $occupations       = $this->Occupation->find('list');
+            $settings          = $this->Setting->findHash();
             $title_for_layout  = __('Workshop Anmeldung');
 
-            $this->set(compact('genders', 'departments', 'coursesByCategory', 'occupations', 'title_for_layout'));
+            $this->set(compact('genders', 'departments', 'coursesByCategory', 'occupations', 'title_for_layout', 'settings'));
         }
     }
 
@@ -80,7 +83,7 @@ class UsersController extends AppController {
                     'password_confirm' => trim($this->request->data['User']['password_confirm']),
                     'firstname'        => trim($this->request->data['User']['firstname']),
                     'lastname'         => trim($this->request->data['User']['lastname']),
-                    'title'            => $this->request->data['User']['title'],
+                    'title'            => trim($this->request->data['User']['title']),
                     'gender_id'        => $this->request->data['User']['gender_id'],
                     'department_id'    => $this->request->data['User']['department_id'],
                     'occupation_id'    => $this->request->data['User']['occupation_id'],

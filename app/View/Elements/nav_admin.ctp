@@ -57,3 +57,5 @@
         <li><?php echo $this->Html->link(__('Anlegen'), '/admin/genders/add'); ?></li>
     </ul>
 </li>
+
+<li data-controller="settings"><?php echo $this->Html->link(__('Einstellungen'), '/admin/settings/edit'); ?></li>

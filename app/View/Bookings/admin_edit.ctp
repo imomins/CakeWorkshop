@@ -57,7 +57,7 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label"><?php echo __('Notizen zu dieser Buchung'); ?></label>
+        <label class="control-label"><?php echo __('Notizen zu dieser Anmeldung'); ?></label>
 
         <div class="controls">
             <?php echo $this->Form->textarea('notes', array('rows' => 7, 'class' => 'span7', 'div' => false, 'label' => false)); ?>

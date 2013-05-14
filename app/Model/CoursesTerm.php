@@ -51,7 +51,7 @@ class CoursesTerm extends AppModel {
                 LEFT OUTER JOIN courses_terms ON (courses.id = courses_terms.course_id)
                 LEFT OUTER JOIN terms ON (courses_terms.term_id = terms.id)
                 LEFT OUTER JOIN days ON (courses_terms.id = days.courses_term_id)
-            WHERE terms.id = (SELECT id FROM terms ORDER BY id DESC LIMIT 1)
+            WHERE terms.id = (SELECT value FROM settings WHERE `key` = 'current_term')
                 ORDER BY categories.name ASC, courses.name ASC
 EOD;
 

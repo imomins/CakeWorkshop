@@ -60,7 +60,7 @@
             &nbsp;
         </dd>
 
-        <dt><?php echo __('Notizen zur Anmeldung'); ?></dt>
+        <dt><?php echo __('Notizen zu dieser Anmeldung'); ?></dt>
         <dd>
             <?php echo $this->Frontend->note($booking['Booking']['notes']); ?>
             &nbsp;

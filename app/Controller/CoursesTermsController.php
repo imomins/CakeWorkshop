@@ -1,9 +1,11 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('Sanitize', 'Utility');
 /**
  * CoursesTerms Controller
  *
  * @property CoursesTerm $CoursesTerm
+ * @property Setting $Setting
  */
 class CoursesTermsController extends AppController {
 
@@ -33,6 +35,13 @@ class CoursesTermsController extends AppController {
     public function admin_index($term_id = null) {
         $this->request->data['term_id'] = $term_id;
 
+        // Redirect to current term
+        if ($term_id === null) {
+            $this->loadModel('Setting');
+            $term    = $this->Setting->findByKey('current_term');
+            return $this->redirect('/admin/courses_terms/index/' . $term['Setting']['value']);
+        }
+
         // TODO: array_push explodes for conditions, reason for ugly code below, check again
         $this->paginate = array(
             'order'      => array('id' => 'DESC'),
@@ -50,7 +59,7 @@ class CoursesTermsController extends AppController {
                 $this->paginate = array(
                     'conditions' => array(
                         'CoursesTerm.term_id' => $term_id,
-                        'Course.name LIKE'    => '%' . trim($this->request->data['query']) . '%'
+                        'Course.name LIKE'    => '%' . Sanitize::escape(trim($this->request->data['query'])) . '%'
                     ),
                     'order'      => array('CoursesTerm.id DESC')
                 );
