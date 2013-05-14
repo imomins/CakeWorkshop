@@ -359,15 +359,15 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cake_workshop`.`messages`
+-- Table `cake_workshop`.`settings`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `cake_workshop`.`messages` ;
+DROP TABLE IF EXISTS `cake_workshop`.`settings` ;
 
-CREATE  TABLE IF NOT EXISTS `cake_workshop`.`messages` (
-  `name` VARCHAR(100) NOT NULL ,
-  `title` VARCHAR(100) NOT NULL ,
-  `message` TEXT NOT NULL ,
-  PRIMARY KEY (`name`) )
+CREATE  TABLE IF NOT EXISTS `cake_workshop`.`settings` (
+  `key` VARCHAR(100) NOT NULL ,
+  `title` VARCHAR(255) NOT NULL ,
+  `value` TEXT NULL ,
+  PRIMARY KEY (`key`) )
 ENGINE = InnoDB;
 
 USE `cake_workshop` ;
@@ -493,5 +493,16 @@ START TRANSACTION;
 USE `cake_workshop`;
 INSERT INTO `cake_workshop`.`types` (`name`, `display`) VALUES ('private', 'Privat');
 INSERT INTO `cake_workshop`.`types` (`name`, `display`) VALUES ('business', 'Geschäftlich');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `cake_workshop`.`settings`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `cake_workshop`;
+INSERT INTO `cake_workshop`.`settings` (`key`, `title`, `value`) VALUES ('current_term', 'Aktuelles Semester', NULL);
+INSERT INTO `cake_workshop`.`settings` (`key`, `title`, `value`) VALUES ('alert_startpage', 'Hinweis auf der Startseite', NULL);
+INSERT INTO `cake_workshop`.`settings` (`key`, `title`, `value`) VALUES ('alert_register_workshop', 'Hinweis über der Workshop-Liste', NULL);
 
 COMMIT;
