@@ -1,4 +1,4 @@
-define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler, $, blockui) {
+define(['ko', 'errorHandler', 'jquery', 'block-ui', 'logger'], function (ko, errorHandler, $, blockui, logger) {
     "use strict";
 
     $(document).ajaxStop($.unblockUI);
@@ -7,6 +7,7 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
         var self = this;
         this.id = id;
 
+        // All booking types are represented in this
         this.bookings = {
             unconfirmed:        ko.observableArray(),
             self_unsubscribed:  ko.observableArray(),
@@ -38,6 +39,27 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
         }
 
         /**
+         * Traverses all element of bookings array and checks which one is selected.
+         * @returns {Array}
+         */
+        function getSelectedIds() {
+            var type,
+                i,
+                selected = [];
+
+            for (type in self.bookings) {
+                var bookings = self.bookings[type]();
+                for (i = 0; i < bookings.length; i += 1) {
+                    if (bookings[i].checked()) {
+                        selected.push(bookings[i].Booking.id);
+                    }
+                }
+            }
+
+            return selected;
+        }
+
+        /**
          * Does three things:
          * 1. Changes the status as specified.
          * 2. Removes the element from the original status array.
@@ -65,7 +87,7 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
                     // Target status position
                     self.bookings[status].push(item);
 
-                    console.log('Status der Buchung mit Id "' + trData.id + '" gesetzt auf "' + status + '"');
+                    logger.log('Status der Buchung mit Id %s gesetzt auf %s', trData.id, status);
                 })
                 .error(function (response) {
                     errorHandler.showAjaxError(response);
@@ -97,7 +119,7 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
                         self.bookings[trData.type].remove(function (item) {
                             return parseInt(item.Booking.id, 10) === trData.id;
                         });
-                        console.log('Buchung gelöscht, Id: ' + trData.id);
+                        logger.log('Buchung gelöscht, Id: %s', trData.id);
                     })
                     .error(function (response) {
                         errorHandler.showAjaxError(response);
@@ -105,6 +127,60 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
             }
         };
 
+        /**
+         * Selected a groups of bookings types.
+         * @param type
+         */
+        function selectAll(type, checked) {
+            var bookings = self.bookings[type](),
+                i;
+
+            for (i = 0; i < bookings.length; i += 1) {
+                bookings[i].checked(checked);
+            }
+        }
+
+        this.selectAllUnconfirmed = ko.observable(false);
+        this.selectAllUnconfirmed.subscribe(function (checked) {
+            selectAll('unconfirmed', checked);
+        });
+
+        this.selectAllSelfUnsubscribed = ko.observable(false);
+        this.selectAllSelfUnsubscribed.subscribe(function (checked) {
+            selectAll('self_unsubscribed', checked);
+        });
+
+        this.selectAllAdminUnsubscribed = ko.observable(false);
+        this.selectAllAdminUnsubscribed.subscribe(function (checked) {
+            selectAll('admin_unsubscribed', checked);
+        });
+
+        this.selectAllConfirmed = ko.observable(false);
+        this.selectAllConfirmed.subscribe(function (checked) {
+            selectAll('confirmed', checked);
+        });
+
+        this.selectAllCleared = ko.observable(false);
+        this.selectAllCleared.subscribe(function (checked) {
+            selectAll('cleared', checked);
+        });
+
+        /**
+         * Moves a given list of booking ids to another CoursesTerm.
+         * @param data
+         * @param event
+         */
+        this.move = function (data, event) {
+            var ids = getSelectedIds();
+
+            if (ids.length > 0) {
+                $.post(CAKEWORKSHOP.webroot + 'admin/bookings/move', { ids: ids });
+            }
+        };
+
+        /**
+         * Gets data from server.
+         */
         this.fetch = (function () {
             $.blockUI({ message: 'Lade, bitte warten...' });
 
@@ -116,6 +192,7 @@ define(['ko', 'errorHandler', 'jquery', 'block-ui'], function (ko, errorHandler,
                     data = data.bookings;
 
                     for (i = 0; i < data.length; i += 1) {
+                        data[i].checked = ko.observable(false);
                         self.bookings[data[i].BookingState.name].push(data[i]);
                     }
 

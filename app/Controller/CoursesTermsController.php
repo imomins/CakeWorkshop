@@ -35,13 +35,6 @@ class CoursesTermsController extends AppController {
     public function admin_index($term_id = null) {
         $this->request->data['term_id'] = $term_id;
 
-        // Redirect to current term
-        if ($term_id === null) {
-            $this->loadModel('Setting');
-            $term    = $this->Setting->findByKey('current_term');
-            return $this->redirect('/admin/courses_terms/index/' . $term['Setting']['value']);
-        }
-
         // TODO: array_push explodes for conditions, reason for ugly code below, check again
         $this->paginate = array(
             'order'      => array('id' => 'DESC'),
@@ -50,7 +43,16 @@ class CoursesTermsController extends AppController {
 
         // Search condition
         if ($this->request->is('post')) {
-            $this->paginate = array('conditions' => array('Course.name LIKE' => '%' . trim($this->request->data['query']) . '%'));
+            $this->request->data['query'] = Sanitize::escape(trim($this->request->data('query')));
+            $this->paginate               = array('conditions' => array('Course.name LIKE' => '%' . trim($this->request->data['query']) . '%'));
+        }
+        else {
+            // Redirect to current term
+            if ($term_id === null) {
+                $this->loadModel('Setting');
+                $term = $this->Setting->findByKey('current_term');
+                return $this->redirect('/admin/courses_terms/index/' . $term['Setting']['value']);
+            }
         }
         // Term condition
         if ($term_id !== null) {
@@ -59,7 +61,7 @@ class CoursesTermsController extends AppController {
                 $this->paginate = array(
                     'conditions' => array(
                         'CoursesTerm.term_id' => $term_id,
-                        'Course.name LIKE'    => '%' . Sanitize::escape(trim($this->request->data['query'])) . '%'
+                        'Course.name LIKE'    => '%' . trim($this->request->data['query']) . '%'
                     ),
                     'order'      => array('CoursesTerm.id DESC')
                 );
@@ -89,15 +91,20 @@ class CoursesTermsController extends AppController {
     public function admin_view($id) {
         $this->CoursesTerm->id = $id;
         if (!$this->CoursesTerm->exists()) {
-            throw new NotFoundException(__('Invalid courses term'));
+            throw new NotFoundException(__('Ungültiger Semester-Kurs'));
         }
 
         if ($this->request->is('ajax')) {
             // Request
             $bookings = $this->CoursesTerm->query("
-                SELECT User.id, CONCAT(User.firstname, ' ', User.lastname) User_name, User.email, Booking.id,DATE_FORMAT(Booking.created, '%d.%m.%Y, %H:%i') Booking_created,DATE_FORMAT(Booking.unsubscribed_at, '%d.%m.%Y, %H:%i') Booking_unsubscribed_at,BookingState.name,BookingState.display FROM bookings Booking
+                SELECT
+                    User.id, CONCAT(User.firstname, ' ', User.lastname) User_name, User.email,
+                    Occupation.name,
+                    Booking.id,DATE_FORMAT(Booking.created, '%d.%m.%Y, %H:%i') Booking_created,DATE_FORMAT(Booking.unsubscribed_at, '%d.%m.%Y, %H:%i') Booking_unsubscribed_at,BookingState.name,BookingState.display
+                FROM bookings Booking
                     LEFT OUTER JOIN users User ON (Booking.user_id = User.id)
                     LEFT OUTER JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
+                    LEFT OUTER JOIN occupations Occupation ON (User.occupation_id = Occupation.id)
                 WHERE Booking.courses_term_id = ?
                     ORDER BY FIELD(BookingState.display,'unconfirmed','self_unsubscribed','admin_unsubscribed','confirmed'), User_name ASC
                 ", array($id));
@@ -166,7 +173,7 @@ class CoursesTermsController extends AppController {
             $this->CoursesTerm->create();
             if ($this->CoursesTerm->save($this->request->data)) {
                 $this->Session->setFlash(__('Der Semester-Kurs wurde angelegt'), 'flash_success');
-                $this->redirect(array('action' => 'view', $this->CoursesTerm->getLastInsertID()));
+                return $this->redirect(array('action' => 'view', $this->CoursesTerm->getLastInsertID()));
             }
             else {
                 $this->Session->setFlash(__('Der Kurs konnte nicht gespeichert werden'), 'flash_error');
@@ -194,7 +201,7 @@ class CoursesTermsController extends AppController {
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->CoursesTerm->save($this->request->data)) {
                 $this->Session->setFlash(__('Die Daten wurden gespeichert'), 'flash_success');
-                $this->redirect(array('action' => 'view', $id));
+                return $this->redirect(array('action' => 'view', $id));
             }
             else {
                 $this->Session->setFlash(__('Fehler beim Speichern'), 'flash_error');
@@ -230,18 +237,19 @@ class CoursesTermsController extends AppController {
         }
         $this->CoursesTerm->id = $id;
         if (!$this->CoursesTerm->exists()) {
-            throw new NotFoundException(__('Invalid courses term'));
+            throw new NotFoundException(__('Ungültiger Semester-Kurs'));
         }
         if ($this->CoursesTerm->delete()) {
-            $this->Session->setFlash(__('Courses term deleted'));
-            $this->redirect(array('action' => 'index'));
+            $this->Session->setFlash(__('Der Semester-Kurs wurde gelöscht'), 'flash_success');
+            return $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash(__('Courses term was not deleted'));
-        $this->redirect(array('action' => 'index'));
+        $this->Session->setFlash(__('Der Semester-Kurs wurde nicht gelöscht'));
+        return $this->redirect(array('action' => 'index'));
     }
 
     public function admin_find() {
-        $this->autoRender = false;
+        $this->autoRender            = false;
+        $this->request->data['name'] = Sanitize::escape($this->request->data('name'));
 
         return json_encode($this->CoursesTerm->find('all', array(
             'fields'     => array('CoursesTerm.id', 'Term.name', 'Course.name'),
@@ -254,6 +262,30 @@ class CoursesTermsController extends AppController {
             ),
             'order'      => array('CoursesTerm.id DESC')
         )));
+    }
+
+    public function admin_reschedule($id = null) {
+        if ($this->request->is('post')) {
+            debug($this->request->data);
+        }
+
+        // TODO: Create new courses term
+        // TODO: Copy users if necessary
+        // TODO: Send email to all attendees if necessary
+
+        $this->CoursesTerm->recursive    = 0;
+        $this->request->data             = $this->CoursesTerm->read(null, $id);
+        $this->request->data['Bookings'] = $this->CoursesTerm->query("
+            SELECT
+                User.id,User.title,User.firstname,User.lastname,BookingState.display,AttendanceState.display
+            FROM bookings Booking
+                LEFT OUTER JOIN users User ON (Booking.user_id = User.id)
+                LEFT OUTER JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
+                LEFT OUTER JOIN attendance_states AttendanceState ON (Booking.attendance_state_name = AttendanceState.name)
+            WHERE
+                Booking.courses_term_id = ?
+        ", array($id));
+
     }
 
 }

@@ -106,21 +106,24 @@
                 <li><?php echo $this->Html->link(__('PDF'), array('controller' => 'courses_terms', 'action' => 'list', $coursesTerm['CoursesTerm']['id'], 'ext' => 'pdf')); ?></li>
             </ul>
         </div>
-        <?php echo $this->Html->link(__('Kurs absagen und neu ansetzen'), array('controller' => 'courses_terms', 'action' => 'nameplates', $coursesTerm['CoursesTerm']['id']), array('class' => 'btn btn-small btn-danger')); ?>
+        <?php echo $this->Html->link(__('Kurs absagen und neu ansetzen'), '/admin/courses_terms/reschedule/' . $coursesTerm['CoursesTerm']['id'], array('class' => 'btn btn-small btn-danger')); ?>
     </div>
 </div>
-
-<hr/>
 
 <div class="row-fluid">
     <div class="span12">
         <div id="booking">
-            <input id="CoursesTermId" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
+            <?php echo $this->Form->create(null, array(
+                'url' => array('controller' => 'bookings', 'action' => 'confirm_move')
+            )); ?>
+            <input id="CoursesTermId" name="data[CoursesTerm][id][<?php echo $coursesTerm['CoursesTerm']['id']; ?>]" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
 
             <div class="type flat-ui-sun-flower"><?php echo __('Unbestätigte Anmeldungen'); ?></div>
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
+                <th class="center" data-bind="visible: ($root.bookings.unconfirmed().length > 0)"><input data-bind="checked: selectAllUnconfirmed" type="checkbox" /></th>
                 <th><?php echo __('Name'); ?></th>
+                <th><?php echo __('Beschäftigung'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
                 <th><?php echo __('Bestätigen'); ?></th>
                 <th><?php echo __('Bearbeiten'); ?></th>
@@ -136,7 +139,9 @@
                 <!-- ko if: (bookings.unconfirmed().length > 0) -->
                 <tbody data-bind="foreach: { data: bookings.unconfirmed, as: 'unconfirmed' }">
                 <tr data-bind="attr: { 'data-id' : unconfirmed.Booking.id, 'data-type': 'unconfirmed' }">
+                    <td class="center" data-bind="visible: ($root.bookings.unconfirmed().length > 0)"><input data-bind="attr: { name: 'data[Booking][id][' + unconfirmed.Booking.id + ']' }, checked: unconfirmed.checked" type="checkbox" /></td>
                     <td><span data-bind="text: unconfirmed['0'].User_name"></span></td>
+                    <td><span data-bind="text: unconfirmed.Occupation.name"></span></td>
                     <td><span data-bind="text: unconfirmed['0'].Booking_created + ' Uhr'"></span></td>
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Bestätigen'); ?></a>
                     </td>
@@ -150,7 +155,9 @@
             <div class="type flat-ui-carrot"><?php echo __('Selbst abgemeldet'); ?></div>
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
+                <th class="center" data-bind="visible: ($root.bookings.self_unsubscribed().length > 0)"><input data-bind="checked: selectAllSelfUnsubscribed" type="checkbox" /></th>
                 <th><?php echo __('Name'); ?></th>
+                <th><?php echo __('Beschäftigung'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
                 <th><?php echo __('Abgemeldet am'); ?></th>
                 <th><?php echo __('Anmelden'); ?></th>
@@ -160,14 +167,16 @@
                 <!-- ko ifnot: (bookings.self_unsubscribed().length > 0) -->
                 <tbody>
                 <tr>
-                    <td colspan="6"><?php echo __('Leer'); ?></td>
+                    <td colspan="7"><?php echo __('Leer'); ?></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
                 <!-- ko if: (bookings.unconfirmed().length > 0) -->
                 <tbody data-bind="foreach: { data: bookings.self_unsubscribed, as: 'self_unsubscribed' }">
                 <tr data-bind="attr: { 'data-id' : self_unsubscribed.Booking.id, 'data-type': 'self_unsubscribed' }">
+                    <td class="center"data-bind="visible: ($root.bookings.self_unsubscribed().length > 0)"><input data-bind="attr: { name: 'data[Booking][id][' + self_unsubscribed.Booking.id + ']' }, checked: self_unsubscribed.checked" type="checkbox" /></td>
                     <td><span data-bind="text: self_unsubscribed['0'].User_name"></span></td>
+                    <td><span data-bind="text: self_unsubscribed.Occupation.name"></span></td>
                     <td><span data-bind="text: self_unsubscribed['0'].Booking_created + ' Uhr'"></span></td>
                     <td><span data-bind="text: self_unsubscribed['0'].Booking_unsubscribed_at + ' Uhr'"></span></td>
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
@@ -182,7 +191,9 @@
             <div class="type flat-ui-alizarin"><?php echo __('Wurde abgemeldet'); ?></div>
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
+                <th class="center" data-bind="visible: ($root.bookings.admin_unsubscribed().length > 0)"><input data-bind="checked: selectAllAdminUnsubscribed" type="checkbox" /></th>
                 <th><?php echo __('Name'); ?></th>
+                <th><?php echo __('Beschäftigung'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
                 <th><?php echo __('Anmelden'); ?></th>
                 <th><?php echo __('Bearbeiten'); ?></th>
@@ -191,14 +202,16 @@
                 <!-- ko ifnot: (bookings.admin_unsubscribed().length > 0) -->
                 <tbody>
                 <tr>
-                    <td colspan="6"><?php echo __('Leer'); ?></td>
+                    <td colspan="7"><?php echo __('Leer'); ?></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
                 <!-- ko if: (bookings.admin_unsubscribed().length > 0) -->
                 <tbody data-bind="foreach: { data: bookings.admin_unsubscribed, as: 'admin_unsubscribed' }">
                 <tr data-bind="attr: { 'data-id' : admin_unsubscribed.Booking.id, 'data-type': 'admin_unsubscribed' }">
+                    <td class="center" data-bind="visible: ($root.bookings.admin_unsubscribed().length > 0)"><input data-bind="attr: { name: 'data[Booking][id][' + admin_unsubscribed.Booking.id + ']' }, checked: admin_unsubscribed.checked" type="checkbox" /></td>
                     <td><span data-bind="text: admin_unsubscribed['0'].User_name"></span></td>
+                    <td><span data-bind="text: admin_unsubscribed.Occupation.name"></span></td>
                     <td><span data-bind="text: admin_unsubscribed['0'].Booking_created + ' Uhr'"></span></td>
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
                     </td>
@@ -213,7 +226,9 @@
 
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
+                <th class="center" data-bind="visible: ($root.bookings.confirmed().length > 0)"><input data-bind="checked: selectAllConfirmed" type="checkbox" /></th>
                 <th><?php echo __('Name'); ?></th>
+                <th><?php echo __('Beschäftigung'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
                 <th><?php echo __('Abgerechnet'); ?></th>
                 <th><?php echo __('Abmelden'); ?></th>
@@ -230,7 +245,9 @@
                 <!-- ko if: (bookings.confirmed().length > 0) -->
                 <tbody data-bind="foreach: { data: bookings.confirmed, as: 'confirmed' }">
                 <tr data-bind="attr: { 'data-id' : confirmed.Booking.id, 'data-type': 'confirmed' }">
+                    <td class="center" data-bind="visible: ($root.bookings.confirmed().length > 0)"><input data-bind="attr: { name: 'data[Booking][id][' + confirmed.Booking.id + ']' }, checked: confirmed.checked" type="checkbox" /></td>
                     <td><span data-bind="text: confirmed['0'].User_name"></span></td>
+                    <td><span data-bind="text: confirmed.Occupation.name"></span></td>
                     <td><span data-bind="text: confirmed['0'].Booking_created + ' Uhr'"></span></td>
                     <td><a class="btn-link" data-bind="click: $parent.cleared"><?php echo __('Abgerechnet'); ?></a></td>
                     <td><a class="btn-link" data-bind="click: $parent.unsubscribe"><?php echo __('Abmelden'); ?></a>
@@ -246,7 +263,9 @@
 
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
+                <th class="center" data-bind="visible: ($root.bookings.cleared().length > 0)"><input data-bind="checked: selectAllCleared" type="checkbox" /></th>
                 <th><?php echo __('Name'); ?></th>
+                <th><?php echo __('Beschäftigung'); ?></th>
                 <th><?php echo __('Gebucht am'); ?></th>
                 <th><?php echo __('Anmelden'); ?></th>
                 <th><?php echo __('Bearbeiten'); ?></th>
@@ -255,14 +274,16 @@
                 <!-- ko ifnot: (bookings.cleared().length > 0) -->
                 <tbody>
                 <tr>
-                    <td colspan="6"><?php echo __('Leer'); ?></td>
+                    <td colspan="7"><?php echo __('Leer'); ?></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
                 <!-- ko if: (bookings.cleared().length > 0) -->
                 <tbody data-bind="foreach: { data: bookings.cleared, as: 'cleared' }">
                 <tr data-bind="attr: { 'data-id' : cleared.Booking.id, 'data-type': 'cleared' }">
+                    <td class="center" data-bind="visible: ($root.bookings.cleared().length > 0)"><input data-bind="attr: { name: 'data[Booking][id][' + cleared.Booking.id + ']' }, checked: cleared.checked" type="checkbox" /></td>
                     <td><span data-bind="text: cleared['0'].User_name"></span></td>
+                    <td><span data-bind="text: cleared.Occupation.name"></span></td>
                     <td><span data-bind="text: cleared['0'].Booking_created + ' Uhr'"></span></td>
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
                     </td>
@@ -272,6 +293,11 @@
                 </tbody>
                 <!-- /ko -->
             </table>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><?php echo __('Ausgewählte Teilnehmer in anderen Kurs verschieben'); ?></button>
+            </div>
+            <?php echo $this->Form->end(); ?>
         </div>
     </div>
 </div>
