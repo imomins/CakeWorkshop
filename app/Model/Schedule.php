@@ -44,7 +44,7 @@ class Schedule extends AppModel {
      * @var array
      */
     public $hasMany = array(
-        'User' => array(
+        'CoursesTerm' => array(
             'className'    => 'CoursesTerm',
             'foreignKey'   => 'schedule_name',
             'dependent'    => false,
