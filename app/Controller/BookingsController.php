@@ -355,4 +355,72 @@ class BookingsController extends AppController {
         return json_encode($message);
     }
 
+    /**
+     * Move a set of bookings to another CoursesTerm.
+     * This gets a request from the courses_terms/view page.
+     */
+    public function admin_confirm_move() {
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException();
+        }
+
+        if (!isset($this->request->data['Booking']['id'])) {
+            $this->Session->setFlash(__('Die haben keine Teilnehmer ausgewählt'), 'flash_success');
+            return $this->redirect('/admin/courses_terms/view/' . $this->request->data['CoursesTerm']['id']);
+        }
+
+        // Extract the selected booking ids
+        $booking_ids = array();
+
+        foreach ($this->request->data['Booking']['id'] as $id => $on) {
+            array_push($booking_ids, intval($id));
+        }
+        // Flatten for SQL IN clause
+        $booking_ids = implode(',', $booking_ids);
+
+        $bookings = $this->Booking->query("
+            SELECT
+                Booking.id, User.id,User.title,User.firstname,User.lastname,BookingState.display,AttendanceState.display
+            FROM bookings Booking
+                LEFT JOIN users User ON (Booking.user_id = User.id)
+                LEFT OUTER JOIN booking_states BookingState ON (Booking.booking_state_name = BookingState.name)
+                LEFT OUTER JOIN attendance_states AttendanceState ON (Booking.attendance_state_name = AttendanceState.name)
+            WHERE
+                Booking.id IN (" . $booking_ids . ")
+            ORDER BY
+                Booking.booking_state_name ASC
+        ");
+
+        // Current course data
+        $this->Booking->CoursesTerm->recursive = 0;
+
+        $coursesTerm      = $this->Booking->CoursesTerm->findById($this->request->data['CoursesTerm']['id']);
+        $title_for_layout = __('Verschieben von Anmeldungen');
+
+        $this->set(compact('bookings', 'coursesTerm', 'title_for_layout'));
+    }
+
+    public function admin_move() {
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException();
+        }
+
+        // Extract the selected booking ids
+        $booking_ids = array();
+
+        foreach ($this->request->data['Booking']['id'] as $id => $on) {
+            array_push($booking_ids, intval($id));
+        }
+        // Flatten for SQL IN clause
+        $booking_ids = implode(',', $booking_ids);
+
+        $this->Booking->query(
+            'UPDATE bookings Booking SET Booking.courses_term_id = ? WHERE Booking.id IN (' . $booking_ids . ')',
+            array($this->request->data['Booking']['courses_term_id'])
+        );
+
+        $this->Session->setFlash(__('Die Anmeldungen wurden verschoben'), 'flash_success');
+        $this->redirect('/admin/courses_terms/view/' . $this->request->data['Booking']['courses_term_id']);
+    }
+
 }
