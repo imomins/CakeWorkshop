@@ -1,5 +1,5 @@
 requirejs.config({
-    "paths":   {
+    "paths": {
         "bootstrap":            "vendor/bootstrap.min",
         "bootstrap-tab":        "vendor/bootstrap/bootstrap-tab",
         "bootstrap-tooltip":    "vendor/bootstrap/bootstrap-tooltip",
@@ -10,24 +10,28 @@ requirejs.config({
         "bootstrap-affix":      "vendor/bootstrap/bootstrap-affix",
         "bootstrap-collapse":   "vendor/bootstrap/bootstrap-collapse",
         "bootstrap-modal":      "vendor/bootstrap/bootstrap-modal",
-        "handlebars":           "vendor/handlebars",
         "jquery":               "vendor/jquery-1.9.1.min",
         "ko":                   "vendor/knockout-2.2.1",
         "datepicker":           "vendor/jquery-ui-custom/js/jquery-ui-1.10.2.custom.min",
         "jquery-ui":            "vendor/jquery-ui-custom/js/jquery-ui-1.10.2.custom.min",
-        "block-ui":             "vendor/jquery.blockUI"
+        "jquery-ui-full":       "vendor/jquery-ui-custom-full/js/jquery-ui.custom.min",
+        "block-ui":             "vendor/jquery.blockUI",
+        "dataTables":           "vendor/dataTables/media/js/jquery.dataTables.min"
     },
-    "shim":    {
-        "handlebars":           {
-            "exports": "Handlebars"
-        },
+    "shim":  {
         "datepicker":           {
             "deps": ["jquery", "vendor/jquery-ui-custom/js/jquery.ui.datepicker-de"]
         },
         "bootstrap":            {
             "deps": ["jquery"]
         },
+        "dataTables":           {
+            "deps": ["jquery"]
+        },
         "jquery-ui":            {
+            "deps": ["jquery"]
+        },
+        "jquery-ui-full":       {
             "deps": ["jquery"]
         },
         "block-ui":             {
