@@ -16,7 +16,7 @@
 </div>
 
 <?php if (!empty($category['Course'])): ?>
-    <table class="table table-bordered table-striped">
+    <table id="category" class="table table-bordered table-striped">
         <thead>
         <th><?php echo __('Kurstitel'); ?></th>
         <th><?php echo __('Kürzel'); ?></th>
@@ -35,3 +35,5 @@
         </tbody>
     </table>
 <?php endif; ?>
+
+<?php echo $this->Html->script('categories/admin/view'); ?>
