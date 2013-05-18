@@ -218,39 +218,6 @@ class UsersController extends AppController {
         return json_encode($auto_complete);
     }
 
-    public function view($id = null) {
-        $user = $this->User->find('first',
-            array(
-                'conditions' => array('User.id' => $id),
-                'fields'     => array(
-                    'User.id',
-                    'User.name',
-                    'User.email',
-                    'User.firstname',
-                    'User.lastname',
-                    'User.hrz',
-                    'User.phone',
-                    'User.created',
-                    'User.group_name',
-                    'User.active',
-                    'Department.name',
-                    'Gender.name',
-                    'User.title',
-                    'User.occupation_id',
-                ),
-                'contain'    => array(
-                    'Gender', 'Department', 'Group',
-                    'CoursesTerm' => array(
-                        'fields' => array('term_id', 'course_id'),
-                        'Course' => array('fields' => array('Course.id', 'Course.name')),
-                        'Term'   => array('fields' => array('Term.id', 'Term.name')),
-                    )
-                ),
-                'order'      => 'created DESC'
-            )
-        );
-    }
-
     /**
      * view method
      *
