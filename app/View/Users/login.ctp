@@ -46,7 +46,7 @@
 
                         <tbody data-bind="foreach: { data: category.Category.CoursesTerm, as: 'CoursesTerm' }">
                         <tr data-bind="visible: category.Category.isEmpty">
-                            <td colspan="8">Momentan stehen keine Kurse zur Auswahl</td>
+                            <td colspan="6">Momentan stehen keine Kurse zur Auswahl</td>
                         </tr>
                         <tr data-bind="
                                     attr: {
