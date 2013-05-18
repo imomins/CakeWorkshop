@@ -90,10 +90,12 @@
                     <ul class="nav pull-right">
                         <?php if ($isAdmin): ?>
                             <li class="nav-search">
-                                <form class="form-search" method="POST"
+                                <form class="navbar-search form-search" method="POST"
                                       action="<?php echo Router::url('/admin/courses_terms/index'); ?>">
-                                    <input type="text" class="input-large search-query" name="query"
-                                           placeholder="Semester-Kurs suchen"/>
+                                    <div class="input-append">
+                                        <input required type="text" class="input-large search-query" name="query" placeholder="Semester-Kurs suchen"/>
+                                        <button type="submit" name="submit" value="1" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
+                                    </div>
                                 </form>
                             </li>
                         <?php endif; ?>

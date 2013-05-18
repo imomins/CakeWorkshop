@@ -13,13 +13,12 @@
 
         <div class="tab-pane active" id="current" ng-controller="BookingsController">
 
+            <div class="alert bg-light-red">
+                <strong>Hinweis zur Anmeldung bei ausgebuchten Kursen:</strong> Falls Kurse ausgebucht sind, dann melden Sie sich bitte trotzdem an. Oft werden noch Plätze über die Warteliste frei bzw. bei großem Interesse bieten wir auch Wiederholungstermine für einzelne Kurse an (gelb markierte Zeilen).
+            </div>
+
             <div class="alert bg-light-blue">
-                <button data-dismiss="alert" class="close" type="button">×</button>
-                <p>
-                    <strong>Hinweis zur Anmeldung bei ausgebuchten Kursen:</strong> Falls Kurse ausgebucht sind, dann melden Sie sich bitte trotzdem an. Oft werden noch Plätze über die Warteliste frei bzw. bei großem Interesse bieten wir auch Wiederholungstermine für einzelne Kurse an (gelb markierte Zeilen).
-                    <hr />
-                    Bitte wählen Sie zuerst die Kurse die Sie belegen möchten aus und bestätigen Sie Ihre Auswahl am unteren Ende der Seite. Sie bekommen eine Email mit einer vorläufigen bestätigung Ihrer Anmeldung. Die Zusage für Ihre Anmeldung erhalten Sie nochmal separat, sofern Sie zu dem Kurs zugelassen wurden. Sie können sich <strong>hier</strong> auch selbständig von Kursen abmelden innerhalb einer Frist von 2 Wochen vor dem Kurs.
-                </p>
+                Bitte wählen Sie zuerst die Kurse die Sie belegen möchten aus und bestätigen Sie Ihre Auswahl am unteren Ende der Seite. Sie bekommen eine Email mit einer vorläufigen bestätigung Ihrer Anmeldung. Die Zusage für Ihre Anmeldung erhalten Sie nochmal separat, sofern Sie zu dem Kurs zugelassen wurden. Sie können sich <strong>hier</strong> auch selbständig von Kursen abmelden innerhalb einer Frist von 2 Wochen vor dem Kurs.
             </div>
 
             <div id="address">

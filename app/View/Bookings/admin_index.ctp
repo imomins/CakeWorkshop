@@ -1,10 +1,15 @@
 <div class="page-header">
     <h3><?php echo __('Neusten Anmeldungen'); ?></h3>
 </div>
-<?php echo $this->Form->create('Booking', array('class' => 'form-inline well')); ?>
-<input type="text" name="query" class="span4 search-query"
-       value="<?php echo isset($this->request->data['query']) ? $this->request->data['query'] : ''; ?>"
-       placeholder="Person suchen"/>
+
+<?php echo $this->Form->create('Booking', array('class' => 'form-search well')); ?>
+<div class="input-append">
+    <input type="text" name="query" size="20" class="input-xlarge search-query"
+           value="<?php echo isset($this->request->data['query']) ? $this->request->data['query'] : ''; ?>"
+           placeholder="Person suchen"/>
+    <button type="submit" name="submit" value="1" class="btn"><i
+            class="icon-search"></i></button>
+</div>
 <?php echo $this->Form->end(); ?>
 
 <table class="table table-bordered table-striped table-hover">

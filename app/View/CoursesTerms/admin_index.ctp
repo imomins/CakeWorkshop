@@ -1,11 +1,15 @@
 <div class="page-header">
-    <h3><?php echo __('Semesterkurse'); ?></h3>
+    <h3><?php echo __('Semester-Kurse'); ?></h3>
 </div>
 
-<?php echo $this->Form->create('Term', array('class' => 'form-inline well')); ?>
-<input type="text" name="query" class="span4 search-query"
-       value="<?php echo isset($this->request->data['query']) ? $this->request->data['query'] : ''; ?>"
-       placeholder="Kurs suchen">
+<?php echo $this->Form->create('Term', array('class' => 'form-search form-inline well')); ?>
+<div class="input-append">
+    <input type="text" name="query" class="input-xlarge search-query" required
+           value="<?php echo isset($this->request->data['query']) ? $this->request->data['query'] : ''; ?>"
+           placeholder="Semester-Kurs suchen">
+    <button type="submit" name="submit" value="1" class="btn"><i class="icon-search"></i>
+    </button>
+</div>
 <?php echo $this->Form->input('term_id',
     array(
         'empty'    => __('Semester Filtern'),

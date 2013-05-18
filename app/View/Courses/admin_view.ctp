@@ -41,9 +41,11 @@
 
 <table class="table table-bordered table-hover table-striped">
     <thead>
-    <th><?php echo __('Kurs-Nr.'); ?></th>
-    <th><?php echo __('Semester'); ?></th>
-    <th><?php echo __('Status'); ?></th>
+    <th width="15%"><?php echo __('Semester-Kurs-Nr.'); ?></th>
+    <th width="15%"><?php echo __('Teilnehmerzahl'); ?></th>
+    <th width="15%"><?php echo __('Maximal'); ?></th>
+    <th width="15%"><?php echo __('Semester'); ?></th>
+    <th width="20%"><?php echo __('Semester-Kurs Status'); ?></th>
     <th><?php echo __('Anzeigen'); ?></th>
     <th><?php echo __('Bearbeiten'); ?></th>
     </thead>
@@ -54,6 +56,8 @@
         <?php foreach ($course['children'] as $course): ?>
             <tr>
                 <td><?php echo $course['CoursesTerm']['id']; ?></td>
+                <td><?php echo $course['CoursesTerm']['attendees']; ?></td>
+                <td><?php echo $course['CoursesTerm']['max']; ?></td>
                 <td><?php echo $course['Term']['name']; ?></td>
                 <td><?php echo $course['Schedule']['display']; ?></td>
                 <td><?php echo $this->Html->link(__('Anzeigen'), array('controller' => 'courses_terms', 'action' => 'view', $course['CoursesTerm']['id'])); ?></td>

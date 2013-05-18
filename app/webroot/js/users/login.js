@@ -9,6 +9,7 @@ require(['ko', 'viewmodel/BookingViewModel', 'jquery', 'bootstrap-tab'], functio
         }
         event.preventDefault();
         ko.applyBindings(new BookingViewModel(), document.getElementById('course'));
+
         $(this).tab('show');
 
         loaded = true;

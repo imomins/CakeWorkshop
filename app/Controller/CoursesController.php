@@ -34,16 +34,17 @@ class CoursesController extends AppController {
         }
 
         $result = $this->Course->query('
-            SELECT Course.*,Category.*,Term.name,CoursesTerm.id,Schedule.display FROM courses Course
+            SELECT Course.*,Category.*,Term.name,CoursesTerm.id,CoursesTerm.attendees,CoursesTerm.max,Schedule.display FROM courses Course
                 LEFT JOIN courses_terms CoursesTerm ON (Course.id = CoursesTerm.course_id)
                 LEFT JOIN categories Category ON (Course.category_id = Category.id)
                 LEFT JOIN terms Term ON (CoursesTerm.term_id = Term.id)
                 LEFT JOIN schedules Schedule ON (CoursesTerm.schedule_name = Schedule.name)
-            WHERE Course.id = ?;
+            WHERE Course.id = ?
+            ORDER BY CoursesTerm.id DESC
         ', array($id));
 
         $course['children'] = $result;
-        // The data are repetitions, copy to root to main course data
+        // These data are repetitions, copy to root to main course data
         $course['Term']     = $course['children'][0]['Term'];
         $course['Course']   = $course['children'][0]['Course'];
         $course['Category'] = $course['children'][0]['Category'];
