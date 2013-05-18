@@ -1,9 +1,9 @@
 <div class="groups form">
 <?php echo $this->Form->create('Group'); ?>
 	<fieldset>
-		<legend><?php echo __('Add Group'); ?></legend>
+		<legend><?php echo __('Admin Add Group'); ?></legend>
 	<?php
-		echo $this->Form->input('name');
+		echo $this->Form->input('display');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

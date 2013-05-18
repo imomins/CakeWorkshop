@@ -7,8 +7,15 @@ App::uses('AppController', 'Controller');
  */
 class GroupsController extends AppController {
 
+    public $components = array('RequestHandler');
+
+    public $paginate = array(
+        'limit' => 20,
+        'order' => array('name ASC')
+    );
+
     /**
-     * index method
+     * admin_index method
      *
      * @return void
      */
@@ -18,22 +25,29 @@ class GroupsController extends AppController {
     }
 
     /**
-     * view method
+     * admin_view method
+     * {
+    "Result":"OK",
+    "Records":[
      *
      * @throws NotFoundException
-     * @param string $id
+     * @param string $group_name
      * @return void
      */
-    public function admin_view($id = null) {
-        $this->Group->id = $id;
-        if (!$this->Group->exists()) {
+    public function admin_view($group_name = null) {
+        if (!$this->Group->exists($group_name)) {
             throw new NotFoundException(__('Invalid group'));
         }
-        $this->set('group', $this->Group->read(null, $id));
+
+        $groups = $this->Group->findByName($group_name);
+        if ($this->request->is('ajax')) {
+            $groups['User'] = $this->Group->User->query('SELECT id,title,firstname,lastname,email,active,created FROM users WHERE group_name = ?', array($group_name));
+        }
+        $this->set('groups', $groups);
     }
 
     /**
-     * add method
+     * admin_add method
      *
      * @return void
      */
@@ -51,15 +65,14 @@ class GroupsController extends AppController {
     }
 
     /**
-     * edit method
+     * admin_edit method
      *
      * @throws NotFoundException
      * @param string $id
      * @return void
      */
     public function admin_edit($id = null) {
-        $this->Group->id = $id;
-        if (!$this->Group->exists()) {
+        if (!$this->Group->exists($id)) {
             throw new NotFoundException(__('Invalid group'));
         }
         if ($this->request->is('post') || $this->request->is('put')) {
@@ -72,26 +85,24 @@ class GroupsController extends AppController {
             }
         }
         else {
-            $this->request->data = $this->Group->read(null, $id);
+            $options             = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
+            $this->request->data = $this->Group->find('first', $options);
         }
     }
 
     /**
-     * delete method
+     * admin_delete method
      *
-     * @throws MethodNotAllowedException
      * @throws NotFoundException
      * @param string $id
      * @return void
      */
     public function admin_delete($id = null) {
-        if (!$this->request->is('post')) {
-            throw new MethodNotAllowedException();
-        }
         $this->Group->id = $id;
         if (!$this->Group->exists()) {
             throw new NotFoundException(__('Invalid group'));
         }
+        $this->request->onlyAllow('post', 'delete');
         if ($this->Group->delete()) {
             $this->Session->setFlash(__('Group deleted'));
             $this->redirect(array('action' => 'index'));

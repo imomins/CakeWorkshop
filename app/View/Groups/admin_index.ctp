@@ -1,20 +1,20 @@
-<div class="page-header">
-    <h3><?php echo __('Gruppenübersicht'); ?></h3>
-</div>
-
-<table class="table table-striped table-bordered">
+<h3 class="page-header"><?php echo __('Groups'); ?></h3>
+<table class="table table-bordered table-hover table-striped">
     <tr>
-        <th><?php echo $this->Paginator->sort('display', __('Name')); ?></th>
-        <th class="actions"><?php echo __('Actions'); ?></th>
+        <th><?php echo $this->Paginator->sort('display'); ?></th>
+        <th colspan="3" class="actions"><?php echo __('Optionen'); ?></th>
     </tr>
-    <?php
-    foreach ($groups as $group): ?>
+    <?php foreach ($groups as $group): ?>
         <tr>
             <td><?php echo h($group['Group']['display']); ?>&nbsp;</td>
-            <td class="actions">
-                <?php echo $this->Html->link(__('View'), array('action' => 'view', $group['Group']['name'])); ?>
-                <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $group['Group']['name'])); ?>
-                <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $group['Group']['name']), null, __('Are you sure you want to delete # %s?', $group['Group']['name'])); ?>
+            <td>
+                <?php echo $this->Html->link(__('Anzeigen'), array('action' => 'view', $group['Group']['name'])); ?>
+            </td>
+            <td>
+                <?php echo $this->Html->link(__('Bearbeiten'), array('action' => 'edit', $group['Group']['name'])); ?>
+            </td>
+            <td>
+                <?php echo $this->Form->postLink(__('Löschen'), array('action' => 'delete', $group['Group']['name']), null, __('Are you sure you want to delete # %s?', $group['Group']['name'])); ?>
             </td>
         </tr>
     <?php endforeach; ?>
