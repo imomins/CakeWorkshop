@@ -20,7 +20,7 @@ class Booking extends AppModel {
      * @return mixed
      */
     public function findBookingsByIds($user_id, $ids) {
-        $sql = <<<EOT
+        $sql = "
             SELECT
                 CoursesTerm.id,
                 Category.id id,Category.name name,
@@ -33,9 +33,10 @@ class Booking extends AppModel {
                 LEFT OUTER JOIN terms Term ON (CoursesTerm.term_id = Term.id)
                 LEFT OUTER JOIN days `Day` ON (CoursesTerm.id = `Day`.courses_term_id)
                 LEFT OUTER JOIN categories Category ON (Course.category_id = Category.id)
-EOT;
-        $sql .= 'WHERE Booking.user_id = ? AND CoursesTerm.id IN (' . implode(',', $ids) . ')
-                ORDER BY Category.name ASC, Booking.id ASC';
+            WHERE
+                Booking.user_id = ? AND CoursesTerm.id IN (" . implode(',', $ids) . ")
+            ORDER BY
+                Category.name ASC, Booking.id ASC";
 
         $result      = $this->query($sql, array($user_id));
         $categories  = array();

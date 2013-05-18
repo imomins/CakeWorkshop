@@ -37,8 +37,7 @@ class CoursesTerm extends AppModel {
      * @return array
      */
     public function findCoursesTermGroupedByCategoryWithBookingStateName($param) {
-        // TODO: Replace term max by selectable term
-        $query = <<<EOD
+        $query = "
             SELECT
               (SELECT bookings.booking_state_name FROM bookings WHERE bookings.courses_term_id = courses_terms.id AND bookings.user_id = ?) booking_state_name,
               categories.id,categories.name,
@@ -46,14 +45,17 @@ class CoursesTerm extends AppModel {
               courses_terms.id, courses_terms.attendees,courses_terms.max,courses_terms.locked,
               terms.name,
               DATE_FORMAT(days.start_date, ' %d.%m.%Y') start_date, TIME_FORMAT(days.start_time, '%H:%m') start_time,TIME_FORMAT(days.end_time, '%H:%m') end_time
-            FROM categories
+            FROM
+                categories
                 LEFT OUTER JOIN courses ON (categories.id = courses.category_id)
                 LEFT OUTER JOIN courses_terms ON (courses.id = courses_terms.course_id)
                 LEFT OUTER JOIN terms ON (courses_terms.term_id = terms.id)
                 LEFT OUTER JOIN days ON (courses_terms.id = days.courses_term_id)
-            WHERE terms.id = (SELECT value FROM settings WHERE `key` = 'current_term')
-                ORDER BY categories.name ASC, courses.name ASC
-EOD;
+            WHERE
+                terms.id = (SELECT value FROM settings WHERE `key` = 'current_term')
+            ORDER BY
+                categories.name ASC, courses.name ASC
+        ";
 
         $editable = (isset($param['Editable']) ? $param['Editable'] : false);
         $rows     = $this->query($query, array($param['User']['id']));
@@ -90,7 +92,7 @@ EOD;
                     'max'            => $row['courses_terms']['max'],
                     'lockedClass'    => $locked ? 'error' : '',
                     'confirmedClass' => ($row[0]['booking_state_name'] === 'confirmed') ? 'success' : '',
-                    'errorClass'     => ($row['courses_terms']['attendees'] > $row['courses_terms']['max']) ? 'warning' : '',
+                    'errorClass'     => ($row['courses_terms']['attendees'] > $row['courses_terms']['max']) ? 'error' : '',
                     'booking_state'  => ($row[0]['booking_state_name'] !== null) ? $row[0]['booking_state_name'] : '',
                     'days'           => array()
                 );
