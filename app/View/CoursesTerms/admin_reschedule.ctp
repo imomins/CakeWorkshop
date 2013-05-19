@@ -80,7 +80,7 @@
 
 <div class="form-actions">
     <button type="submit" class="btn btn-primary">
-        <?php echo __('Ok, in den Ausgewählen Semester-Kurs verschieben'); ?>
+        <?php echo __('Den Kurs neu ansetzen'); ?>
     </button>
 </div>
 

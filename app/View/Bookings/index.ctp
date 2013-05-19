@@ -1,8 +1,6 @@
-<div class="page-header">
-    <h3><?php echo __('Kursverwaltung'); ?></h3>
-</div>
+<h3 class="page-header"><?php echo __('Kursverwaltung'); ?></h3>
 
-<div class="tabbable" ng-app>
+<div class="tabbable">
 
     <ul class="nav nav-tabs">
         <li class="active"><a href="#current" data-toggle="tab"><?php echo __('Aktuelle Kurse'); ?></a></li>
@@ -11,7 +9,7 @@
 
     <div class="tab-content">
 
-        <div class="tab-pane active" id="current" ng-controller="BookingsController">
+        <div class="tab-pane active" id="current">
 
             <div class="alert bg-light-red">
                 <strong>Hinweis zur Anmeldung bei ausgebuchten Kursen:</strong> Falls Kurse ausgebucht sind, dann melden Sie sich bitte trotzdem an. Oft werden noch Plätze über die Warteliste frei bzw. bei großem Interesse bieten wir auch Wiederholungstermine für einzelne Kurse an (gelb markierte Zeilen).
