@@ -22,10 +22,10 @@
             <div id="address">
                 <form class="form-inline" data-bind="visible: showAddressControls">
                     <label>Bitte wählen Sie einer Ihrer bestehende Rechnungsadresse oder erstellen Sie eine neue:</label><br />
-                    <div class="btn-group" data-toggle="buttons-radio" data-bind="click: load, foreach: addresses">
+                    <div class="btn-group existing-address" data-toggle="buttons-radio" data-bind="click: load, foreach: addresses">
                         <button data-bind="attr: { 'data-id': id }, text: name + '-' + ($index() + 1)" type="button" class="btn btn-small"></button>
                     </div>
-                    <button type="button" class="btn btn-small" data-bind="click: add, disable: working">Neue Rechnungsadresse anlegen</button>
+                    <button type="button" class="btn btn-small add-address" data-bind="click: add, disable: working">Neue Rechnungsadresse anlegen</button>
                 </form>
 
                 <form class="well form-horizontal" data-bind="visible: show, submit: save">

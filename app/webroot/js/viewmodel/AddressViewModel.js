@@ -85,7 +85,10 @@ define(['ko', 'jquery'], function (ko, $) {
         };
 
         this.add = function () {
+            var $address = $('#address');
             form.clear();
+            $address.first('.existing-address').find('button').removeClass('active');
+            $address.find('.add-address').addClass('active');
             self.show(true);
             self.loaded(false);
         };

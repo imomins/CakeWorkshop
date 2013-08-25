@@ -68,7 +68,9 @@ define(['ko', 'jquery', 'block-ui'], function (ko, $) {
                     }
                     // Highlight first button
                     if (categories.length > 0) {
-                        $('#address').find('.btn-group button').first().addClass('active');
+                        setTimeout(function () {
+                            $('#address').find('.btn-group button').first().addClass('active');
+                        }, 0);
                     }
                 })
                 .error(function (response) {
