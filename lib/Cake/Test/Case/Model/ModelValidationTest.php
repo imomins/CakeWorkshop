@@ -15,8 +15,9 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Model
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 require_once dirname(__FILE__) . DS . 'ModelTestBase.php';
 
 /**
@@ -25,6 +26,16 @@ require_once dirname(__FILE__) . DS . 'ModelTestBase.php';
  * @package       Cake.Test.Case.Model
  */
 class ModelValidationTest extends BaseModelTest {
+
+/**
+ * override locale to the default (eng).
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		Configure::write('Config.language', 'eng');
+	}
 
 /**
  * Tests validation parameter order in custom validation methods
@@ -1511,7 +1522,7 @@ class ModelValidationTest extends BaseModelTest {
  * @return void
  */
 	public function testValidateAssociated() {
-		$this->loadFixtures('Comment', 'Attachment');
+		$this->loadFixtures('Comment', 'Attachment', 'Article', 'User');
 		$TestModel = new Comment();
 		$TestModel->Attachment->validate = array('attachment' => 'notEmpty');
 
@@ -1527,6 +1538,18 @@ class ModelValidationTest extends BaseModelTest {
 		$this->assertFalse($result);
 		$result = $TestModel->validateAssociated($data);
 		$this->assertFalse($result);
+
+		$fieldList = array(
+			'Attachment' => array('comment_id')
+		);
+		$result = $TestModel->saveAll($data, array(
+			'fieldList' => $fieldList, 'validate' => 'only'
+		));
+		$this->assertTrue($result);
+		$this->assertEmpty($TestModel->validationErrors);
+		$result = $TestModel->validateAssociated($data, array('fieldList' => $fieldList));
+		$this->assertTrue($result);
+		$this->assertEmpty($TestModel->validationErrors);
 
 		$TestModel->validate = array('comment' => 'notEmpty');
 		$record = array(

@@ -11,7 +11,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Controller
  * @since         CakePHP(tm) v 0.2.9
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CakeResponse', 'Network');
@@ -347,7 +347,7 @@ class Controller extends Object implements CakeEventListener {
  * Lazy loads models using the loadModel() method if declared in $uses
  *
  * @param string $name
- * @return void
+ * @return boolean
  */
 	public function __isset($name) {
 		switch ($name) {
@@ -384,8 +384,8 @@ class Controller extends Object implements CakeEventListener {
  * Provides backwards compatibility access to the request object properties.
  * Also provides the params alias.
  *
- * @param string $name
- * @return void
+ * @param string $name The name of the requested value
+ * @return mixed The requested value for valid variables/aliases else null
  */
 	public function __get($name) {
 		switch ($name) {
@@ -422,15 +422,19 @@ class Controller extends Object implements CakeEventListener {
 			case 'here':
 			case 'webroot':
 			case 'data':
-				return $this->request->{$name} = $value;
+				$this->request->{$name} = $value;
+				return;
 			case 'action':
-				return $this->request->params['action'] = $value;
+				$this->request->params['action'] = $value;
+				return;
 			case 'params':
-				return $this->request->params = $value;
+				$this->request->params = $value;
+				return;
 			case 'paginate':
-				return $this->Components->load('Paginator')->settings = $value;
+				$this->Components->load('Paginator')->settings = $value;
+				return;
 		}
-		return $this->{$name} = $value;
+		$this->{$name} = $value;
 	}
 
 /**
@@ -632,11 +636,11 @@ class Controller extends Object implements CakeEventListener {
  */
 	public function constructClasses() {
 		$this->_mergeControllerVars();
-		$this->Components->init($this);
 		if ($this->uses) {
 			$this->uses = (array)$this->uses;
-			list(, $this->modelClass) = pluginSplit(current($this->uses));
+			list(, $this->modelClass) = pluginSplit(reset($this->uses));
 		}
+		$this->Components->init($this);
 		return true;
 	}
 
@@ -714,7 +718,7 @@ class Controller extends Object implements CakeEventListener {
  *
  * @param string $modelClass Name of model class to load
  * @param integer|string $id Initial ID the instanced model class should have
- * @return mixed true when single model found and instance created, error returned if model not found.
+ * @return bool True if the model was found
  * @throws MissingModelException if the model class cannot be found.
  */
 	public function loadModel($modelClass = null, $id = null) {

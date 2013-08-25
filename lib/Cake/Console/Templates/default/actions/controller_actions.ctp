@@ -15,7 +15,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Console.Templates.default.actions
  * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
 
@@ -26,7 +26,7 @@
  */
 	public function <?php echo $admin ?>index() {
 		$this-><?php echo $currentModelName ?>->recursive = 0;
-		$this->set('<?php echo $pluralName ?>', $this->paginate());
+		$this->set('<?php echo $pluralName ?>', $this->Paginator->paginate());
 	}
 
 /**
@@ -56,7 +56,7 @@
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
 				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been saved'));
-				$this->redirect(array('action' => 'index'));
+				return $this->redirect(array('action' => 'index'));
 <?php else: ?>
 				$this->flash(__('<?php echo ucfirst(strtolower($currentModelName)); ?> saved.'), array('action' => 'index'));
 <?php endif; ?>
@@ -99,7 +99,7 @@
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
 				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been saved'));
-				$this->redirect(array('action' => 'index'));
+				return $this->redirect(array('action' => 'index'));
 <?php else: ?>
 				$this->flash(__('The <?php echo strtolower($singularHumanName); ?> has been saved.'), array('action' => 'index'));
 <?php endif; ?>
@@ -145,7 +145,7 @@
 		if ($this-><?php echo $currentModelName; ?>->delete()) {
 <?php if ($wannaUseSession): ?>
 			$this->Session->setFlash(__('<?php echo ucfirst(strtolower($singularHumanName)); ?> deleted'));
-			$this->redirect(array('action' => 'index'));
+			return $this->redirect(array('action' => 'index'));
 <?php else: ?>
 			$this->flash(__('<?php echo ucfirst(strtolower($singularHumanName)); ?> deleted'), array('action' => 'index'));
 <?php endif; ?>
@@ -155,5 +155,5 @@
 <?php else: ?>
 		$this->flash(__('<?php echo ucfirst(strtolower($singularHumanName)); ?> was not deleted'), array('action' => 'index'));
 <?php endif; ?>
-		$this->redirect(array('action' => 'index'));
+		return $this->redirect(array('action' => 'index'));
 	}

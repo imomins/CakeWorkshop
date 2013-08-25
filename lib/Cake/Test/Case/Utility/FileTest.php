@@ -15,8 +15,9 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Utility
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('File', 'Utility');
 App::uses('Folder', 'Utility');
 
@@ -542,7 +543,7 @@ class FileTest extends CakeTestCase {
 /**
  * getTmpFile method
  *
- * @param bool $paintSkip
+ * @param boolean $paintSkip
  * @return void
  */
 	protected function _getTmpFile($paintSkip = true) {

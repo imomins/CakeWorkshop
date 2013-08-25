@@ -17,7 +17,7 @@
  * @link          http://cakephp.org CakePHP Project
  * @package       Cake.Test.Case.Console.Command.Task
  * @since         CakePHP v 1.2.0.7726
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Folder', 'Utility');
@@ -268,7 +268,7 @@ class ExtractTaskTest extends CakeTestCase {
 		$this->out = $this->getMock('ConsoleOutput', array(), array(), '', false);
 		$this->in = $this->getMock('ConsoleInput', array(), array(), '', false);
 		$this->Task = $this->getMock('ExtractTask',
-			array('_isExtractingApp', '_extractValidationMessages', 'in', 'out', 'err', 'clear', '_stop'),
+			array('_isExtractingApp', 'in', 'out', 'err', 'clear', '_stop'),
 			array($this->out, $this->out, $this->in)
 		);
 
@@ -280,6 +280,7 @@ class ExtractTaskTest extends CakeTestCase {
 		$this->assertNotRegExp('#Pages#', $result);
 		$this->assertContains('translate.ctp:1', $result);
 		$this->assertContains('This is a translatable string', $result);
+		$this->assertContains('I can haz plugin model validation message', $result);
 	}
 
 /**

@@ -10,8 +10,9 @@
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('Hash', 'Utility');
 
 /**
@@ -377,6 +378,9 @@ class CakeRoute {
  * @return array An array with persistent parameters applied.
  */
 	public function persistParams($url, $params) {
+		if (empty($this->options['persist']) || !is_array($this->options['persist'])) {
+			return $url;
+		}
 		foreach ($this->options['persist'] as $persistKey) {
 			if (array_key_exists($persistKey, $params) && !isset($url[$persistKey])) {
 				$url[$persistKey] = $params[$persistKey];

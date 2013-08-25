@@ -17,7 +17,7 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Controller.Component
  * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Controller', 'Controller');
@@ -31,13 +31,6 @@ App::uses('CakeResponse', 'Network');
  * @package       Cake.Test.Case.Controller.Component
  */
 class PaginatorTestController extends Controller {
-
-/**
- * name property
- *
- * @var string 'PaginatorTest'
- */
-	public $name = 'PaginatorTest';
 
 /**
  * components property
@@ -55,16 +48,9 @@ class PaginatorTestController extends Controller {
 class PaginatorControllerPost extends CakeTestModel {
 
 /**
- * name property
- *
- * @var string 'PaginatorControllerPost'
- */
-	public $name = 'PaginatorControllerPost';
-
-/**
  * useTable property
  *
- * @var string 'posts'
+ * @var string
  */
 	public $useTable = 'posts';
 
@@ -125,16 +111,9 @@ class PaginatorControllerPost extends CakeTestModel {
 class ControllerPaginateModel extends CakeTestModel {
 
 /**
- * name property
- *
- * @var string 'ControllerPaginateModel'
- */
-	public $name = 'ControllerPaginateModel';
-
-/**
  * useTable property
  *
- * @var string 'comments'
+ * @var string
  */
 	public $useTable = 'comments';
 
@@ -169,21 +148,21 @@ class PaginatorControllerComment extends CakeTestModel {
 /**
  * name property
  *
- * @var string 'Comment'
+ * @var string
  */
 	public $name = 'Comment';
 
 /**
  * useTable property
  *
- * @var string 'comments'
+ * @var string
  */
 	public $useTable = 'comments';
 
 /**
  * alias property
  *
- * @var string 'PaginatorControllerComment'
+ * @var string
  */
 	public $alias = 'PaginatorControllerComment';
 }
@@ -196,30 +175,16 @@ class PaginatorControllerComment extends CakeTestModel {
 class PaginatorAuthor extends CakeTestModel {
 
 /**
- * name property
- *
- * @var string 'PaginatorAuthor'
- */
-	public $name = 'PaginatorAuthor';
-
-/**
  * useTable property
  *
- * @var string 'authors'
+ * @var string
  */
 	public $useTable = 'authors';
 
 /**
  * alias property
  *
- * @var string 'PaginatorAuthor'
- */
-	public $alias = 'PaginatorAuthor';
-
-/**
- * alias property
- *
- * @var string 'PaginatorAuthor'
+ * @var string
  */
 	public $virtualFields = array(
 			'joined_offset' => 'PaginatorAuthor.id + 1'
@@ -354,6 +319,8 @@ class PaginatorComponentTest extends CakeTestCase {
 		$Controller->request->params['pass'] = array('1');
 		$Controller->request->query = array();
 		$Controller->constructClasses();
+
+		$Controller->PaginatorControllerPost->order = null;
 
 		$Controller->Paginator->settings = array(
 			'order' => array('PaginatorControllerComment.id' => 'ASC')
@@ -610,6 +577,31 @@ class PaginatorComponentTest extends CakeTestCase {
 		$results = Hash::extract($Controller->Paginator->paginate('PaginatorControllerPost'), '{n}.PaginatorControllerPost.id');
 		$this->assertEquals('PaginatorControllerPost.id DESC', $Controller->params['paging']['PaginatorControllerPost']['order']);
 		$this->assertEquals(array(3, 2, 1), $results);
+	}
+
+/**
+ * test paginate() and model default order
+ *
+ * @return void
+ */
+	public function testPaginateOrderModelDefault() {
+		$Controller = new PaginatorTestController($this->request);
+		$Controller->uses = array('PaginatorControllerPost');
+		$Controller->params['url'] = array();
+		$Controller->constructClasses();
+		$Controller->PaginatorControllerPost->order = array(
+			$Controller->PaginatorControllerPost->alias . '.created' => 'desc'
+		);
+
+		$Controller->Paginator->settings = array(
+			'fields' => array('id', 'title', 'created'),
+			'maxLimit' => 10,
+			'paramType' => 'named'
+		);
+		$result = $Controller->Paginator->paginate('PaginatorControllerPost');
+		$expected = array('2007-03-18 10:43:23', '2007-03-18 10:41:23', '2007-03-18 10:39:23');
+		$this->assertEquals($expected, Hash::extract($result, '{n}.PaginatorControllerPost.created'));
+		$this->assertEquals($Controller->PaginatorControllerPost->order, $this->Controller->request['paging']['PaginatorControllerPost']['order']);
 	}
 
 /**
@@ -941,6 +933,23 @@ class PaginatorComponentTest extends CakeTestCase {
 		$result = $this->Paginator->validateSort($model, $options, array('title', 'id'));
 
 		$this->assertNull($result['order']);
+	}
+
+/**
+ * test that fields in the whitelist are not validated
+ *
+ * @return void
+ */
+	public function testValidateSortWhitelistTrusted() {
+		$model = $this->getMock('Model');
+		$model->alias = 'model';
+		$model->expects($this->never())->method('hasField');
+
+		$options = array('sort' => 'body', 'direction' => 'asc');
+		$result = $this->Paginator->validateSort($model, $options, array('body'));
+
+		$expected = array('body' => 'asc');
+		$this->assertEquals($expected, $result['order']);
 	}
 
 /**

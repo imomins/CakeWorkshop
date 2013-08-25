@@ -15,8 +15,9 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Network.Email
  * @since         CakePHP(tm) v 2.0.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('CakeEmail', 'Network/Email');
 
 /**
@@ -62,6 +63,14 @@ class TestCakeEmail extends CakeEmail {
  */
 	public function encode($text) {
 		return $this->_encode($text);
+	}
+
+/**
+ * Render to protected method
+ *
+ */
+	public function render($content) {
+		return $this->_render($content);
 	}
 
 }
@@ -718,6 +727,11 @@ class CakeEmailTest extends CakeTestCase {
 
 		$this->CakeEmail->config(array());
 		$this->assertSame($transportClass->config(), array());
+
+		$config = array('test' => 'test@example.com');
+		$this->CakeEmail->config($config);
+		$expected = array('test' => 'test@example.com', 'test2' => true);
+		$this->assertSame($expected, $this->CakeEmail->config());
 	}
 
 /**
@@ -1099,10 +1113,7 @@ class CakeEmailTest extends CakeTestCase {
 		$result = $this->CakeEmail->send();
 
 		$this->assertTextContains('<h1>HTML Ipsum Presents</h1>', $result['message']);
-		$lines = explode("\n", $result['message']);
-		foreach ($lines as $line) {
-			$this->assertTrue(strlen($line) <= CakeEmail::LINE_LENGTH_MUST);
-		}
+		$this->assertLineLengths($result['message']);
 	}
 
 /**
@@ -1482,6 +1493,22 @@ class CakeEmailTest extends CakeTestCase {
 	}
 
 /**
+ * testRender method
+ *
+ * @return void
+ */
+	public function testRenderWithLayoutAndAttachment() {
+		$this->CakeEmail->emailFormat('html');
+		$this->CakeEmail->template('html', 'default');
+		$this->CakeEmail->attachments(array(CAKE . 'basics.php'));
+		$result = $this->CakeEmail->render(array());
+		$this->assertNotEmpty($result);
+
+		$result = $this->CakeEmail->getBoundary();
+		$this->assertNotEmpty($result);
+	}
+
+/**
  * testConstructWithConfigArray method
  *
  * @return void
@@ -1642,7 +1669,7 @@ class CakeEmailTest extends CakeTestCase {
 		$email->to('someone@example.com')->from('someone@example.com');
 		$result = $email->send('ってテーブルを作ってやってたらう');
 		$this->assertContains('Content-Type: text/plain; charset=ISO-2022-JP', $result['headers']);
-		$this->assertContains(mb_convert_encoding('ってテーブルを作ってやってたらう','ISO-2022-JP'), $result['message']);
+		$this->assertContains(mb_convert_encoding('ってテーブルを作ってやってたらう', 'ISO-2022-JP'), $result['message']);
 	}
 
 /**
@@ -1666,7 +1693,7 @@ class CakeEmailTest extends CakeTestCase {
 		$result = $email->send('①㈱');
 		$this->assertTextContains("Content-Type: text/plain; charset=ISO-2022-JP", $result['headers']);
 		$this->assertTextNotContains("Content-Type: text/plain; charset=ISO-2022-JP-MS", $result['headers']); // not charset=iso-2022-jp-ms
-		$this->assertTextNotContains(mb_convert_encoding('①㈱','ISO-2022-JP-MS'), $result['message']);
+		$this->assertTextNotContains(mb_convert_encoding('①㈱', 'ISO-2022-JP-MS'), $result['message']);
 	}
 
 /**
@@ -1690,7 +1717,7 @@ class CakeEmailTest extends CakeTestCase {
 		$result = $email->send('①㈱');
 		$this->assertTextContains("Content-Type: text/plain; charset=ISO-2022-JP", $result['headers']);
 		$this->assertTextNotContains("Content-Type: text/plain; charset=iso-2022-jp-ms", $result['headers']); // not charset=iso-2022-jp-ms
-		$this->assertContains(mb_convert_encoding('①㈱','ISO-2022-JP-MS'), $result['message']);
+		$this->assertContains(mb_convert_encoding('①㈱', 'ISO-2022-JP-MS'), $result['message']);
 	}
 
 	protected function _checkContentTransferEncoding($message, $charset) {
@@ -1864,6 +1891,120 @@ class CakeEmailTest extends CakeTestCase {
 		$email->send('テストメールの本文');
 
 		return $email;
+	}
+
+	public function testWrapLongLine() {
+		$message = '<a href="http://cakephp.org">' . str_repeat('x', CakeEmail::LINE_LENGTH_MUST) . "</a>";
+
+		$this->CakeEmail->reset();
+		$this->CakeEmail->transport('Debug');
+		$this->CakeEmail->from('cake@cakephp.org');
+		$this->CakeEmail->to('cake@cakephp.org');
+		$this->CakeEmail->subject('Wordwrap Test');
+		$this->CakeEmail->config(array('empty'));
+		$result = $this->CakeEmail->send($message);
+		$expected = "<a\r\n" . 'href="http://cakephp.org">' . str_repeat('x', CakeEmail::LINE_LENGTH_MUST - 26) . "\r\n" .
+			str_repeat('x', 26) . "\r\n</a>\r\n\r\n";
+		$this->assertEquals($expected, $result['message']);
+		$this->assertLineLengths($result['message']);
+
+		$str1 = "a ";
+		$str2 = " b";
+		$length = strlen($str1) + strlen($str2);
+		$message = $str1 . str_repeat('x', CakeEmail::LINE_LENGTH_MUST - $length - 1) . $str2;
+
+		$result = $this->CakeEmail->send($message);
+		$expected = "{$message}\r\n\r\n";
+		$this->assertEquals($expected, $result['message']);
+		$this->assertLineLengths($result['message']);
+
+		$message = $str1 . str_repeat('x', CakeEmail::LINE_LENGTH_MUST - $length) . $str2;
+
+		$result = $this->CakeEmail->send($message);
+		$expected = "{$message}\r\n\r\n";
+		$this->assertEquals($expected, $result['message']);
+		$this->assertLineLengths($result['message']);
+
+		$message = $str1 . str_repeat('x', CakeEmail::LINE_LENGTH_MUST - $length + 1) . $str2;
+
+		$result = $this->CakeEmail->send($message);
+		$expected = $str1 . str_repeat('x', CakeEmail::LINE_LENGTH_MUST - $length + 1) . sprintf("\r\n%s\r\n\r\n", trim($str2));
+		$this->assertEquals($expected, $result['message']);
+		$this->assertLineLengths($result['message']);
+	}
+
+	public function testWrapWithTagsAcrossLines() {
+		$str = <<<HTML
+<table>
+<th align="right" valign="top"
+        style="font-weight: bold">The tag is across multiple lines</th>
+</table>
+HTML;
+		$length = strlen($str);
+		$message = $str . str_repeat('x', CakeEmail::LINE_LENGTH_MUST + 1);
+
+		$this->CakeEmail->reset();
+		$this->CakeEmail->transport('Debug');
+		$this->CakeEmail->from('cake@cakephp.org');
+		$this->CakeEmail->to('cake@cakephp.org');
+		$this->CakeEmail->subject('Wordwrap Test');
+		$this->CakeEmail->config(array('empty'));
+		$result = $this->CakeEmail->send($message);
+		$message = str_replace("\r\n", "\n", substr($message, 0, -9));
+		$message = str_replace("\n", "\r\n", $message);
+		$expected = "{$message}\r\nxxxxxxxxx\r\n\r\n";
+		$this->assertEquals($expected, $result['message']);
+		$this->assertLineLengths($result['message']);
+	}
+
+	public function testWrapIncludeLessThanSign() {
+		$str = 'foo<bar';
+		$length = strlen($str);
+		$message = $str . str_repeat('x', CakeEmail::LINE_LENGTH_MUST - $length + 1);
+
+		$this->CakeEmail->reset();
+		$this->CakeEmail->transport('Debug');
+		$this->CakeEmail->from('cake@cakephp.org');
+		$this->CakeEmail->to('cake@cakephp.org');
+		$this->CakeEmail->subject('Wordwrap Test');
+		$this->CakeEmail->config(array('empty'));
+		$result = $this->CakeEmail->send($message);
+		$message = substr($message, 0, -1);
+		$expected = "{$message}\r\nx\r\n\r\n";
+		$this->assertEquals($expected, $result['message']);
+		$this->assertLineLengths($result['message']);
+	}
+
+	public function testWrapForJapaneseEncoding() {
+		$this->skipIf(!function_exists('mb_convert_encoding'));
+
+		$message = mb_convert_encoding('受け付けました', 'iso-2022-jp', 'UTF-8');
+
+		$this->CakeEmail->reset();
+		$this->CakeEmail->transport('Debug');
+		$this->CakeEmail->from('cake@cakephp.org');
+		$this->CakeEmail->to('cake@cakephp.org');
+		$this->CakeEmail->subject('Wordwrap Test');
+		$this->CakeEmail->config(array('empty'));
+		$this->CakeEmail->charset('iso-2022-jp');
+		$this->CakeEmail->headerCharset('iso-2022-jp');
+		$result = $this->CakeEmail->send($message);
+		$expected = "{$message}\r\n\r\n";
+		$this->assertEquals($expected, $result['message']);
+	}
+
+/**
+ * CakeEmailTest::assertLineLengths()
+ *
+ * @param string $message
+ * @return void
+ */
+	public function assertLineLengths($message) {
+		$lines = explode("\r\n", $message);
+		foreach ($lines as $line) {
+			$this->assertTrue(strlen($line) <= CakeEmail::LINE_LENGTH_MUST,
+				'Line length exceeds the max. limit of CakeEmail::LINE_LENGTH_MUST');
+		}
 	}
 
 }

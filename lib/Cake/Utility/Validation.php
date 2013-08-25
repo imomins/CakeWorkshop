@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP Version 5.x
+ * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -12,7 +12,7 @@
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @since         CakePHP(tm) v 1.2.0.3830
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Multibyte', 'I18n');
@@ -255,7 +255,6 @@ class Validation {
 				break;
 			default:
 				self::$errors[] = __d('cake_dev', 'You must define the $operator parameter for Validation::comparison()');
-				break;
 		}
 		return false;
 	}
@@ -817,9 +816,8 @@ class Validation {
 	protected static function _check($check, $regex) {
 		if (is_string($regex) && preg_match($regex, $check)) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 /**
