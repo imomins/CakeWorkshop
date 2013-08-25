@@ -162,7 +162,7 @@
                 <th><?php echo __('Abgemeldet am'); ?></th>
                 <th><?php echo __('Anmelden'); ?></th>
                 <th><?php echo __('Bearbeiten'); ?></th>
-                <th><?php echo __('Löschen'); ?></th>
+                <th style="display: none;"><?php echo __('Löschen'); ?></th>
                 </thead>
                 <!-- ko ifnot: (bookings.self_unsubscribed().length > 0) -->
                 <tbody>
@@ -182,7 +182,7 @@
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
                     </td>
                     <td><a class="btn-link" data-bind="click: $parent.edit"><?php echo __('Bearbeiten'); ?></a></td>
-                    <td><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
+                    <td style="display: none;"><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
@@ -197,7 +197,7 @@
                 <th><?php echo __('Gebucht am'); ?></th>
                 <th><?php echo __('Anmelden'); ?></th>
                 <th><?php echo __('Bearbeiten'); ?></th>
-                <th><?php echo __('Löschen'); ?></th>
+                <th style="display: none;"><?php echo __('Löschen'); ?></th>
                 </thead>
                 <!-- ko ifnot: (bookings.admin_unsubscribed().length > 0) -->
                 <tbody>
@@ -216,7 +216,7 @@
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
                     </td>
                     <td><a class="btn-link" data-bind="click: $parent.edit"><?php echo __('Bearbeiten'); ?></a></td>
-                    <td><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
+                    <td style="display: none;"><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
@@ -233,7 +233,7 @@
                 <th><?php echo __('Abgerechnet'); ?></th>
                 <th><?php echo __('Abmelden'); ?></th>
                 <th><?php echo __('Bearbeiten'); ?></th>
-                <th><?php echo __('Löschen'); ?></th>
+                <th style="display: none;"><?php echo __('Löschen'); ?></th>
                 </thead>
                 <!-- ko ifnot: (bookings.confirmed().length > 0) -->
                 <tbody>
@@ -253,7 +253,7 @@
                     <td><a class="btn-link" data-bind="click: $parent.unsubscribe"><?php echo __('Abmelden'); ?></a>
                     </td>
                     <td><a class="btn-link" data-bind="click: $parent.edit"><?php echo __('Bearbeiten'); ?></a></td>
-                    <td><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
+                    <td style="display: none;"><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
@@ -269,7 +269,7 @@
                 <th><?php echo __('Gebucht am'); ?></th>
                 <th><?php echo __('Anmelden'); ?></th>
                 <th><?php echo __('Bearbeiten'); ?></th>
-                <th><?php echo __('Löschen'); ?></th>
+                <th style="display: none;"><?php echo __('Löschen'); ?></th>
                 </thead>
                 <!-- ko ifnot: (bookings.cleared().length > 0) -->
                 <tbody>
@@ -288,7 +288,7 @@
                     <td><a class="btn-link" data-bind="click: $parent.confirm"><?php echo __('Anmelden'); ?></a>
                     </td>
                     <td><a class="btn-link" data-bind="click: $parent.edit"><?php echo __('Bearbeiten'); ?></a></td>
-                    <td><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
+                    <td style="display: none;"><a class="btn-link" data-bind="click: $parent.remove"><?php echo __('Löschen'); ?></a></td>
                 </tr>
                 </tbody>
                 <!-- /ko -->
