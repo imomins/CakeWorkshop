@@ -31,7 +31,7 @@
         <label class="control-label"><?php echo __('Kursstatus'); ?></label>
 
         <div class="controls">
-            <?php echo $this->Form->select('schedule_name', $schedules, array('empty' => false, 'div' => false, 'label' => false, 'required' => true, 'class' => 'span3')); ?>
+            <?php echo $this->Form->select('schedule_name', $schedules, array('empty' => false, 'div' => false, 'label' => false, 'required' => true, 'class' => 'span3', 'default' => 'unknown')); ?>
         </div>
     </div>
 
