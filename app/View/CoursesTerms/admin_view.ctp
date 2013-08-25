@@ -118,7 +118,7 @@
             )); ?>
             <input id="CoursesTermId" name="data[CoursesTerm][id][<?php echo $coursesTerm['CoursesTerm']['id']; ?>]" value="<?php echo $coursesTerm['CoursesTerm']['id']; ?>" type="hidden"/>
 
-            <div class="type flat-ui-sun-flower"><?php echo __('Unbestätigte Anmeldungen'); ?></div>
+            <div class="type bg-grey-yellow"><?php echo __('Unbestätigte Anmeldungen'); ?></div>
             <table class="table-condensed table table-bordered table-striped table-hover">
                 <thead>
                 <th class="center" data-bind="visible: ($root.bookings.unconfirmed().length > 0)"><input data-bind="checked: selectAllUnconfirmed" type="checkbox" /></th>
