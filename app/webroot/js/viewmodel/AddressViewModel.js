@@ -4,6 +4,8 @@ define(['ko', 'jquery'], function (ko, $) {
     function AddressViewModel() {
         var self = this;
 
+        var $address = $('#address');
+
         this.working = ko.observable(false);
         this.saveCaption = ko.observable('Speichern');
 
@@ -85,7 +87,6 @@ define(['ko', 'jquery'], function (ko, $) {
         };
 
         this.add = function () {
-            var $address = $('#address');
             form.clear();
             $address.first('.existing-address').find('button').removeClass('active');
             $address.find('.add-address').addClass('active');
@@ -119,6 +120,7 @@ define(['ko', 'jquery'], function (ko, $) {
                     self.show(true);
 
                     self.toggleType();
+                    $address.find('.add-address').removeClass('active');
                     self.working(false);
                 })
                 .error(function (response) {
