@@ -1,11 +1,9 @@
-require(['domReady', 'jquery', 'datepicker'], function (domReady, $) {
+require(['jquery', 'datepicker'], function ($) {
     'use strict';
 
-    domReady(function () {
-        $('#start,#end').each(function () {
-            $(this)
-                .datepicker()
-                .datepicker('option', 'dateFormat', 'yy-mm-dd');
+    $(function () {
+        $('#start,#end').datepicker({
+            dateFormat: 'yy-mm-dd'
         });
     });
 });
